@@ -1,7 +1,7 @@
 # Ecommerce Marketplacec Car Shop
 Welcome to our Ecommerce Car Marketplace, a feature-rich web application built with Python Django and React JavaScript. This platform empowers users to buy and sell cars seamlessly, providing a user-friendly interface for both sellers and buyers.
 
-[EcommerceCarShop.webm](https://github.com/tczartoryski/ecommerce-car-shop/assets/117608669/bfc94cf8-46be-48bb-99f3-2c0f9b3bb8be)
+[EcommerceCarShop.webm]((./React%20App.mp4))
 
 ## Key Features:
 ### 1. Car Listing and Browsing:
