@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "noImplicitAny": true,
+    "jsx": "react",
+    "module": "esnext",
+    "target": "es6",
+    "paths": {
+      "@mui/*": ["./node_modules/@mui/*"]
+    },
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node" // Add this line
+  },
+  "include": ["src", "src/custom.d.ts"]
+}
