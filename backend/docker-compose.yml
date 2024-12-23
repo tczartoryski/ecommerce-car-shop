@@ -1,37 +1,38 @@
 version: '3'
 
 services:
- backend:
-   container_name: ecommerce-backend
-   build: .
-   volumes:
-     - type: bind
-       source: ./
-       target: /app
-   ports:
-     - "8000:8000"
-   env_file:
-     - .env
-   depends_on:
-     - db
-   environment:
-     - DJANGO_SETTINGS_MODULE=ecommerce.settings
+  backend:
+    container_name: ecommerce-backend
+    build: .
+    volumes:
+      - type: bind
+        source: ./
+        target: /app
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      - db
+    environment:
+      - DJANGO_SETTINGS_MODULE=ecommerce.settings
 
- redis:
-   container_name: ecommerce-redis
-   image: redis
-   ports:
-     - "6379:6379"
+  redis:
+    container_name: ecommerce-redis
+    image: redis
+    ports:
+      - "6379:6379"
 
- db:
-   container_name: db
-   image: postgres/postgres:latest
-   env_file:
-     - .env
-   ports:
-     - "5432:5432"
-   volumes:
-     - postgres_data:/var/lib/postgresql/data
+  db:
+    container_name: db
+    image: postgres:latest
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    command: ["postgres", "-c", "shared_preload_libraries=pg_stat_statements"]
 
 volumes:
- postgres_data:
+  postgres_data:

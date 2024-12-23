@@ -54,8 +54,9 @@ class Car(models.Model):
     model = models.TextField(null=True, blank=True)
     make = models.TextField(null=True, blank=True)
     year = models.TextField(null=True, blank=True)
-    location = models.TextField(null=True, blank=True)
-    price = models.TextField(null=True, blank=True)
+    location = models.CharField(max_length=5, null=True, blank=True)  # Updated field
+    price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)  # Updated field
+    mileage = models.IntegerField(null=True, blank=True)  # New field
     description = models.TextField(null=True, blank=True)
     owner = models.ForeignKey(EcommerceUser, on_delete=models.SET_NULL, null=True, blank=True, related_name='cars')
 

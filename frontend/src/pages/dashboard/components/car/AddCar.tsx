@@ -6,7 +6,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import OutlinedInput from '@mui/material/OutlinedInput';
-import { FormHelperText, InputLabel, MenuItem, Select } from '@mui/material';
+import { FormHelperText, InputLabel, MenuItem, Select, Stack } from '@mui/material';
 import { MakeDropdown } from './MakeDropdown';
 import { ModelDropdown } from './ModelDropdown';
 import { ColorDropdown } from './ColorDropdown';
@@ -24,6 +24,7 @@ export default function AddCar({ open, handleClose }: AddCarProps) {
     const [color, setColor] = React.useState('');
     const [description, setDescription] = React.useState('');
     const [mileage, setMileage] = React.useState('');
+    const [price, setPrice] = React.useState('');
     const [images, setImages] = React.useState<File[]>([]);
     const [selectedImageIndex, setSelectedImageIndex] = React.useState(0);
     const [yearError, setYearError] = React.useState(''); 
@@ -80,26 +81,30 @@ export default function AddCar({ open, handleClose }: AddCarProps) {
    >
      <DialogTitle>Create Car Listing</DialogTitle>
      <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '100%' }}>
-     <MakeDropdown make={make} setMake={setMake}/>
-     <ModelDropdown make={make} model={model} setModel={setModel} />
+    <Stack direction="row" spacing={2} sx={{ justifyContent: 'space-between' }}>
+      <MakeDropdown make={make} setMake={setMake} />
+      <ModelDropdown make={make} model={model} setModel={setModel} />
+       </Stack>
 
-     <>
-    <OutlinedInput
-      required
-      margin="dense"
-      id="year"
-      name="year"
-      label="Year"
-      placeholder="Enter the year"
-      type="number"
-      fullWidth
-      value={year}
-      onChange={(e) => handleYearChange(e.target.value)}
-      error={yearError !== ''}
-    />
-    {yearError && <FormHelperText error>{yearError}</FormHelperText>}
-      </>
-  <ColorDropdown color={color} setColor={setColor} />
+      <Stack direction="row" spacing={2} sx={{ gap: 2, alignItems: 'flex-end' }}>
+        <Stack direction="column" spacing={1} sx={{ width: 150, alignItems: 'flex-start' }}>
+          <OutlinedInput
+            required
+            margin="dense"
+            id="year"
+            name="year"
+            label="Year"
+            placeholder="Enter the year"
+            type="number"
+            sx={{ height: '40px', marginTop: '8px' }}
+            value={year}
+            onChange={(e) => handleYearChange(e.target.value)}
+            error={yearError !== ''}
+          />
+          {yearError && <FormHelperText error>{yearError}</FormHelperText>}
+        </Stack>
+        <ColorDropdown color={color} setColor={setColor} />
+      </Stack>
  <OutlinedInput
    required
    margin="dense"
@@ -113,18 +118,34 @@ export default function AddCar({ open, handleClose }: AddCarProps) {
    value={description}
    onChange={(e) => setDescription(e.target.value)}
  />
- <OutlinedInput
-   required
-   margin="dense"
-   id="mileage"
-   name="mileage"
-   label="Mileage"
-   placeholder="Enter the mileage"
-   type="number"
-   fullWidth
-   value={mileage}
-   onChange={(e) => setMileage(e.target.value)}
- />
+    <Stack direction="row" spacing={2} sx={{ justifyContent: 'space-between' }}>
+      <OutlinedInput
+        required
+        margin="dense"
+        id="mileage"
+        name="mileage"
+        label="Mileage"
+        placeholder="Enter the mileage"
+        type="number"
+        sx={{ width: 150 }}
+        value={mileage}
+        onChange={(e) => setMileage(e.target.value)}
+      />
+      <OutlinedInput
+        required
+        margin="dense"
+        id="price"
+        name="price"
+        label="Price"
+        placeholder="Enter the price"
+        type="number"
+        sx={{ width: 150 }}
+        value={price}
+        onChange={(e) => setPrice(e.target.value)}
+      />
+    </Stack>
+
+
  <input
  type="file"
  multiple

@@ -1,33 +1,14 @@
-import * as React from 'react';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { Typography } from '@mui/material';
+import React from 'react';
+import { FormControl, InputLabel, Select, MenuItem, Typography } from '@mui/material';
+import { SelectChangeEvent } from '@mui/material/Select';
 
-
-const popularCarColors = [
-    'White',
-    'Black',
-    'Gray',
-    'Silver',
-    'Red',
-    'Blue',
-    'Brown',
-    'Green',
-    'Beige',
-    'Yellow',
-    'Orange',
-    'Purple',
-    'Gold',
-    'Burgundy',
-    'Champagne'
+const possibleColors = [
+  'Red', 'Blue', 'Green', 'Black', 'White', 'Silver', 'Gray', 'Yellow', 'Orange', 'Brown', 'Purple'
 ];
 
-
 interface ColorDropdownProps {
-color: string;
-setColor: (value: string) => void;
+  color: string;
+  setColor: (value: string) => void;
 }
 
 export const ColorDropdown: React.FC<ColorDropdownProps> = ({ color, setColor }) => {
@@ -37,24 +18,31 @@ export const ColorDropdown: React.FC<ColorDropdownProps> = ({ color, setColor })
 
   return (
     <div>
-      <FormControl variant="standard" sx={{width: '100%'}}>
-        <InputLabel id="demo-simple-select-standard-label">Color</InputLabel>
+      <FormControl variant="standard" sx={{ width: '100%' }}>
+        <InputLabel id="color-select-label" shrink={color !== ''}>Color</InputLabel>
         <Select
-          labelId="demo-simple-select-standard-label"
-          id="demo-simple-select-standard"
+          labelId="color-select-label"
+          id="color-select"
           value={color}
           onChange={handleChange}
-          label="Color"
           displayEmpty
-          sx={{width: '100%',  height: '38.125px', paddingTop: '8px', paddingBottom: '8px', paddingRight: '12px', paddingLeft: '12px' }}
-          startAdornment={color === '' ? <Typography sx={{ width: '100%' }}>Enter a color</Typography> : null}        >
-          {popularCarColors.map((color) => (
-        <MenuItem key={color} value={color}>
-          {color}
-        </MenuItem>
-      ))}
+          sx={{ width: '100%', minWidth: 150 }}  // Set the minimum width here
+          renderValue={(selected) => {
+            if (selected.length === 0) {
+              return <Typography sx={{ color: 'text.secondary', paddingLeft: 2 }}>Enter a Color</Typography>;
+            }
+            return <Typography sx={{ color: 'text.secondary', paddingLeft: 2 }}>{selected}</Typography>;
+          }}
+        >
+          {possibleColors.map((color) => (
+            <MenuItem key={color} value={color}>
+              {color}
+            </MenuItem>
+          ))}
         </Select>
       </FormControl>
     </div>
   );
-}
+};
+
+export default ColorDropdown;
