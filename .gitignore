@@ -1,0 +1,7 @@
+# Ignore node_modules in frontend directory
+frontend/node_modules/
+
+# Other typical entries
+*.pyc
+*.log
+*.env
