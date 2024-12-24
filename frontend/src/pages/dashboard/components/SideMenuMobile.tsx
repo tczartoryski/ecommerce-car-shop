@@ -10,6 +10,8 @@ import NotificationsRoundedIcon from '@mui/icons-material/NotificationsRounded';
 
 import MenuButton from './MenuButton';
 import MenuContent from './MenuContent';
+import UserContext from '../../../hooks/user/UserContext';
+import { logout, request } from '../../../hooks/authentication/authentication';
 
 interface SideMenuMobileProps {
   open: boolean | undefined;
@@ -17,6 +19,31 @@ interface SideMenuMobileProps {
 }
 
 export default function SideMenuMobile({ open, toggleDrawer }: SideMenuMobileProps) {
+  const { user, updateUser } = React.useContext(UserContext);
+  const handleLogout = () => {
+      logout();
+  }
+  React.useEffect(() => {
+      const fetchUserDetails = async () => {
+        try {
+          const response = await request('api/user/details/');
+          if (response.ok) {
+            const data = await response.json();
+            const { first_name, last_name, email } = data;
+            updateUser({ firstName: first_name, lastName: last_name, email });
+          } else {
+            console.error('Failed to fetch user details');
+          }
+        } catch (error) {
+          console.error('Error fetching user details:', error);
+        }
+      };
+  
+      if (user === null) {
+        fetchUserDetails();
+      }
+    }, [user, updateUser]);
+
   return (
     <Drawer
       anchor="right"
@@ -43,13 +70,22 @@ export default function SideMenuMobile({ open, toggleDrawer }: SideMenuMobilePro
           >
             <Avatar
               sizes="small"
-              alt="Riley Carter"
+              alt={user?.firstName}
               src="/static/images/avatar/7.jpg"
-              sx={{ width: 24, height: 24 }}
+              sx={{ width: 36, height: 36 }}
             />
-            <Typography component="p" variant="h6">
-              Riley Carter
-            </Typography>
+           <Typography
+           variant="body2"
+           sx={{
+             fontWeight: 500,
+             lineHeight: '16px',
+             whiteSpace: 'nowrap',
+             overflow: 'hidden',
+             textOverflow: 'ellipsis',
+           }}
+         >
+           {user?.firstName} {user?.lastName}
+         </Typography>
           </Stack>
           <MenuButton showBadge>
             <NotificationsRoundedIcon />
@@ -61,7 +97,7 @@ export default function SideMenuMobile({ open, toggleDrawer }: SideMenuMobilePro
           <Divider />
         </Stack>
         <Stack sx={{ p: 2 }}>
-          <Button variant="outlined" fullWidth startIcon={<LogoutRoundedIcon />}>
+          <Button variant="outlined" onClick={handleLogout} fullWidth startIcon={<LogoutRoundedIcon />}>
             Logout
           </Button>
         </Stack>

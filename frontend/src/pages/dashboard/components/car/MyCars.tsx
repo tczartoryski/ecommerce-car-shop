@@ -1,14 +1,52 @@
 import * as React from 'react';
-import Grid from '@mui/material/Grid2';
+import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import CarCard from './CarCard';
 import { Button, Stack } from '@mui/material';
 import AddCar from './AddCar';
+import { request } from '../../../../hooks/authentication/authentication';
 
+
+export interface CarImage {
+  image_url: string;
+}
+
+export interface Car {
+  id: number;
+  make: string;
+  model: string;
+  year: string;
+  color: string;
+  description: string;
+  mileage: number;
+  price: string;
+  zipcode: string;
+  images: CarImage[];
+}
 
 export default function MyCars() {
     const [open, setOpen] = React.useState(false);
+    const [cars, setCars] = React.useState<Car[]>([]);
+    React.useEffect(() => {
+      const fetchCars = async () => {
+        try {
+          const response = await request('api/my-cars/', {
+            method: 'GET',
+          });
+          if (!response.ok) {
+            throw new Error('Failed to fetch cars');
+          }
+          const data: Car[] = await response.json();
+          setCars(data);
+        } catch (error) {
+          console.error('Error fetching cars:', error);
+        }
+      };
+  
+      fetchCars();
+    }, []);
+
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -34,18 +72,11 @@ export default function MyCars() {
         sx={{ mb: '30px' }}
       >
        
-          <Grid size={{ xs: 16, sm: 8, lg: 4 }}>
-            <CarCard ></CarCard>
+       {cars.map((car) => (
+          <Grid item xs={16} sm={8} lg={4} key={car.id}>
+            <CarCard car={car} /> {/* Pass the car prop */}
           </Grid>
-          <Grid size={{ xs: 16, sm: 8, lg: 4 }}>
-            <CarCard ></CarCard>
-          </Grid>
-          <Grid size={{ xs: 16, sm: 8, lg: 4 }}>
-            <CarCard ></CarCard>
-          </Grid>
-          <Grid size={{ xs: 16, sm: 8, lg: 4 }}>
-            <CarCard ></CarCard>
-          </Grid>
+        ))}
       </Grid>
     </Box>
   );

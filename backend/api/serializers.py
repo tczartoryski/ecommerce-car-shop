@@ -15,12 +15,23 @@ class CarImageSerializer(serializers.ModelSerializer):
         fields = ['image_url']
 
 
-class CarSerializer(ModelSerializer):
+class CarSerializer(serializers.ModelSerializer):
     images = CarImageSerializer(many=True, read_only=True)
+    image_files = serializers.ListField(
+        child=serializers.ImageField(write_only=True), write_only=True
+    )
+
     class Meta:
         model = Car
-        fields = '__all__'
+        fields = ['id', 'make', 'model', 'year', 'color', 'description', 'mileage', 'price', 'zipcode', 'images', 'image_files']
         depth = 1
+
+    def create(self, validated_data):
+        image_files = validated_data.pop('image_files')
+        car = Car.objects.create(**validated_data)
+        for image in image_files:
+            CarImage.objects.create(car=car, image=image)
+        return car
 
 
 

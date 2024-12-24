@@ -54,14 +54,15 @@ class Car(models.Model):
     model = models.TextField(null=True, blank=True)
     make = models.TextField(null=True, blank=True)
     year = models.TextField(null=True, blank=True)
-    location = models.CharField(max_length=5, null=True, blank=True)  # Updated field
+    color = models.CharField(max_length=50)  # Add the color field
+    zipcode = models.CharField(max_length=5, null=True, blank=True)  # Updated field
     price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)  # Updated field
     mileage = models.IntegerField(null=True, blank=True)  # New field
     description = models.TextField(null=True, blank=True)
     owner = models.ForeignKey(EcommerceUser, on_delete=models.SET_NULL, null=True, blank=True, related_name='cars')
 
     def __str__(self):
-        return f'{self.model} {self.make} {self.year} {self.price} {self.location}'
+        return f'{self.model} {self.make} {self.year} {self.price} {self.zipcode}'
 
 class CarImage(models.Model):
     car = models.ForeignKey(Car, on_delete=models.CASCADE, related_name='images')

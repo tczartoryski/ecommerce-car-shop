@@ -27,13 +27,21 @@ export const request = async (
  
   if (!authenticatedToken) throw new Error('AUTHENTICATE FIRST');
  
+  const headers: { [key: string]: string } = {
+    ...(options?.headers as { [key: string]: string }),
+    Authorization: `Bearer ${authenticatedToken}`,
+  };
+
+  // Remove 'Content-Type' header if the body is FormData
+  if (options?.body instanceof FormData) {
+    delete headers['Content-Type'];
+  } else {
+    headers['Content-Type'] = 'application/json';
+  }
+
   const response = await fetch(`http://127.0.0.1:8000/${url}`, {
     ...options,
-    headers: {
-      ...options?.headers,
-      Authorization: `Bearer ${authenticatedToken}`,
-      'Content-Type': 'application/json',
-    },
+    headers,
   });
  
   if (response.status === 401) {
