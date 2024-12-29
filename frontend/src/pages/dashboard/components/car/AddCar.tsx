@@ -10,16 +10,15 @@ import { MakeDropdown } from './MakeDropdown';
 import { ModelDropdown } from './ModelDropdown';
 import { ColorDropdown } from './ColorDropdown';
 import { request } from '../../../../hooks/authentication/authentication';
-import useCityByZipcode from '../../../../hooks/cityByZipcode';
+import useCityByZipcode from '../../../../hooks/getCityByZipcode';
 
 interface AddCarProps {
  open: boolean;
  handleClose: () => void;
+ onSuccess: () => void;
 }
 
-
-
-export default function AddCar({ open, handleClose }: AddCarProps) {
+export default function AddCar({ open, handleClose, onSuccess }: AddCarProps) {
     const [make, setMake] = React.useState('');
     const [model, setModel] = React.useState('');
     const [year, setYear] = React.useState('');
@@ -48,6 +47,18 @@ export default function AddCar({ open, handleClose }: AddCarProps) {
         setYearError('');
       }
      };
+     React.useEffect(() => {
+      if (zipcode.length === 5) {
+        const fetchCity = async () => {
+          await getCityByZipcode(zipcode);
+          setCity(location);
+          console.log("New location is: ", location);
+        };
+        fetchCity();
+      } else {
+        setCity('');
+      }
+    }, [zipcode, location]);
 
     const handleExit = () => {
       setMake('');
@@ -62,7 +73,7 @@ export default function AddCar({ open, handleClose }: AddCarProps) {
     }
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-      if (!make || !model || !year || !color || !description || !mileage || !price || !zipcode  || images.length === 0) {
+      if (!make || !model || !year || !color || !mileage || !price || !zipcode  || images.length === 0) {
         setError('Please fill in all fields and upload at least one image.');
         return;
       }
@@ -102,6 +113,7 @@ export default function AddCar({ open, handleClose }: AddCarProps) {
       setImages([]);
       setZipcode('');
       setCity('');
+      onSuccess();
       handleClose();
     } catch (error) {
       console.error('Error:', error);
@@ -120,7 +132,7 @@ export default function AddCar({ open, handleClose }: AddCarProps) {
      }}
    >
      <DialogTitle>Create A Car Listing</DialogTitle>
-    <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '100%' }}>
+    <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, width: '100%' }}>
       {error && <Typography color="error">{error}</Typography>}
       <Stack direction="row" spacing={2} sx={{ justifyContent: 'space-between' }}>
         <MakeDropdown make={make} setMake={setMake} />
@@ -128,7 +140,8 @@ export default function AddCar({ open, handleClose }: AddCarProps) {
       </Stack>
 
       <Stack direction="row" spacing={2} sx={{ gap: 2, alignItems: 'flex-end', justifyContent: 'space-between' }}>
-        <Stack direction="column" spacing={1} sx={{ width: 150, alignItems: 'flex-start' }}>
+        <Stack direction="column" sx={{ width: 150, alignItems: 'flex-start' }}>
+          <Typography variant="body1">Year</Typography>
           <OutlinedInput
             required
             margin="dense"
@@ -146,8 +159,8 @@ export default function AddCar({ open, handleClose }: AddCarProps) {
         </Stack>
         <ColorDropdown color={color} setColor={setColor} />
       </Stack>
+      <Typography variant="body1">Description</Typography>
       <OutlinedInput
-        required
         margin="dense"
         id="description"
         name="description"
@@ -161,6 +174,7 @@ export default function AddCar({ open, handleClose }: AddCarProps) {
       />
       <Stack direction="row" spacing={2} sx={{ justifyContent: 'space-between' }}>
         <Stack direction="column" spacing={1} sx={{ width: 150, alignItems: 'flex-start' }}>
+          <Typography variant="body1">Mileage</Typography>
           <OutlinedInput
             required
             margin="dense"
@@ -176,6 +190,7 @@ export default function AddCar({ open, handleClose }: AddCarProps) {
           />
         </Stack>
         <Stack direction="column" spacing={1} sx={{ width: 150, alignItems: 'flex-start' }}>
+          <Typography variant="body1">Price</Typography>
           <OutlinedInput
             required
             margin="dense"
@@ -193,6 +208,8 @@ export default function AddCar({ open, handleClose }: AddCarProps) {
         </Stack>
       </Stack>
       <Stack direction="row" spacing={1} sx={{ width: '100%', alignItems: 'center' }}>
+        <Stack direction="column">
+        <Typography variant="body1">Zipcode</Typography>
         <OutlinedInput
           required
           margin="dense"
@@ -205,16 +222,12 @@ export default function AddCar({ open, handleClose }: AddCarProps) {
           onChange={async (e) => {
             const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 5);
             setZipcode(value);
-            if (value.length === 5) {
-              await getCityByZipcode(value);
-              setCity(location);
-            } else {
-              setCity('');
-            }
+            console.log("This is the value: ", value);
           }}
         />
+        </Stack>
         {city && (
-          <Typography variant="body2" color="textSecondary">
+          <Typography variant="body2" color="textSecondary" paddingTop="30px">
             Location: {city}
           </Typography>
         )}

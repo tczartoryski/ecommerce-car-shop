@@ -1,6 +1,6 @@
 # Ignore any folder named venv
 **/venv/
-
+**/staticfiles/
 **/.idea/
 
 # Ignore any folder named node_modules

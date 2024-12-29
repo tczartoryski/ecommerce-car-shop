@@ -1,24 +1,19 @@
 import * as React from 'react';
 import { Card, CardContent, CardMedia, Stack, Typography, Link, useTheme, IconButton, Box } from "@mui/material";
-import panameraImage from './panamera.jpg';
-import panamera2Image from './panamera2.png';
-import panamera3Image from './panamera3.jpg';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { Car } from './MyCars';
-import useCityByZipcode from '../../../../hooks/cityByZipcode';
+import useCityByZipcode from '../../../../hooks/getCityByZipcode';
 
 interface CarCardProps {
   car: Car;
+  onClick: (car: Car) => void; // Add onClick prop
 }
-export default function CarCard({ car }: CarCardProps) {
+const CarCard: React.FC<CarCardProps> = ({ car, onClick }) => {
  const theme = useTheme();
  const { location, getCityByZipcode } = useCityByZipcode();
  const [currentImageIndex, setCurrentImageIndex] = React.useState(0);
 
- const handleClick = () => {
-   console.log('Card clicked');
- };
 
   React.useEffect(() => {
          getCityByZipcode(car.zipcode);
@@ -34,10 +29,15 @@ export default function CarCard({ car }: CarCardProps) {
    console.log("Current image index: ", currentImageIndex);
  };
 
+ const handleCardClick = (event: React.MouseEvent) => {
+    event.stopPropagation();
+  };
+
  return (
-   <Link onClick={handleClick} underline="none">
-     <Card sx={{ height: '100%', '&:hover': { bgcolor: theme.palette.action.hover } }}>
+   <Box onClick={() => onClick(car)} sx={{ cursor: 'pointer' }}>
+     <Card sx={{ height: '100%',  cursor: 'pointer', '&:hover': { bgcolor: theme.palette.action.hover } }}>
       <CardContent>
+        <Box onClick={handleCardClick}>
         <Stack direction="row" justifyContent="center" alignItems="center" >
           <IconButton onClick={handlePrevImage} sx={{border: 'none', color: 'darkgray', cursor: 'pointer', bgcolor: 'rgba(0, 0, 0, 0.0)'}}>
             <ArrowBackIosIcon />
@@ -58,6 +58,7 @@ export default function CarCard({ car }: CarCardProps) {
             <ArrowForwardIosIcon />
           </IconButton>
         </Stack>
+        </Box>
         <Typography component="h2" variant="subtitle2" sx={{ fontWeight: '600' }}>
           {car.year} {car.make} {car.model}
         </Typography>
@@ -71,6 +72,8 @@ export default function CarCard({ car }: CarCardProps) {
         </Stack>
       </CardContent>
      </Card>
-   </Link>
+   </Box>
  );
 }
+
+export default CarCard;

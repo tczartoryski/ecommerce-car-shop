@@ -70,14 +70,23 @@ class CarImage(models.Model):
 
     def __str__(self):
         return f'Image for {self.car.model} {self.car.make}'
+   
+    def delete(self, *args, **kwargs):
+        # Delete the image file from the S3 bucket
+        self.image.delete(save=False)
+        # Call the superclass delete method
+        super().delete(*args, **kwargs)
 
 class Conversation(models.Model):
-    participants = models.ManyToManyField(EcommerceUser, related_name='conversations')
+    seller = models.ForeignKey(EcommerceUser, on_delete=models.CASCADE, related_name='seller_conversations')    
+    buyer = models.ForeignKey(EcommerceUser, on_delete=models.CASCADE, related_name='buyer_conversations')
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
 
 
 class Message(models.Model):
     conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE, related_name='messages')
-    sender = models.ForeignKey(EcommerceUser, on_delete=models.CASCADE)
+    sender = models.ForeignKey(EcommerceUser, on_delete=models.CASCADE, related_name='sent_messages')
+    receiver = models.ForeignKey(EcommerceUser, on_delete=models.CASCADE, related_name='received_messages')
     content = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
+    read = models.BooleanField(default=False)

@@ -24,11 +24,11 @@ export const MakeDropdown: React.FC<MakeDropdownProps> = ({ make, setMake }) => 
   const handleChange = async (event: SelectChangeEvent) => {
     setMake(event.target.value);
   };
-
+  
   return (
     <div>
       <FormControl variant="standard" sx={{ width: '100%' }}>
-        <InputLabel id="make-select-label" shrink={make !== ''} sx={{ paddingLeft: 2 }}>Make</InputLabel>
+        <Typography variant="body1">Make</Typography>
         <Select
           labelId="make-select-label"
           id="make-select"

@@ -1,5 +1,7 @@
 # api/urls.py
-from django.urls import path, re_path, include
+from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 from . import views
 from .views import CarDetailView, UserLoginView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
@@ -13,11 +15,17 @@ urlpatterns = [
    path('login/', UserLoginView.as_view(), name="login"),
    path('car/create/', CarDetailView.as_view(), name="create-car"),
    path('car/<str:pk>/', CarDetailView.as_view(), name="car-detail"),
+   path('car/<str:pk>/update/', views.CarUpdateView.as_view(), name="car-update"),
    path('market-cars/', views.CarListView.as_view(), name="market-cars"),
    path('my-cars/', views.CarListView.as_view(), name="my-cars"),
    path('password_reset/', views.password_reset_request, name='password_reset_request'),
-
+   path('message-owner/', views.CreateConversationAndMessageView.as_view(), name='message-owner'),
 ]
+
+# Serve static files in development
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += websocket_urlpatterns  # Include WebSocket URL patterns
 

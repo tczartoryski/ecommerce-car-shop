@@ -8,12 +8,16 @@ import { useNavigate } from 'react-router-dom';
 import MessageCard from '../messages/MessageCard';
 import { Car } from '../car/MyCars';
 import { request } from '../../../../hooks/authentication/authentication';
+import ShowCar from '../car/ShowCar';
 
 
 export default function MainGrid() {
-  const [cars, setCars] = React.useState<Car[]>([]);
+  const [myCars, setMyCars] = React.useState<Car[]>([]);
+  const [marketCars, setMarketCars] = React.useState<Car[]>([]);
+  const [displayedMarketCar, setDisplayedMarketCar] = React.useState<Car | undefined>(undefined);
+  const [openShow, setOpenShow] = React.useState(false);
       React.useEffect(() => {
-        const fetchCars = async () => {
+        const fetchMyCars = async () => {
           try {
             const response = await request('api/my-cars/', {
               method: 'GET',
@@ -22,26 +26,50 @@ export default function MainGrid() {
               throw new Error('Failed to fetch cars');
             }
             const data: Car[] = await response.json();
-            setCars(data);
+            setMyCars(data);
+          } catch (error) {
+            console.error('Error fetching cars:', error);
+          }
+        };
+        const fetchMarketCars = async () => {
+          try {
+            const response = await request('api/market-cars/', {
+              method: 'GET',
+            });
+            if (!response.ok) {
+              throw new Error('Failed to fetch cars');
+            }
+            const data: Car[] = await response.json();
+            setMarketCars(data);
           } catch (error) {
             console.error('Error fetching cars:', error);
           }
         };
     
-        fetchCars();
+        fetchMyCars();
+        fetchMarketCars();
       }, []);
   const navigate = useNavigate();
   const handleSeeAllClick = (route: string) => {
     navigate(route);
   };
+   const handleMarketCarClick = (car: Car) => {
+          setDisplayedMarketCar(car);
+          setOpenShow(true);
+        };
+    const handleShowClose = () => {
+      setDisplayedMarketCar(undefined);
+      setOpenShow(false);
+    }
   return (
     <Box sx={{ width: '100%', maxWidth: { sm: '100%', md: '1700px' } }}>
+        {displayedMarketCar && <ShowCar car={displayedMarketCar} open={openShow} handleClose={handleShowClose}/>}
       {/* cards */}
       <Stack direction="row" alignItems="center" spacing={2} justifyContent="space-between" mb={4} mt={2} >
        <Typography component="h2" variant="h6">
          Market
        </Typography>
-       <Button variant="contained" onClick={() => handleSeeAllClick('/my-cars')} >See All</Button>
+       <Button variant="contained" onClick={() => handleSeeAllClick('/market')} >See All</Button>
      </Stack>
       <Grid
         container
@@ -49,9 +77,9 @@ export default function MainGrid() {
         columns={16}
         sx={{ mb: '30px' }}
       >
-       {cars.map((car) => (
+       {marketCars.map((car) => (
           <Grid item xs={16} sm={8} lg={4} key={car.id}>
-            <CarCard car={car} /> {/* Pass the car prop */}
+            <CarCard car={car} onClick={handleMarketCarClick}/>
           </Grid>
         ))}
       </Grid>
@@ -69,9 +97,9 @@ export default function MainGrid() {
         sx={{ mb: '30px' }}
       >
        
-       {cars.map((car) => (
+       {myCars.map((car) => (
           <Grid item xs={16} sm={8} lg={4} key={car.id}>
-            <CarCard car={car} /> {/* Pass the car prop */}
+            <CarCard car={car} onClick={handleMarketCarClick} /> {/* Pass the car prop */}
           </Grid>
         ))}
       </Grid>

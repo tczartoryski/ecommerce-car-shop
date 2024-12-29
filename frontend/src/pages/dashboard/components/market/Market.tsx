@@ -7,17 +7,31 @@ import { Button, Card, Divider, Stack } from '@mui/material';
 import { Car } from '../car/MyCars';
 import { request } from '../../../../hooks/authentication/authentication';
 import Search from '../Search';
+import ShowCar from '../car/ShowCar';
 
 
 export default function Market() {
   const [cars, setCars] = React.useState<Car[]>([]); // Use the Car type for the state
-
+  const [open, setOpen] = React.useState(false);
+  const [displayedCar, setDisplayedCar] = React.useState<Car | undefined>(undefined);
+  
+   const handleCarClick = (car: Car) => {
+          setDisplayedCar(car);
+          setOpen(true);
+          console.log('Car clicked:', car);
+          // Handle the car click event here
+    };
+  
+    const handleClose = () => {
+      setOpen(false);
+      setDisplayedCar(undefined);
+    };
 
   React.useEffect(() => {
     const fetchCars = async () => {
       console.log('fetching cars');
       try {
-        const response = await request('api/my-cars/', {
+        const response = await request('api/market-cars/', {
           method: 'GET',
         });
         if (!response.ok) {
@@ -34,6 +48,7 @@ export default function Market() {
   }, []);
   return (
     <Box sx={{ width: '100%', maxWidth: { sm: '100%', md: '1700px' } }}>
+      {displayedCar && <ShowCar car={displayedCar} open={open} handleClose={handleClose}/>}
       {/* cards */}
      <Stack direction="row" alignItems="center" spacing={2} justifyContent="space-between" mb={4} mt={2} >
        <Typography component="h2" variant="h6">
@@ -49,7 +64,7 @@ export default function Market() {
       >
        {cars.map((car) => (
           <Grid item xs={16} sm={8} lg={4} key={car.id}>
-            <CarCard car={car} /> {/* Pass the car prop */}
+            <CarCard car={car} onClick={handleCarClick} /> {/* Pass the car prop */}
           </Grid>
         ))}
       </Grid>

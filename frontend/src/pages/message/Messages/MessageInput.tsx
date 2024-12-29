@@ -7,10 +7,12 @@ export type MessageInputProps = {
   textAreaValue: string;
   setTextAreaValue: (value: string) => void;
   onSubmit: () => void;
+  sx?: object;
+  placeholder?: string; // Add placeholder prop
 };
 
 export default function MessageInput(props: MessageInputProps) {
-  const { textAreaValue, setTextAreaValue, onSubmit } = props;
+  const { textAreaValue, setTextAreaValue, onSubmit, sx, placeholder="Type a message here" } = props;
   const textAreaRef = React.useRef<HTMLDivElement>(null);
   const handleClick = () => {
     if (textAreaValue.trim() !== '') {
@@ -19,11 +21,11 @@ export default function MessageInput(props: MessageInputProps) {
     }
   };
   return (
-    <Box sx={{ px: 2, pb: 3 }}>
+    <Box sx={{ px: 2, pb: 3,  ...sx }}>
       <FormControl sx={{width: '100%'}}>
         <Stack direction="row" sx={{ alignItems: 'center', gap: '8px' }}>
           <TextField
-            placeholder="Type something here…"
+            placeholder={placeholder}
             aria-label="Message"
             ref={textAreaRef}
             onChange={(event) => {

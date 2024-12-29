@@ -6,6 +6,7 @@ import CarCard from './CarCard';
 import { Button, Stack } from '@mui/material';
 import AddCar from './AddCar';
 import { request } from '../../../../hooks/authentication/authentication';
+import EditCar from './EditCar';
 
 
 export interface CarImage {
@@ -26,44 +27,58 @@ export interface Car {
 }
 
 export default function MyCars() {
-    const [open, setOpen] = React.useState(false);
+    const [addOpen, setAddOpen] = React.useState(false);
+    const [editOpen, setEditOpen] = React.useState(false);
     const [cars, setCars] = React.useState<Car[]>([]);
-    React.useEffect(() => {
-      const fetchCars = async () => {
-        try {
-          const response = await request('api/my-cars/', {
-            method: 'GET',
-          });
-          if (!response.ok) {
-            throw new Error('Failed to fetch cars');
-          }
-          const data: Car[] = await response.json();
-          setCars(data);
-        } catch (error) {
-          console.error('Error fetching cars:', error);
+    const [editCar, setEditCar] = React.useState<Car | undefined>(undefined);
+    const fetchCars = async () => {
+      try {
+        const response = await request('api/my-cars/', {
+          method: 'GET',
+        });
+        if (!response.ok) {
+          throw new Error('Failed to fetch cars');
         }
-      };
-  
+        const data: Car[] = await response.json();
+        setCars(data);
+      } catch (error) {
+        console.error('Error fetching cars:', error);
+      }
+    };
+    React.useEffect(() => {
       fetchCars();
     }, []);
 
 
-    const handleClickOpen = () => {
-        setOpen(true);
+      const handleCarClick = (car: Car) => {
+        setEditCar(car);
+        setEditOpen(true);
+        // Handle the car click event here
       };
-    
-      const handleClose = () => {
-        setOpen(false);
+
+      const handleSuccess = () => {
+        fetchCars();
+        setAddOpen(false);
+        setEditOpen(false);
+
+        setEditCar(undefined);
       };
+
+
   return (
     <Box sx={{ width: '100%', maxWidth: { sm: '100%', md: '1700px' } }}>
-        <AddCar open={open} handleClose={handleClose} />
+        {editCar && <EditCar car={editCar} open={editOpen} handleClose={() => {
+          setEditOpen(false)
+           setEditCar(undefined)}}
+           onSuccess={handleSuccess}
+            />}
+        {addOpen && <AddCar onSuccess={handleSuccess} open={addOpen} handleClose={() => {setAddOpen(false)}} />}
       {/* cards */}
      <Stack direction="row" alignItems="center" spacing={2} justifyContent="space-between" mb={4} mt={2} >
        <Typography component="h2" variant="h6">
          My Cars
        </Typography>
-       <Button variant="contained" onClick={() => {handleClickOpen()}}>List A Car</Button>
+       <Button variant="contained" onClick={() => setAddOpen(true)}>List A Car</Button>
      </Stack>
       <Grid
         container
@@ -74,7 +89,7 @@ export default function MyCars() {
        
        {cars.map((car) => (
           <Grid item xs={16} sm={8} lg={4} key={car.id}>
-            <CarCard car={car} /> {/* Pass the car prop */}
+            <CarCard car={car} onClick={handleCarClick} />
           </Grid>
         ))}
       </Grid>

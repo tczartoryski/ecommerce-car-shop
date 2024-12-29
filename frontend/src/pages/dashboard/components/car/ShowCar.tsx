@@ -6,7 +6,9 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import {Stack, Typography } from '@mui/material';
 import { Car } from './MyCars';
-import useCityByZipcode from '../../../../hooks/cityByZipcode';
+import useCityByZipcode from '../../../../hooks/getCityByZipcode';
+import MessageInput from '../../../message/Messages/MessageInput';
+import { request } from '../../../../hooks/authentication/authentication';
 
 interface ShowCarProps {
  car: Car;
@@ -17,18 +19,33 @@ interface ShowCarProps {
 
 export default function ShowCar({ car, open, handleClose, edit }: ShowCarProps) {
     const { location, getCityByZipcode } = useCityByZipcode();
-    const [currentImageIndex, setCurrentImageIndex] = React.useState(0);
     const [selectedImageIndex, setSelectedImageIndex] = React.useState(0);
+    const [message, setMessage] = React.useState('');
     React.useEffect(() => {
         getCityByZipcode(car.zipcode);
       }, [car.zipcode, getCityByZipcode]);
-    const handlePrevImage = () => {
-        setCurrentImageIndex((prevIndex) => (prevIndex === 0 ? car.images.length - 1 : prevIndex - 1));
+    
+      const handleSendMessage = async () => {
+        console.log("sending this message ", message);
+        const newMessage = {
+          car_id: car.id,
+          content: message,
+        };
+        try {
+            const response = await request('api/message-owner/', {
+                method: 'POST',
+                body: JSON.stringify(newMessage),
+            });
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+              }
+        
+              console.log('Message sent successfully:');
+            } catch (error) {
+              console.error('Error sending message:', error);
+            }
       };
-     
-    const handleNextImage = () => {
-        setCurrentImageIndex((prevIndex) => (prevIndex === car.images.length - 1 ? 0 : prevIndex + 1));
-    };
+ 
     
 
 
@@ -42,32 +59,37 @@ export default function ShowCar({ car, open, handleClose, edit }: ShowCarProps) 
        sx: { backgroundImage: 'none' },
      }}
    >
-     <DialogTitle>Create A Car Listing</DialogTitle>
+     <DialogTitle>{car.year} {car.make} {car.model}</DialogTitle>
+    <Button
+        onClick={handleClose}
+        sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+        }}
+    >
+        X
+    </Button>
     <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 2, width: '100%' }}>
-      <Stack direction="row" spacing={2} sx={{ justifyContent: 'space-between' }}>
-        <Typography>{car.make}</Typography>
-        <Typography>{car.model}</Typography>
-      </Stack>
 
-      <Stack direction="row" spacing={2} sx={{ gap: 2, alignItems: 'flex-end', justifyContent: 'space-between' }}>
-        <Stack direction="column" spacing={1} sx={{ width: 150, alignItems: 'flex-start' }}>
-          <Typography>{car.year}</Typography>
-        </Stack>
-        <Typography>{car.color}</Typography>
-      </Stack>
-     <Typography>{car.description}</Typography>
-      <Stack direction="row" spacing={2} sx={{ justifyContent: 'space-between' }}>
-        <Stack direction="column" spacing={1} sx={{ width: 150, alignItems: 'flex-start' }}>
-          <Typography>{car.mileage}</Typography>
-        </Stack>
-        <Stack direction="column" spacing={1} sx={{ width: 150, alignItems: 'flex-start' }}>
-            <Typography>${car.price.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Typography>
-        </Stack>
-      </Stack>
+    <Stack direction="row" spacing={2} sx={{ gap: 2, alignItems: 'flex-end', justifyContent: 'space-between' }}>
+        <Typography sx={{ fontSize: '16px', fontWeight: 400 }}>Make:   {car.make}</Typography>
+        <Typography sx={{ fontSize: '16px', fontWeight: 400 }}>Model:   {car.model.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Typography>
+    </Stack>
+    <Stack direction="row" spacing={2} sx={{ gap: 2, alignItems: 'flex-end', justifyContent: 'space-between' }}>
+        <Typography sx={{ fontSize: '16px', fontWeight: 400 }}>Year:   {car.year}</Typography>
+        <Typography sx={{ fontSize: '16px', fontWeight: 400 }}>Mileage:   {car.mileage.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Typography>
+    </Stack>
+    <Stack direction="row" spacing={2} sx={{ gap: 2, alignItems: 'flex-end', justifyContent: 'space-between' }}>
+        <Typography sx={{ fontSize: '16px', fontWeight: 400 }}>Color:   {car.color}</Typography>
+        <Typography sx={{ fontSize: '16px', fontWeight: 400 }}>Price:   ${car.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Typography>
+    </Stack>
+    <Typography sx={{ fontSize: '16px', fontWeight: 400 }}>Description: {car.description}</Typography>
       <Stack direction="row" spacing={1} sx={{ width: '100%', alignItems: 'center' }}>
         {location && (
           <Typography variant="body2" color="textSecondary">
-            Location: {location}
+            Location:   {location}
           </Typography>
         )}
       </Stack>
@@ -98,11 +120,15 @@ export default function ShowCar({ car, open, handleClose, edit }: ShowCarProps) 
       )}
     </DialogContent>
 
-     <DialogActions sx={{ pb: 3, px: 3 }}>
-       <Button onClick={handleClose}>Cancel</Button>
-       <Button variant="contained" type="submit">
-         Create Listing
-       </Button>
+     <DialogActions>
+       <MessageInput
+         textAreaValue={message}
+         setTextAreaValue={setMessage}
+         onSubmit={handleSendMessage}
+         sx={{ width: '100%' }} // Adjust the width of the MessageInput component
+         placeholder={'Message owner...'}
+
+       />
      </DialogActions>
    </Dialog>
  );

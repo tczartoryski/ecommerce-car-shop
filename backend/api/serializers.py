@@ -8,11 +8,17 @@ from django.contrib.auth import authenticate
 User = get_user_model()
 
 class CarImageSerializer(serializers.ModelSerializer):
-    image_url = serializers.CharField(source='image.url', read_only=True)
+    image_url = serializers.SerializerMethodField()
 
     class Meta:
         model = CarImage
         fields = ['image_url']
+
+    def get_image_url(self, obj):
+        request = self.context.get('request')
+        if request is not None:
+            return request.build_absolute_uri(obj.image.url)
+        return obj.image.url
 
 
 class CarSerializer(serializers.ModelSerializer):
@@ -81,20 +87,25 @@ class UserLoginSerializer(serializers.Serializer):
         return attrs
 
 
-class ConversationSerializer(ModelSerializer):
-    buyer = EcommerceUserSerializer(many=False)
+class EcommerceUserWithoutCarsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EcommerceUser
+        fields = ('email', 'first_name', 'last_name')
+
+class ConversationSerializer(serializers.ModelSerializer):
     seller = EcommerceUserSerializer(many=False)
+    buyer = EcommerceUserSerializer(many=False)
     car = CarSerializer(many=False)
 
     class Meta:
         model = Conversation
-        fields = ('id', 'car', 'buyer', 'seller')
+        fields = ('id', 'car', 'seller', 'buyer')
 
-
-class MessageSerializer(ModelSerializer):
-    conversation = ConversationSerializer(many=False)
-    sender = EcommerceUserSerializer(many=False)
+class MessageSerializer(serializers.ModelSerializer):
+    conversation = serializers.PrimaryKeyRelatedField(queryset=Conversation.objects.all())
+    sender = EcommerceUserWithoutCarsSerializer(many=False)
+    receiver = EcommerceUserWithoutCarsSerializer(many=False)
 
     class Meta:
         model = Message
-        fields = ('id', 'conversation', 'content', 'sender', 'timestamp')
+        fields = ('id', 'conversation', 'sender', 'receiver', 'content', 'timestamp', 'read')

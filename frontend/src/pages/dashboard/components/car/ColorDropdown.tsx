@@ -19,7 +19,7 @@ export const ColorDropdown: React.FC<ColorDropdownProps> = ({ color, setColor })
   return (
     <div>
       <FormControl variant="standard" sx={{ width: '100%' }}>
-        <InputLabel id="color-select-label" shrink={color !== ''}>Color</InputLabel>
+        <Typography variant="body1">Color</Typography>
         <Select
           labelId="color-select-label"
           id="color-select"

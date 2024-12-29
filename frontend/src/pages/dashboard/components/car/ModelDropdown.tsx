@@ -39,10 +39,11 @@ const car_data = [
 interface ModelDropdownProps {
   make: string;
   model: string;
+  edit?: boolean;
   setModel: (value: string) => void;
 }
 
-export const ModelDropdown: React.FC<ModelDropdownProps> = ({ make, model, setModel }) => {
+export const ModelDropdown: React.FC<ModelDropdownProps> = ({ make, model, setModel, edit=false }) => {
   const handleChange = async (event: SelectChangeEvent) => {
     setModel(event.target.value);
   };
@@ -50,13 +51,15 @@ export const ModelDropdown: React.FC<ModelDropdownProps> = ({ make, model, setMo
   const carModels = car_data.find((car) => car.brand.toLowerCase() === make.toLowerCase())?.models || [];
 
   React.useEffect(() => {
-    setModel('');
+    if (!edit) {
+      setModel('');
+    }
   }, [make]);
 
   return (
     <div>
       <FormControl variant="standard" sx={{ width: '100%' }}>
-        <InputLabel id="model-select-label" shrink={model !== ''}>Model</InputLabel>
+        <Typography variant="body1">Model</Typography>
         <Select
           labelId="model-select-label"
           id="model-select"
@@ -68,7 +71,7 @@ export const ModelDropdown: React.FC<ModelDropdownProps> = ({ make, model, setMo
             if (selected.length === 0) {
               return <Typography sx={{ color: 'text.secondary', paddingLeft: 2 }}>Enter a Model</Typography>;
             }
-            return <Typography sx={{ paddingLeft: 2 }}>{selected}</Typography>;
+            return <Typography sx={{ color: 'text.secondary', paddingLeft: 2 }}>{selected}</Typography>;
           }}
         >
           {carModels.map((model) => (
