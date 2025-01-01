@@ -13,6 +13,11 @@ class CarImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = CarImage
         fields = ['image_url']
+    
+    def create(self, validated_data):
+        car_image = CarImage.objects.create(**validated_data)
+        car_image.upload_to_s3()
+        return car_image
 
     def get_image_url(self, obj):
         request = self.context.get('request')
@@ -93,13 +98,18 @@ class EcommerceUserWithoutCarsSerializer(serializers.ModelSerializer):
         fields = ('email', 'first_name', 'last_name')
 
 class ConversationSerializer(serializers.ModelSerializer):
-    seller = EcommerceUserSerializer(many=False)
-    buyer = EcommerceUserSerializer(many=False)
-    car = CarSerializer(many=False)
+    seller = EcommerceUserWithoutCarsSerializer(many=False)
+    buyer = EcommerceUserWithoutCarsSerializer(many=False)
+    car = serializers.PrimaryKeyRelatedField(queryset=Car.objects.all())
+    most_recent_message = serializers.SerializerMethodField()
+
+    def get_most_recent_message(self, obj):
+        message = obj.get_most_recent_message()
+        return MessageSerializer(message).data if message else None
 
     class Meta:
         model = Conversation
-        fields = ('id', 'car', 'seller', 'buyer')
+        fields = ('id', 'car', 'seller', 'buyer', 'most_recent_message')
 
 class MessageSerializer(serializers.ModelSerializer):
     conversation = serializers.PrimaryKeyRelatedField(queryset=Conversation.objects.all())

@@ -2,36 +2,83 @@ import * as React from 'react';
 import AvatarWithStatus from './AvatarWithStatus';
 import MessageInput from './MessageInput';
 import MessagesPaneHeader from './MessagesPaneHeader';
-import { ChatProps, MessageProps } from '../types';
+import { Conversation, Message } from '../types';
 import { Box, Stack } from '@mui/material';
 import ChatBubble from './ChatBubble';
+import { EccomerceUserWithoutCars } from '../../dashboard/components/Header';
+import UserContext from '../../../hooks/user/UserContext';
+import { request } from '../../../hooks/authentication/authentication';
+import useWebSocket from '../../../hooks/useWebsocket';
 
 type MessagesPaneProps = {
-  chat: ChatProps;
+  chat: Conversation;
 };
 
 export default function MessagesPane(props: MessagesPaneProps) {
   const { chat } = props;
-  const [chatMessages, setChatMessages] = React.useState(chat.messages);
+  const [chatMessages, setChatMessages] = React.useState<Message[]>([chat.most_recent_message]);
   const [textAreaValue, setTextAreaValue] = React.useState('');
-  const isFirstRender = React.useRef(true);
-  React.useEffect(() => {
-    if (!isFirstRender.current) {
-      setChatMessages(chat.messages);
-      const messagesContainer = document.querySelector('#messages-container');
-      if (messagesContainer) {
-        // Reset scroll position to the top when a new chat is selected
-        messagesContainer.scrollTop = 0; // You can adjust this value if you want a different scroll behavior
+  const { user } = React.useContext(UserContext);
+  const [sender, setSender] = React.useState<EccomerceUserWithoutCars | null>(null);
+  const { messages, sendMessage } = useWebSocket(`ws://localhost:8000/ws/conversations/${chat.id}/`);
+
+    
+    React.useEffect(() => {
+        if (user && chat) {
+          if (chat.buyer.email === user.email) {
+            setSender(chat.seller);
+          } else {
+            setSender(chat.buyer);
+          }
+        }
+      }, [user, chat]);
+    
+    React.useEffect(() => {
+      if (!user || !sender) {
+        return; // or a loading spinner
+      }});
+  
+    const handleNewMessage = () => {
+      const message = {
+        message: textAreaValue,
+        sender_id: user.id,
+      };
+      sendMessage(message);
+      setTextAreaValue('');
       }
-    } else {
-      isFirstRender.current = false;
-    }
-  }, [chat]);
+  
+  
+  React.useEffect(() => {
+    // Fetch conversation and messages on initialization
+    const fetchMessages = async () => {
+      try {
+        const response = await request(`api/conversations/${chat.id}/messages/`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch messages');
+        }
+        const data = await response.json();
+        console.log("Here is the data", data);
+        setChatMessages(data);
+      } catch (error) {
+        console.error('Error fetching messages:', error);
+      }
+    };
+
+    fetchMessages();
+
+
+    return () => {
+    };
+  }, [chat.id]);
 
   React.useEffect(() => {
-    setChatMessages(chat.messages);
-
-  }, [chat.messages]);
+      // Log the messages received from the WebSocket
+      messages.forEach((message) => {
+        //console.log(message);
+          setChatMessages((prevMessages) => [...prevMessages, message]);
+        
+      });
+    }, [messages]);
   
 
   return (
@@ -44,7 +91,7 @@ export default function MessagesPane(props: MessagesPaneProps) {
         backgroundColor: 'background.level1',
       }}
     >
-      <MessagesPaneHeader sender={chat.sender} />
+      {sender && <MessagesPaneHeader sender={sender} />}
       <Box
         id="messages-container"
         sx={{
@@ -58,8 +105,8 @@ export default function MessagesPane(props: MessagesPaneProps) {
         }}
       >
         <Stack spacing={2} sx={{ justifyContent: 'flex-end' }}>
-          {chatMessages.map((message: MessageProps, index: number) => {
-            const isYou = message.sender === 'You';
+          {chatMessages.map((message: Message, index: number) => {
+            const isYou = message.sender.email === user.email;
             return (
               <Stack
                 key={index}
@@ -67,13 +114,14 @@ export default function MessagesPane(props: MessagesPaneProps) {
                 spacing={2}
                 sx={{ flexDirection: isYou ? 'row-reverse' : 'row' }}
               >
-                {message.sender !== 'You' && (
+                {message.sender.email !== user.email && (
                   <AvatarWithStatus
-                    online={message.sender.online}
-                    src={message.sender.avatar}
+                    online={true}
+                    src={"/static/images/avatar/7.jpg"}
+                    alt={sender.first_name}
                   />
                 )}
-                <ChatBubble variant={isYou ? 'sent' : 'received'} {...message} />
+                <ChatBubble variant={isYou ? 'sent' : 'received'} message={message} />
               </Stack>
             );
           })}
@@ -82,19 +130,7 @@ export default function MessagesPane(props: MessagesPaneProps) {
       <MessageInput
         textAreaValue={textAreaValue}
         setTextAreaValue={setTextAreaValue}
-        onSubmit={() => {
-          const newId = chatMessages.length + 1;
-          const newIdString = newId.toString();
-          setChatMessages([
-            ...chatMessages,
-            {
-              id: newIdString,
-              sender: 'You',
-              content: textAreaValue,
-              timestamp: 'Just now',
-            },
-          ]);
-        }}
+        onSubmit={handleNewMessage}
       />
     </Box>
   );

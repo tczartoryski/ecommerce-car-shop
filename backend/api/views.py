@@ -4,7 +4,8 @@ from rest_framework.response import Response
 from rest_framework import generics
 from django.shortcuts import get_object_or_404
 from rest_framework_simplejwt.tokens import RefreshToken
-from .serializers import (EcommerceUserSerializer, CarSerializer, UserLoginSerializer)
+from .serializers import (EcommerceUserSerializer, CarSerializer, UserLoginSerializer, ConversationSerializer, MessageSerializer)
+from rest_framework import viewsets
 from .models import Car, EcommerceUser, Conversation, Message, CarImage
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
@@ -61,7 +62,8 @@ class FetchDetailsView(generics.RetrieveAPIView):
         return Response({
             'email': user.email,
             'first_name': user.first_name,
-            'last_name': user.last_name
+            'last_name': user.last_name,
+            'id': user.id
         }, status=200)
 
 
@@ -200,3 +202,19 @@ class CreateConversationAndMessageView(generics.CreateAPIView):
         )
 
         return Response(status=201)
+
+class ConversationViewSet(viewsets.ModelViewSet):
+    queryset = Conversation.objects.all()
+    serializer_class = ConversationSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        return Conversation.objects.filter(seller=user) | Conversation.objects.filter(buyer=user)
+
+class ConversationMessagesView(generics.ListAPIView):
+    serializer_class = MessageSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        conversation_id = self.kwargs['conversation_id']
+        return Message.objects.filter(conversation_id=conversation_id).order_by('timestamp')

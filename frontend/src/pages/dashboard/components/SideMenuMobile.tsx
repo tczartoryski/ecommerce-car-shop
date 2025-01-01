@@ -29,8 +29,8 @@ export default function SideMenuMobile({ open, toggleDrawer }: SideMenuMobilePro
           const response = await request('api/user/details/');
           if (response.ok) {
             const data = await response.json();
-            const { first_name, last_name, email } = data;
-            updateUser({ firstName: first_name, lastName: last_name, email });
+            const { first_name, last_name, email, id } = data;
+            updateUser({ firstName: first_name, lastName: last_name, id: id, email });
           } else {
             console.error('Failed to fetch user details');
           }

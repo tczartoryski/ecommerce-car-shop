@@ -1,11 +1,9 @@
 from django.urls import re_path
-from .consumers import NotificationConsumer
+from .consumers import NotificationConsumer, ChatConsumer, ConversationsConsumer
 
-print("Configuring WebSocket URL patterns")
 
 websocket_urlpatterns = [
    re_path('ws/notifications/', NotificationConsumer.as_asgi()),
-    #re_path(r'ws/chat/(?P<room_name>\w+)/$', ChatConsumer.as_asgi()),
+   re_path(r'ws/conversations/(?P<conversation_id>\d+)/$', ChatConsumer.as_asgi()),
+   re_path(r'ws/conversations/', ConversationsConsumer.as_asgi()),
 ]
-
-print("WebSocket URL patterns configured")

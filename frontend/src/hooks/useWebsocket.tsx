@@ -14,7 +14,7 @@ const useWebSocket = (url: string) => {
     webSocketRef.current = webSocket;
 
     webSocket.onopen = () => {
-      console.log('WebSocket connection opened');
+      //console.log('WebSocket connection opened');
       setIsConnected(true);
     };
 
@@ -26,7 +26,7 @@ const useWebSocket = (url: string) => {
     };
 
     webSocket.onclose = () => {
-      console.log('WebSocket connection closed');
+      //console.log('WebSocket connection closed');
       setIsConnected(false);
     };
 
@@ -40,7 +40,7 @@ const useWebSocket = (url: string) => {
       console.log('Sending message:', message); // Log the message being sent
       webSocketRef.current.send(JSON.stringify(message));
     } else {
-      console.log('WebSocket is not open. Ready state:', webSocketRef.current?.readyState);
+      //console.log('WebSocket is not open. Ready state:', webSocketRef.current?.readyState);
     }
   }, [isConnected]);
 

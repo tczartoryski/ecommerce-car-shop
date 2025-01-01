@@ -9,28 +9,32 @@ import MessageCard from '../messages/MessageCard';
 import { Car } from '../car/MyCars';
 import { request } from '../../../../hooks/authentication/authentication';
 import ShowCar from '../car/ShowCar';
+import EditCar from '../car/EditCar';
 
 
 export default function MainGrid() {
   const [myCars, setMyCars] = React.useState<Car[]>([]);
   const [marketCars, setMarketCars] = React.useState<Car[]>([]);
   const [displayedMarketCar, setDisplayedMarketCar] = React.useState<Car | undefined>(undefined);
+  const [displayedMyCar, setDisplayedMyCar] = React.useState<Car | undefined>(undefined);
   const [openShow, setOpenShow] = React.useState(false);
+  const [openEdit, setOpenEdit] = React.useState(false);
+  const fetchMyCars = async () => {
+    try {
+      const response = await request('api/my-cars/', {
+        method: 'GET',
+      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch cars');
+      }
+      const data: Car[] = await response.json();
+      setMyCars(data);
+    } catch (error) {
+      console.error('Error fetching cars:', error);
+    }
+  };
       React.useEffect(() => {
-        const fetchMyCars = async () => {
-          try {
-            const response = await request('api/my-cars/', {
-              method: 'GET',
-            });
-            if (!response.ok) {
-              throw new Error('Failed to fetch cars');
-            }
-            const data: Car[] = await response.json();
-            setMyCars(data);
-          } catch (error) {
-            console.error('Error fetching cars:', error);
-          }
-        };
+       
         const fetchMarketCars = async () => {
           try {
             const response = await request('api/market-cars/', {
@@ -56,14 +60,28 @@ export default function MainGrid() {
    const handleMarketCarClick = (car: Car) => {
           setDisplayedMarketCar(car);
           setOpenShow(true);
-        };
+    };
+    const handleMyCarClick = (car: Car) => {
+      setDisplayedMyCar(car);
+      setOpenEdit(true);
+    };
     const handleShowClose = () => {
       setDisplayedMarketCar(undefined);
       setOpenShow(false);
     }
+    const handleEditClose = () => {
+      setDisplayedMyCar(undefined);
+      setOpenEdit(false);
+    }
+    const handleSuccess = () => {
+      fetchMyCars();
+      setOpenEdit(false);
+      setDisplayedMyCar(undefined);
+    };
   return (
     <Box sx={{ width: '100%', maxWidth: { sm: '100%', md: '1700px' } }}>
         {displayedMarketCar && <ShowCar car={displayedMarketCar} open={openShow} handleClose={handleShowClose}/>}
+        {displayedMyCar && <EditCar car={displayedMyCar} open={openEdit} handleClose={handleEditClose} onSuccess={handleSuccess}/>}
       {/* cards */}
       <Stack direction="row" alignItems="center" spacing={2} justifyContent="space-between" mb={4} mt={2} >
        <Typography component="h2" variant="h6">
@@ -99,7 +117,7 @@ export default function MainGrid() {
        
        {myCars.map((car) => (
           <Grid item xs={16} sm={8} lg={4} key={car.id}>
-            <CarCard car={car} onClick={handleMarketCarClick} /> {/* Pass the car prop */}
+            <CarCard car={car} onClick={handleMyCarClick} /> {/* Pass the car prop */}
           </Grid>
         ))}
       </Grid>

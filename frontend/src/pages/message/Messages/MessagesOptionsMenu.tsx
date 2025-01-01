@@ -8,13 +8,14 @@ import { listClasses } from '@mui/material/List';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import MenuButton from '../../dashboard/components/MenuButton';
 import { UserProps } from '../types';
+import { EccomerceUserWithoutCars } from '../../dashboard/components/Header';
 
 
 const MenuItem = styled(MuiMenuItem)({
   margin: '2px 0',
 });
 type MessagesOptionsMenuProps = {
-    sender: UserProps;
+    sender: EccomerceUserWithoutCars;
   };
 
 export default function MessagesOptionsMenu(props: MessagesOptionsMenuProps) {

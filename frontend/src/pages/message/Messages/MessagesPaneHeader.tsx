@@ -9,8 +9,9 @@ import PhoneInTalkRoundedIcon from '@mui/icons-material/PhoneInTalkRounded';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import OptionsMenu from '../../dashboard/components/OptionsMenu';
 import MessagesOptionsMenu from './MessagesOptionsMenu';
+import { EccomerceUserWithoutCars } from '../../dashboard/components/Header';
 type MessagesPaneHeaderProps = {
-  sender: UserProps;
+  sender: EccomerceUserWithoutCars;
 };
 
 export default function MessagesPaneHeader(props: MessagesPaneHeaderProps) {
@@ -40,15 +41,15 @@ export default function MessagesPaneHeader(props: MessagesPaneHeaderProps) {
         >
           <ArrowBackIosNewRoundedIcon />
         </IconButton>
-        <Avatar src={sender.avatar} />
+        <Avatar alt={sender.first_name}  src="/static/images/avatar/7.jpg" />
         <div>
         <Stack direction="row" sx={{ alignItems: 'flex-end' }}>
         <Typography
             component="h2"
             noWrap
             sx={{ fontWeight: 'lg', fontSize: 'lg' }}
-          >{sender.name}</Typography>
-          {sender.online ? (
+          >{sender.first_name} {sender.last_name}</Typography>
+          {true ? (
             <Stack direction="row" sx={{ alignItems: 'center', paddingLeft: '16px' }}>
                <Chip
                   variant="outlined"

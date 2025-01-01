@@ -2,15 +2,21 @@ import * as React from 'react';
 import InsertDriveFileRoundedIcon from '@mui/icons-material/InsertDriveFileRounded';
 import { Typography, Avatar, IconButton } from '@mui/material';
 import { Box, Stack } from '@mui/system';
-import { MessageProps } from '../types';
+import { Message, MessageProps } from '../types';
+import UserContext from '../../../hooks/user/UserContext';
+import { formatDistanceToNow, parseISO } from 'date-fns';
 
-type ChatBubbleProps = MessageProps & {
+
+type ChatBubbleProps = {
   variant: 'sent' | 'received';
+  message: Message;
 };
 
 export default function ChatBubble(props: ChatBubbleProps) {
-  const { content, variant, timestamp, attachment = undefined, sender } = props;
+  const { variant, message } = props;
   const isSent = variant === 'sent';
+  const { user } = React.useContext(UserContext);
+  const formattedTimestamp = formatDistanceToNow(parseISO(message.timestamp), { addSuffix: true });
   return (
     <Box sx={{ maxWidth: '60%', minWidth: 'auto', border: '1px solid grey', borderRadius: '8px', padding: '8px' }}>
       <Stack
@@ -20,33 +26,11 @@ export default function ChatBubble(props: ChatBubbleProps) {
 
       >
         <Typography >
-          {sender === 'You' ? sender : sender.name}
+          {message.sender.email === user.email ? 'You' : `${message.sender.first_name} ${message.sender.last_name}`}
         </Typography>
-        <Typography >{timestamp}</Typography>
+        <Typography >{formattedTimestamp}</Typography>
       </Stack>
-      {attachment ? (
-        <Box
-          sx={[
-            {
-              px: 1.75,
-              py: 1.25,
-              borderRadius: 'lg',
-            },
-            isSent ? { borderTopRightRadius: 0 } : { borderTopRightRadius: 'lg' },
-            isSent ? { borderTopLeftRadius: 'lg' } : { borderTopLeftRadius: 0 },
-          ]}
-        >
-          <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
-            <Avatar color="primary">
-              <InsertDriveFileRoundedIcon />
-            </Avatar>
-            <div>
-              <Typography sx={{ fontSize: 'sm' }}>{attachment.fileName}</Typography>
-              <Typography >{attachment.size}</Typography>
-            </div>
-          </Stack>
-        </Box>
-      ) : (
+      
         <Box
           sx={{ position: 'relative' }}
         >
@@ -91,11 +75,10 @@ export default function ChatBubble(props: ChatBubbleProps) {
                     },
               ]}
             >
-              {content}
+              {message.content}
             </Typography>
           </Box>
         </Box>
-      )}
     </Box>
   );
 }

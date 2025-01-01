@@ -1,3 +1,5 @@
+import { EccomerceUserWithoutCars } from "../dashboard/components/Header";
+
 export type UserProps = {
     name: string;
     username: string;
@@ -17,9 +19,27 @@ export type UserProps = {
       size: string;
     };
   };
+
+  export type Message = {
+    content: string;
+    conversation: number;
+    id: number;
+    read: boolean;
+    receiver: EccomerceUserWithoutCars;
+    sender: EccomerceUserWithoutCars;
+    timestamp: string;
+  }
   
   export type ChatProps = {
     id: string;
     sender: UserProps;
     messages: MessageProps[];
   };
+
+  export type Conversation = {
+    id: number;
+    car: number;
+    seller: EccomerceUserWithoutCars;
+    buyer: EccomerceUserWithoutCars;
+    most_recent_message: Message;
+  }

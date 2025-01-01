@@ -18,6 +18,7 @@ export interface LoginData {
         firstName: loginData.first_name,
         lastName: loginData.last_name,
         email: loginData.email,
+        id: Number(loginData.user_id)
       });
       localStorage.setItem('userId', loginData.user_id);
       localStorage.setItem('authToken', loginData.access);

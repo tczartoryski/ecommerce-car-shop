@@ -3,13 +3,13 @@ import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import ChatListItem from './ChatListItem';
-import { ChatProps } from '../types';
+import { Conversation } from '../types';
 import { toggleMessagesPane } from '../utils';
 import { Typography, Box, Stack, IconButton, Input, List, Chip } from '@mui/material';
 
 type ChatsPaneProps = {
-  chats: ChatProps[];
-  setSelectedChat: (chat: ChatProps) => void;
+  chats: Conversation[];
+  setSelectedChat: (chat: Conversation) => void;
   selectedChatId: string;
 };
 
@@ -34,13 +34,13 @@ export default function ChatsPane(props: ChatsPaneProps) {
               variant="filled"
               color="primary"
               size="medium"
-              label='4'
+              label={chats.length}
             />
             <Typography
               component="h1"
               sx={{ fontSize: { xs: 'md', md: 'lg' }, fontWeight: 'lg', mr: 'auto' }}
             >
-              Messages
+              {chats.length == 1 ? 'Message' : 'Messages'}
             </Typography>
         </Stack>
        
@@ -66,10 +66,10 @@ export default function ChatsPane(props: ChatsPaneProps) {
       >
         {chats.map((chat) => (
           <ChatListItem
-            key={chat.id}
-            {...chat}
-            setSelectedChat={setSelectedChat}
+            key={chat.id.toString()}
+            conversation={chat}
             selectedChatId={selectedChatId}
+            setSelectedChat={setSelectedChat}
           />
         ))}
       </List>

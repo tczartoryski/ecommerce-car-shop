@@ -1,42 +1,63 @@
 import * as React from 'react';
-import { ChatProps, MessageProps, UserProps } from '../types';
+import { ChatProps, Conversation, Message, MessageProps, UserProps } from '../types';
 import { toggleMessagesPane } from '../utils';
 import { Typography, Box, Stack, IconButton, Input, List, ListItemButtonProps, ListItem, ListItemButton, Divider, Avatar } from '@mui/material';
+import UserContext from '../../../hooks/user/UserContext';
+import { EccomerceUserWithoutCars } from '../../dashboard/components/Header';
+import { formatDistanceToNow, parseISO } from 'date-fns';
+
 type ChatListItemProps = ListItemButtonProps & {
-  id: string;
-  unread?: boolean;
-  sender: UserProps;
-  messages: MessageProps[];
+  conversation: Conversation;
   selectedChatId?: string;
-  setSelectedChat: (chat: ChatProps) => void;
+  setSelectedChat: (conversation: Conversation) => void;
 };
 
 export default function ChatListItem(props: ChatListItemProps) {
-  const { id, sender, messages, selectedChatId, setSelectedChat } = props;
-  const selected = selectedChatId === id;
+  const { conversation, selectedChatId, setSelectedChat } = props;
+  const selected = selectedChatId === conversation.id.toString();
+  const { user } = React.useContext(UserContext);
+  const [sender, setSender] = React.useState<EccomerceUserWithoutCars | null>(null);
+
+  React.useEffect(() => {
+    if (user && conversation) {
+      if (conversation.buyer.email === user.email) {
+        setSender(conversation.seller);
+      } else {
+        setSender(conversation.buyer);
+      }
+    }
+  }, [user, conversation]);
+
+  if (!user || !sender) {
+    return null; // or a loading spinner
+  }
+
+  const timestamp = conversation.most_recent_message.timestamp;
+  const formattedTimestamp = formatDistanceToNow(parseISO(timestamp), { addSuffix: true });
+
   return (
     <React.Fragment>
       <ListItem>
         <ListItemButton
           onClick={() => {
             toggleMessagesPane();
-            setSelectedChat({ id, sender, messages });
+            setSelectedChat(conversation);
           }}
           selected={selected}
           color="neutral"
           sx={{ flexDirection: 'column', alignItems: 'initial', gap: 1 }}
         >
           <Stack direction="row" spacing={1.5}>
-            <Avatar src={sender.avatar} />
+            <Avatar alt={sender.first_name}  src="/static/images/avatar/7.jpg" />
             <Box sx={{ flex: 1 }}>
-              <Typography>{sender.name}</Typography>
+              <Typography>{sender.first_name} {sender.last_name}</Typography>
             </Box>
             <Box sx={{ lineHeight: 1.5, textAlign: 'right' }}>
               <Typography
                 noWrap
                 sx={{ display: { xs: 'none', md: 'block' } }}
               >
-                5 mins ago
+                {formattedTimestamp}
               </Typography>
             </Box>
           </Stack>
@@ -49,7 +70,7 @@ export default function ChatListItem(props: ChatListItemProps) {
               textOverflow: 'ellipsis',
             }}
           >
-            {messages[0].content}
+            {conversation.most_recent_message.sender.email === user.email ? 'You: ' : `${conversation.most_recent_message.sender.first_name}: `} {conversation.most_recent_message.content}
           </Typography>
         </ListItemButton>
       </ListItem>

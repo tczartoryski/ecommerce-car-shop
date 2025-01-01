@@ -1,5 +1,7 @@
+import boto3
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
+from django.conf import settings
 from django.db import models
 
 
@@ -70,7 +72,6 @@ class CarImage(models.Model):
 
     def __str__(self):
         return f'Image for {self.car.model} {self.car.make}'
-   
     def delete(self, *args, **kwargs):
         # Delete the image file from the S3 bucket
         self.image.delete(save=False)
@@ -81,6 +82,8 @@ class Conversation(models.Model):
     seller = models.ForeignKey(EcommerceUser, on_delete=models.CASCADE, related_name='seller_conversations')    
     buyer = models.ForeignKey(EcommerceUser, on_delete=models.CASCADE, related_name='buyer_conversations')
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
+    def get_most_recent_message(self):
+        return self.messages.order_by('-timestamp').first()
 
 
 class Message(models.Model):
