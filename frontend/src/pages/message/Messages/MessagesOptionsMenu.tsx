@@ -9,6 +9,7 @@ import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import MenuButton from '../../dashboard/components/MenuButton';
 import { UserProps } from '../types';
 import { EccomerceUserWithoutCars } from '../../dashboard/components/Header';
+import { useMessages } from '../../../hooks/messages/MessagesContext';
 
 
 const MenuItem = styled(MuiMenuItem)({
@@ -20,7 +21,10 @@ type MessagesOptionsMenuProps = {
 
 export default function MessagesOptionsMenu(props: MessagesOptionsMenuProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const { handleDeleteConversation } = useMessages();
+
   const open = Boolean(anchorEl);
+
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -57,7 +61,7 @@ export default function MessagesOptionsMenu(props: MessagesOptionsMenuProps) {
           },
         }}
       >
-        <MenuItem onClick={handleClose}>End Conversation</MenuItem>
+        <MenuItem onClick={() => {handleClose(); handleDeleteConversation();}}>End Conversation</MenuItem>
       </Menu>
     </React.Fragment>
   );

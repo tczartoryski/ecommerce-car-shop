@@ -40,6 +40,7 @@ export default function MessagesPane(props: MessagesPaneProps) {
   
     const handleNewMessage = () => {
       const message = {
+        type: 'new_message',
         message: textAreaValue,
         sender_id: user.id,
       };

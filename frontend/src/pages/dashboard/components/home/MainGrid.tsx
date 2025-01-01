@@ -33,30 +33,26 @@ export default function MainGrid() {
       console.error('Error fetching cars:', error);
     }
   };
-      React.useEffect(() => {
-       
-        const fetchMarketCars = async () => {
-          try {
-            const response = await request('api/market-cars/', {
-              method: 'GET',
-            });
-            if (!response.ok) {
-              throw new Error('Failed to fetch cars');
-            }
-            const data: Car[] = await response.json();
-            setMarketCars(data);
-          } catch (error) {
-            console.error('Error fetching cars:', error);
-          }
-        };
-    
-        fetchMyCars();
-        fetchMarketCars();
-      }, []);
-  const navigate = useNavigate();
-  const handleSeeAllClick = (route: string) => {
-    navigate(route);
+  const fetchMarketCars = async () => {
+    try {
+      const response = await request('api/market-cars/', {
+        method: 'GET',
+      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch cars');
+      }
+      const data: Car[] = await response.json();
+      setMarketCars(data);
+    } catch (error) {
+      console.error('Error fetching cars:', error);
+    }
   };
+  React.useEffect(() => {
+    fetchMyCars();
+    fetchMarketCars();
+  }, []);
+  const navigate = useNavigate();
+
    const handleMarketCarClick = (car: Car) => {
           setDisplayedMarketCar(car);
           setOpenShow(true);
@@ -65,14 +61,7 @@ export default function MainGrid() {
       setDisplayedMyCar(car);
       setOpenEdit(true);
     };
-    const handleShowClose = () => {
-      setDisplayedMarketCar(undefined);
-      setOpenShow(false);
-    }
-    const handleEditClose = () => {
-      setDisplayedMyCar(undefined);
-      setOpenEdit(false);
-    }
+
     const handleSuccess = () => {
       fetchMyCars();
       setOpenEdit(false);
@@ -80,14 +69,14 @@ export default function MainGrid() {
     };
   return (
     <Box sx={{ width: '100%', maxWidth: { sm: '100%', md: '1700px' } }}>
-        {displayedMarketCar && <ShowCar car={displayedMarketCar} open={openShow} handleClose={handleShowClose}/>}
-        {displayedMyCar && <EditCar car={displayedMyCar} open={openEdit} handleClose={handleEditClose} onSuccess={handleSuccess}/>}
+        {displayedMarketCar && <ShowCar car={displayedMarketCar} open={openShow} handleClose={() => {setDisplayedMarketCar(undefined); setOpenShow(false);}}/>}
+        {displayedMyCar && <EditCar car={displayedMyCar} open={openEdit} handleClose={() => {setDisplayedMyCar(undefined); setOpenEdit(false);}} onSuccess={handleSuccess}/>}
       {/* cards */}
       <Stack direction="row" alignItems="center" spacing={2} justifyContent="space-between" mb={4} mt={2} >
        <Typography component="h2" variant="h6">
          Market
        </Typography>
-       <Button variant="contained" onClick={() => handleSeeAllClick('/market')} >See All</Button>
+       <Button variant="contained" onClick={() => navigate('/market')} >See All</Button>
      </Stack>
       <Grid
         container
@@ -106,7 +95,7 @@ export default function MainGrid() {
        <Typography component="h2" variant="h6">
          My Cars
        </Typography>
-       <Button variant="contained" onClick={() => handleSeeAllClick('/my-cars')}>See All</Button>
+       <Button variant="contained" onClick={() => navigate('/my-cars')}>See All</Button>
      </Stack>
       <Grid
         container
@@ -123,10 +112,10 @@ export default function MainGrid() {
       </Grid>
       <Divider sx={{marginBottom: '15px'}}/>
       <Stack direction="row" alignItems="center" spacing={2} justifyContent="space-between" mb={4} mt={2} >
-       <Typography component="h2" variant="h6" onClick={() => handleSeeAllClick('/inbox')}>
+       <Typography component="h2" variant="h6" onClick={() => navigate('/inbox')}>
          Messages
        </Typography>
-       <Button variant="contained" onClick={() => handleSeeAllClick('/inbox')}>See All</Button>
+       <Button variant="contained" onClick={() => navigate('/inbox')}>See All</Button>
      </Stack>
       <Grid
         container

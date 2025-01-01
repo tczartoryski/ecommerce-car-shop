@@ -13,11 +13,11 @@ import { request } from '../../../../hooks/authentication/authentication';
 interface ShowCarProps {
  car: Car;
  open: boolean;
- edit?: boolean
+ canMessage?: boolean
  handleClose: () => void;
 }
 
-export default function ShowCar({ car, open, handleClose, edit }: ShowCarProps) {
+export default function ShowCar({ car, open, handleClose, canMessage=true }: ShowCarProps) {
     const { location, getCityByZipcode } = useCityByZipcode();
     const [selectedImageIndex, setSelectedImageIndex] = React.useState(0);
     const [message, setMessage] = React.useState('');
@@ -120,7 +120,7 @@ export default function ShowCar({ car, open, handleClose, edit }: ShowCarProps) 
       )}
     </DialogContent>
 
-     <DialogActions>
+     {canMessage && <DialogActions>
        <MessageInput
          textAreaValue={message}
          setTextAreaValue={setMessage}
@@ -129,7 +129,7 @@ export default function ShowCar({ car, open, handleClose, edit }: ShowCarProps) 
          placeholder={'Message owner...'}
 
        />
-     </DialogActions>
+     </DialogActions>}
    </Dialog>
  );
 }

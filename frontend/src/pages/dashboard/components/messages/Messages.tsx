@@ -4,17 +4,23 @@ import { Conversation } from '../../../message/types';
 import { Box } from '@mui/material';
 import MessagesPane from '../../../message/Messages/MessagesPane';
 import useWebSocket from '../../../../hooks/useWebsocket';
+import { MessagesProvider } from '../../../../hooks/messages/MessagesContext';
+import ShowCar from '../car/ShowCar';
+import { Car } from '../car/MyCars';
+import { request } from '../../../../hooks/authentication/authentication';
 
 export default function Messages() {
   const [conversations, setConversations] = React.useState<Conversation[]>([]);
   const [selectedChat, setSelectedChat] = React.useState<Conversation | undefined>(undefined);
-  const { messages } = useWebSocket('ws://localhost:8000/ws/conversations/');
+  const { messages, sendMessage } = useWebSocket('ws://localhost:8000/ws/conversations/');
+  const [displayedCar, setDisplayedCar] = React.useState<Car | undefined>(undefined);
+  const [open, setOpen] = React.useState(false);
+  const carCache = React.useRef<Map<number, Car>>(new Map());
 
   React.useEffect(() => {
     const newConversations = [...conversations];
     messages.forEach((message) => {
      
-    console.log("Here is the data in messages", message);
     if (message.type === 'initial_conversations') {
       setConversations(message.conversations);
       setSelectedChat(message.conversations[0]);
@@ -31,8 +37,46 @@ export default function Messages() {
     });
   }, [messages]);
 
+  const handleDeleteConversation = () => {
+    const message = {
+      type: 'delete_conversation',
+      conversation_id: selectedChat.id,
+    };
+    sendMessage(message);
+  };
+
+  const handleViewCar = async () => {
+    if (selectedChat && selectedChat.car) {
+      const carId = selectedChat.car;
+      if (carCache.current.has(carId)) {
+        setDisplayedCar(carCache.current.get(carId));
+        setOpen(true);
+      } else {
+        try {
+          const response = await request(`api/car/${carId}/`, {
+            method: 'GET',
+          });
+          if (!response.ok) {
+            throw new Error('Failed to fetch car');
+          }
+          const data: Car = await response.json();
+          carCache.current.set(carId, data);
+          setDisplayedCar(data);
+          setOpen(true);
+        } catch (error) {
+          console.error('Error fetching car:', error);
+        }
+      }
+    }
+  };
+  const handleCloseDialog = () => {
+    setDisplayedCar(undefined);
+    setOpen(false);
+  }
+
 
   return (
+    <MessagesProvider handleDeleteConversation={handleDeleteConversation} handleViewCar={handleViewCar}>
     <Box
       sx={{
         flex: 1,
@@ -46,6 +90,7 @@ export default function Messages() {
         },
       }}
     >
+      {displayedCar && <ShowCar car={displayedCar} open={open} handleClose={handleCloseDialog} canMessage={false}/>}
       <ChatsPane
         chats={conversations}
         selectedChatId={selectedChat ? selectedChat.id.toString() : ''}
@@ -53,5 +98,6 @@ export default function Messages() {
       />
       {selectedChat && <MessagesPane chat={selectedChat} />}
     </Box>
+    </MessagesProvider>
   );
 }

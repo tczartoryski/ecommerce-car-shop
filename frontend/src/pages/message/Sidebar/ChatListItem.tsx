@@ -48,14 +48,13 @@ export default function ChatListItem(props: ChatListItemProps) {
           sx={{ flexDirection: 'column', alignItems: 'initial', gap: 1 }}
         >
           <Stack direction="row" spacing={1.5}>
-            <Avatar alt={sender.first_name}  src="/static/images/avatar/7.jpg" />
+            <Avatar alt={sender.first_name} src="/static/images/avatar/7.jpg" />
             <Box sx={{ flex: 1 }}>
               <Typography>{sender.first_name} {sender.last_name}</Typography>
             </Box>
-            <Box sx={{ lineHeight: 1.5, textAlign: 'right' }}>
+            <Box sx={{ lineHeight: 1.5, textAlign: 'right', wordBreak: 'break-word', whiteSpace: 'normal' }}>
               <Typography
-                noWrap
-                sx={{ display: { xs: 'none', md: 'block' } }}
+                sx={{ display: { xs: 'none', md: 'block' }, whiteSpace: 'normal', wordBreak: 'break-word' }}
               >
                 {formattedTimestamp}
               </Typography>

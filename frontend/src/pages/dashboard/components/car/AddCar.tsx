@@ -184,7 +184,7 @@ export default function AddCar({ open, handleClose, onSuccess }: AddCarProps) {
             type="text"
             value={mileage}
             onChange={(e) => {
-              const value = e.target.value.replace(/,/g, '');
+              const value = e.target.value.replace(/[^0-9]/g, '');
               setMileage(value.replace(/\B(?=(\d{3})+(?!\d))/g, ','));
             }}
           />

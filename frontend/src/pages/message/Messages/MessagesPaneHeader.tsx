@@ -1,21 +1,18 @@
 import { IconButton, Avatar, Typography, Chip, Button } from '@mui/material';
-import CircleIcon from '@mui/icons-material/Circle';
 import { Stack } from '@mui/system';
 import * as React from 'react';
-import { UserProps } from '../types';
 import { toggleMessagesPane } from '../utils';
 import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded';
-import PhoneInTalkRoundedIcon from '@mui/icons-material/PhoneInTalkRounded';
-import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
-import OptionsMenu from '../../dashboard/components/OptionsMenu';
 import MessagesOptionsMenu from './MessagesOptionsMenu';
 import { EccomerceUserWithoutCars } from '../../dashboard/components/Header';
+import { useMessages } from '../../../hooks/messages/MessagesContext';
 type MessagesPaneHeaderProps = {
   sender: EccomerceUserWithoutCars;
 };
 
 export default function MessagesPaneHeader(props: MessagesPaneHeaderProps) {
   const { sender } = props;
+  const { handleViewCar } = useMessages();
   return (
     <Stack
       direction="row"
@@ -66,7 +63,7 @@ export default function MessagesPaneHeader(props: MessagesPaneHeaderProps) {
       </Stack>
       <Stack spacing={1} direction="row" sx={{ alignItems: 'center' }}>
         
-       
+        <Button variant='contained' onClick={handleViewCar}>View Car</Button>
         <MessagesOptionsMenu sender={sender}></MessagesOptionsMenu>
       </Stack>
     </Stack>
