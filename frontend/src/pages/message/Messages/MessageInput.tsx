@@ -1,14 +1,14 @@
 import * as React from 'react';
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
-import { FormControl, IconButton, Button, TextField } from '@mui/material';
-import { Box, Stack, width } from '@mui/system';
+import { FormControl, Button, TextField } from '@mui/material';
+import { Box, Stack } from '@mui/system';
 
 export type MessageInputProps = {
   textAreaValue: string;
   setTextAreaValue: (value: string) => void;
   onSubmit: () => void;
   sx?: object;
-  placeholder?: string; // Add placeholder prop
+  placeholder?: string;
 };
 
 export default function MessageInput(props: MessageInputProps) {

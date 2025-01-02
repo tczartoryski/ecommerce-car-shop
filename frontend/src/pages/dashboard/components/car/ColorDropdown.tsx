@@ -26,7 +26,7 @@ export const ColorDropdown: React.FC<ColorDropdownProps> = ({ color, setColor })
           value={color}
           onChange={handleChange}
           displayEmpty
-          sx={{ width: '100%', minWidth: 150 }}  // Set the minimum width here
+          sx={{ width: '100%', minWidth: 150 }}
           renderValue={(selected) => {
             if (selected.length === 0) {
               return <Typography sx={{ color: 'text.secondary', paddingLeft: 2 }}>Enter a Color</Typography>;

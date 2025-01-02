@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import * as React from 'react';
 import UserContext from "../user/UserContext";
 
 export interface LoginData {
@@ -11,7 +11,7 @@ export interface LoginData {
   }
   
   const useAuthenticate = () => {
-    const { updateUser } = useContext(UserContext);
+    const { updateUser } = React.useContext(UserContext);
    
     const authenticate = (loginData: LoginData): void => {
       updateUser({

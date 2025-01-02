@@ -1,13 +1,13 @@
-import { useState, useEffect, useCallback } from 'react';
+import * as React from 'react';
 import { Car } from '../../pages/dashboard/components/car/MyCars';
 import { request } from '../authentication/authentication';
 
 const useFetchCars = (url: string) => {
-  const [cars, setCars] = useState<Car[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const [cars, setCars] = React.useState<Car[]>([]);
+  const [loading, setLoading] = React.useState<boolean>(true);
+  const [error, setError] = React.useState<string | null>(null);
 
-  const fetchCars = useCallback(async () => {
+  const fetchCars = React.useCallback(async () => {
     setLoading(true);
     try {
       const response = await request(url, {
@@ -26,7 +26,7 @@ const useFetchCars = (url: string) => {
     }
   }, [url]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     fetchCars();
   }, [fetchCars]);
 

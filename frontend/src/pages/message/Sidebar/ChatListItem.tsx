@@ -29,7 +29,7 @@ export default function ChatListItem(props: ChatListItemProps) {
   }, [user, conversation]);
 
   if (!user || !sender) {
-    return null; // or a loading spinner
+    return null;
   }
 
   const timestamp = conversation.most_recent_message.timestamp;

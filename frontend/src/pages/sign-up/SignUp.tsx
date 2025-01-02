@@ -19,7 +19,7 @@ import { useNavigate } from 'react-router-dom';
 import useAuthenticate from '../../hooks/authentication/authenticate';
 
 
-const apiUrl = 'http://127.0.0.1:8000/api/register/'; // Replace with your registration API URL
+const apiUrl = 'http://127.0.0.1:8000/api/register/';
 
 
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -131,7 +131,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
     const data = new FormData(event.currentTarget);
     const formData = {
       first_name: data.get('firstName'),
-      last_name: data.get('lastName'), // If you don't have a lastName field, you can omit this
+      last_name: data.get('lastName'),
       email: data.get('email'),
       password: data.get('password'),
     };
@@ -147,8 +147,8 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
    
       if (response.ok) {
         const newData = await response.json();
-        authenticate(newData); // Authenticate the user
-        navigate('/home'); // Redirect to the desired page after successful registration
+        authenticate(newData);
+        navigate('/home');
       } else {
         console.error('Registration failed');
       }

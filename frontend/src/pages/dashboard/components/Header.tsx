@@ -34,9 +34,7 @@ export default function Header() {
 
 
   React.useEffect(() => {
-    // Log the messages received from the WebSocket
     messages.forEach((message) => {
-      //console.log(message);
       if (message.type === 'new_notifications') {
         setNotifications((prevNotifications) => [...prevNotifications, ...message.notifications]);
       } 

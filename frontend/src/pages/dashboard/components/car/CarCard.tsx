@@ -7,7 +7,7 @@ import useCityByZipcode from '../../../../hooks/getCityByZipcode';
 
 interface CarCardProps {
   car: Car;
-  onClick: (car: Car) => void; // Add onClick prop
+  onClick: (car: Car) => void;
 }
 const CarCard: React.FC<CarCardProps> = ({ car, onClick }) => {
  const theme = useTheme();

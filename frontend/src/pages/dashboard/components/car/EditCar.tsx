@@ -28,7 +28,7 @@ export default function EditCar({ open, handleClose, car, onSuccess }: EditCarPr
   const [description, setDescription] = React.useState(car.description);
   const [mileage, setMileage] = React.useState(car.mileage.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
   const [price, setPrice] = React.useState(car.price.replace(/\B(?=(\d{3})+(?!\d))/g, ','));
-  const [existingImages, setExistingImages] = React.useState<string[]>(car.images.map((img: CarImage) => img.image_url)); // Initial images are URLs
+  const [existingImages, setExistingImages] = React.useState<string[]>(car.images.map((img: CarImage) => img.image_url));
   const [newImages, setNewImages] = React.useState<File[]>([]);
   const [currentImageIndex, setCurrentImageIndex] = React.useState(0);
   const [yearError, setYearError] = React.useState('');
@@ -125,11 +125,11 @@ export default function EditCar({ open, handleClose, car, onSuccess }: EditCarPr
     formData.append('zipcode', zipcode);
 
     existingImages.forEach((image, index) => {
-      formData.append(`existing_images`, image); // Append existing image URLs
+      formData.append(`existing_images`, image);
     });
 
     newImages.forEach((image, index) => {
-      formData.append('image_files', image); // Append new image files
+      formData.append('image_files', image);
     });
 
     try {

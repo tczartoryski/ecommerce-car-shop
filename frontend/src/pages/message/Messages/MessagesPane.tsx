@@ -35,7 +35,7 @@ export default function MessagesPane(props: MessagesPaneProps) {
     
     React.useEffect(() => {
       if (!user || !sender) {
-        return; // or a loading spinner
+        return;
       }});
   
     const handleNewMessage = () => {
@@ -50,7 +50,6 @@ export default function MessagesPane(props: MessagesPaneProps) {
   
   
   React.useEffect(() => {
-    // Fetch conversation and messages on initialization
     const fetchMessages = async () => {
       try {
         const response = await request(`api/conversations/${chat.id}/messages/`);
@@ -72,11 +71,8 @@ export default function MessagesPane(props: MessagesPaneProps) {
   }, [chat.id]);
 
   React.useEffect(() => {
-      // Log the messages received from the WebSocket
       messages.forEach((message) => {
-        //console.log(message);
           setChatMessages((prevMessages) => [...prevMessages, message]);
-        
       });
     }, [messages]);
   

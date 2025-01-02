@@ -23,8 +23,8 @@ export default function NotificationsDropdown({ notifications, onClearNotificati
 
   const handleSelect = (id: number, conversation: number) => {
     console.log('Message clicked:', id, conversation);
-    // Handle the message click event here
   }
+  
   const truncateContent = (content: string, wordLimit: number) => {
     const words = content.split(' ');
     if (words.length > wordLimit) {

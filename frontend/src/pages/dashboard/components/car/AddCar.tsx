@@ -87,7 +87,7 @@ export default function AddCar({ open, handleClose, onSuccess }: AddCarProps) {
       formData.append('price', priceFloat.toString());
       formData.append('zipcode', zipcode);
       images.forEach((image, index) => {
-        formData.append('image_files', image); // Correct field name
+        formData.append('image_files', image);
       });
       
     try {
@@ -231,7 +231,7 @@ export default function AddCar({ open, handleClose, onSuccess }: AddCarProps) {
         multiple
         onChange={(e) => {
           setImages([...images, ...Array.from(e.target.files || [])]);
-          setSelectedImageIndex(0); // Reset the selected image index when new images are uploaded
+          setSelectedImageIndex(0);
         }}
           />
         </Button>

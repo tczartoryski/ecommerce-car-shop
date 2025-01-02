@@ -29,7 +29,7 @@ export default function MessageCard({conversation}: MessagesCardProps) {
    }, [user, conversation]);
  
    if (!user || !sender) {
-     return null; // or a loading spinner
+     return null;
    }
  const handleClick = () => {
    setSelectedChat(conversation);

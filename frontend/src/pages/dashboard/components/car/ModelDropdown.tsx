@@ -66,7 +66,7 @@ export const ModelDropdown: React.FC<ModelDropdownProps> = ({ make, model, setMo
           value={model}
           onChange={handleChange}
           displayEmpty
-          sx={{ width: '100%', minWidth: 150 }}  // Set the minimum width here
+          sx={{ width: '100%', minWidth: 150 }}
           renderValue={(selected) => {
             if (selected.length === 0) {
               return <Typography sx={{ color: 'text.secondary', paddingLeft: 2 }}>Enter a Model</Typography>;

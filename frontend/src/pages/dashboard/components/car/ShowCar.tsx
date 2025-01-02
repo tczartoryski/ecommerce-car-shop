@@ -125,7 +125,7 @@ export default function ShowCar({ car, open, handleClose, canMessage=true }: Sho
          textAreaValue={message}
          setTextAreaValue={setMessage}
          onSubmit={handleSendMessage}
-         sx={{ width: '100%' }} // Adjust the width of the MessageInput component
+         sx={{ width: '100%' }}
          placeholder={'Message owner...'}
 
        />

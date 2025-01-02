@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import * as React from 'react';
 import UserContext, { UserData } from './UserContext';
 import { request } from '../authentication/authentication';
 
@@ -7,7 +7,7 @@ interface UserProviderProps {
 }
 
 const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
- const [user, setUser] = useState<UserData | null>(null);
+ const [user, setUser] = React.useState<UserData | null>(null);
 
  const updateUser = (userData: UserData) => {
    setUser(userData);

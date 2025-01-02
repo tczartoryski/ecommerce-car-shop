@@ -32,7 +32,7 @@ export default function SideMenu() {
    display: { xs: 'none', md: 'block' },
    [`& .${drawerClasses.paper}`]: {
      backgroundColor: 'background.paper',
-     width: drawerWidth, // Set the desired fixed width
+     width: drawerWidth,
    },
  }}
 >
@@ -85,7 +85,7 @@ export default function SideMenu() {
          </Typography>
          <Box
            sx={{
-             width: '140px', // Set the desired width
+             width: '140px',
              whiteSpace: 'nowrap',
              overflow: 'hidden',
              textOverflow: 'ellipsis',

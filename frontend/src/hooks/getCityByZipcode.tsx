@@ -1,9 +1,9 @@
-import { useState, useCallback } from 'react';
+import * as React from 'react';
 
 const useCityByZipcode = () => {
-  const [location, setLocation] = useState<string>('');
+  const [location, setLocation] = React.useState<string>('');
 
-  const getCityByZipcode = useCallback(async (zipcode: string) => {
+  const getCityByZipcode = React.useCallback(async (zipcode: string) => {
     try {
       const response = await fetch(`http://api.zippopotam.us/us/${zipcode}`);
       const data = await response.json();

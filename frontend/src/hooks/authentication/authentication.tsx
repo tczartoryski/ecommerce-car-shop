@@ -1,8 +1,3 @@
-import { useContext } from "react";
-import UserContext from "../user/UserContext";
-
-// authentication.ts
-
 
 export const isAuthenticated = (): string | null => {
   return localStorage.getItem('authToken');
@@ -15,7 +10,7 @@ export const getUserId = (): string | null => {
 export const logout = (): void => {
   localStorage.removeItem('authToken');
   localStorage.removeItem('refresh');
-  localStorage.removeItem('userId'); // Also remove userId
+  localStorage.removeItem('userId');
   window.location.href = '/login';
 };
 
@@ -32,7 +27,6 @@ export const request = async (
     Authorization: `Bearer ${authenticatedToken}`,
   };
 
-  // Remove 'Content-Type' header if the body is FormData
   if (options?.body instanceof FormData) {
     delete headers['Content-Type'];
   } else {
@@ -45,15 +39,12 @@ export const request = async (
   });
  
   if (response.status === 401) {
-    // Access token expired, try to refresh
     const newAccessToken = await refreshAccessToken();
  
     if (newAccessToken) {
-      // Refresh successful, retry the request with the new access token
       authenticatedToken = newAccessToken;
       return request(url, options);
     } else {
-      // Refresh failed, log out the user
       logout();
       throw new Error('Authentication failed');
     }
@@ -71,7 +62,6 @@ const refreshAccessToken = async (): Promise<string | null> => {
   const refreshToken = localStorage.getItem('refresh');
  
   if (!refreshToken) {
-    // No refresh token available, log out the user
     logout();
     return null;
   }
@@ -86,7 +76,6 @@ const refreshAccessToken = async (): Promise<string | null> => {
     });
  
     if (!response.ok) {
-      // Refresh token is invalid or expired, log out the user
       logout();
       return null;
     }
@@ -94,7 +83,6 @@ const refreshAccessToken = async (): Promise<string | null> => {
     const data = await response.json();
     const { access } = data;
  
-    // Update the access token in local storage
     localStorage.setItem('authToken', access);
  
     return access;

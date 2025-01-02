@@ -5,7 +5,6 @@ import Typography from '@mui/material/Typography';
 import CarCard from './CarCard';
 import { Button, Stack } from '@mui/material';
 import AddCar from './AddCar';
-import { request } from '../../../../hooks/authentication/authentication';
 import EditCar from './EditCar';
 import useFetchCars from '../../../../hooks/cars/useFetchCars';
 
@@ -37,7 +36,6 @@ export default function MyCars() {
       const handleCarClick = (car: Car) => {
         setEditCar(car);
         setEditOpen(true);
-        // Handle the car click event here
       };
 
       const handleSuccess = () => {
