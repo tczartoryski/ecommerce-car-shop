@@ -4,8 +4,9 @@ import * as React from 'react';
 import { toggleMessagesPane } from '../utils';
 import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded';
 import MessagesOptionsMenu from './MessagesOptionsMenu';
-import { EccomerceUserWithoutCars } from '../../dashboard/components/Header';
 import { useMessages } from '../../../hooks/messages/MessagesContext';
+import { EccomerceUserWithoutCars } from '../types';
+
 type MessagesPaneHeaderProps = {
   sender: EccomerceUserWithoutCars;
 };
@@ -46,17 +47,6 @@ export default function MessagesPaneHeader(props: MessagesPaneHeaderProps) {
             noWrap
             sx={{ fontWeight: 'lg', fontSize: 'lg' }}
           >{sender.first_name} {sender.last_name}</Typography>
-          {true ? (
-            <Stack direction="row" sx={{ alignItems: 'center', paddingLeft: '16px' }}>
-               <Chip
-                  variant="outlined"
-                  size="small"
-                  color="primary"
-                  label="Online"
-                  sx={{ borderRadius: 'sm' }}
-                />
-            </Stack>
-              ) : undefined}
         </Stack>
           
         </div>

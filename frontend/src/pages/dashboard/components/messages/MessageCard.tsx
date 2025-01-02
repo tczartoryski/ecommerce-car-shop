@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { Card, CardContent, Stack, Typography, Link, useTheme, IconButton, Box } from "@mui/material";import { Conversation } from '../../../message/types';
+import { Card, CardContent, Stack, Typography, Link, useTheme, IconButton, Box } from "@mui/material";
+import { Conversation, EccomerceUserWithoutCars } from '../../../message/types';
 import { formatDistanceToNow, parseISO } from 'date-fns';
 import UserContext from '../../../../hooks/user/UserContext';
-import { EccomerceUserWithoutCars } from '../Header';
 import { useSelectedChat } from '../../../../hooks/messages/SelectedChatContext';
 import { useNavigate } from 'react-router-dom';
 

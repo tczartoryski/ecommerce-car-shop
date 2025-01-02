@@ -4,11 +4,14 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import {Stack, Typography } from '@mui/material';
+import {CircularProgress, Stack, Typography } from '@mui/material';
 import { Car } from './MyCars';
 import useCityByZipcode from '../../../../hooks/getCityByZipcode';
 import MessageInput from '../../../message/Messages/MessageInput';
 import { request } from '../../../../hooks/authentication/authentication';
+import { useSelectedChat } from '../../../../hooks/messages/SelectedChatContext';
+import { useNavigate } from 'react-router-dom';
+import { Conversation } from '../../../message/types';
 
 interface ShowCarProps {
  car: Car;
@@ -19,14 +22,19 @@ interface ShowCarProps {
 
 export default function ShowCar({ car, open, handleClose, canMessage=true }: ShowCarProps) {
     const { location, getCityByZipcode } = useCityByZipcode();
+    const [loading, setLoading] = React.useState(false);
     const [selectedImageIndex, setSelectedImageIndex] = React.useState(0);
+    const [messageSent, setMessageSent] = React.useState(false);
+    const { setSelectedChat } = useSelectedChat();
+    const navigate = useNavigate();
+
     const [message, setMessage] = React.useState('');
     React.useEffect(() => {
         getCityByZipcode(car.zipcode);
       }, [car.zipcode, getCityByZipcode]);
     
       const handleSendMessage = async () => {
-        console.log("sending this message ", message);
+        setLoading(true);
         const newMessage = {
           car_id: car.id,
           content: message,
@@ -39,11 +47,18 @@ export default function ShowCar({ car, open, handleClose, canMessage=true }: Sho
             if (!response.ok) {
                 throw new Error('Network response was not ok');
               }
-        
-              console.log('Message sent successfully:');
+              const data: Conversation = await response.json();
+              setSelectedChat(data);
+              setMessageSent(true);
             } catch (error) {
               console.error('Error sending message:', error);
+            } finally {
+              setLoading(false);
             }
+      };
+
+      const handleNavigateToConversation = () => {
+        navigate('/inbox');
       };
  
     
@@ -119,17 +134,26 @@ export default function ShowCar({ car, open, handleClose, canMessage=true }: Sho
         </div>
       )}
     </DialogContent>
-
-     {canMessage && <DialogActions>
-       <MessageInput
-         textAreaValue={message}
-         setTextAreaValue={setMessage}
-         onSubmit={handleSendMessage}
-         sx={{ width: '100%' }}
-         placeholder={'Message owner...'}
-
-       />
-     </DialogActions>}
+    {canMessage && (
+        <DialogActions>
+          {loading ? (
+            <CircularProgress />
+          ) : messageSent ? (
+            
+              <Button onClick={handleNavigateToConversation}>View Conversation</Button>
+       
+          ) : (
+            <MessageInput
+              textAreaValue={message}
+              setTextAreaValue={setMessage}
+              onSubmit={handleSendMessage}
+              sx={{ width: '100%' }}
+              placeholder={'Message owner...'}
+            />
+          )}
+        </DialogActions>
+      )}
+    
    </Dialog>
  );
 }

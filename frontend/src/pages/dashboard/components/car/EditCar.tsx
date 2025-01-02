@@ -5,7 +5,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import OutlinedInput from '@mui/material/OutlinedInput';
-import { Box, FormHelperText, InputAdornment, Stack, Typography } from '@mui/material';
+import { Box, CircularProgress, FormHelperText, InputAdornment, Stack, Typography } from '@mui/material';
 import { MakeDropdown } from './MakeDropdown';
 import { ModelDropdown } from './ModelDropdown';
 import { ColorDropdown } from './ColorDropdown';
@@ -36,6 +36,8 @@ export default function EditCar({ open, handleClose, car, onSuccess }: EditCarPr
   const { location, getCityByZipcode } = useCityByZipcode();
   const [error, setError] = React.useState('');
   const [city, setCity] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
+
 
   useEffect(() => {
         if (zipcode.length === 5) {
@@ -108,6 +110,7 @@ export default function EditCar({ open, handleClose, car, onSuccess }: EditCarPr
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setLoading(true);
     if (!make || !model || !year || !color || !mileage || !price || !zipcode || (existingImages.length === 0 && newImages.length === 0)) {
       setError('Please fill in all fields and upload at least one image.');
       return;
@@ -148,6 +151,8 @@ export default function EditCar({ open, handleClose, car, onSuccess }: EditCarPr
     } catch (error) {
       console.error('Error updating car:', error);
       setError('Error updating car');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -315,8 +320,8 @@ export default function EditCar({ open, handleClose, car, onSuccess }: EditCarPr
           <Button variant="contained" onClick={handleDelete}>Delete</Button>
           <Box>
             <Button onClick={handleClose}>Cancel</Button>
-            <Button variant="contained" type="submit">
-              Edit Listing
+            <Button type="submit" variant="contained" disabled={loading}>
+            {loading ? <CircularProgress size={24} /> : 'Edit Car'}
             </Button>
           </Box>
         </Stack>

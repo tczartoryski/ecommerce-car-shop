@@ -7,9 +7,8 @@ import { paperClasses } from '@mui/material/Paper';
 import { listClasses } from '@mui/material/List';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import MenuButton from '../../dashboard/components/MenuButton';
-import { UserProps } from '../types';
-import { EccomerceUserWithoutCars } from '../../dashboard/components/Header';
 import { useMessages } from '../../../hooks/messages/MessagesContext';
+import { EccomerceUserWithoutCars } from '../types';
 
 
 const MenuItem = styled(MuiMenuItem)({

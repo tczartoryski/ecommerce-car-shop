@@ -2,10 +2,9 @@ import * as React from 'react';
 import AvatarWithStatus from './AvatarWithStatus';
 import MessageInput from './MessageInput';
 import MessagesPaneHeader from './MessagesPaneHeader';
-import { Conversation, Message } from '../types';
-import { Box, Stack } from '@mui/material';
+import { Conversation, EccomerceUserWithoutCars, Message } from '../types';
+import { Box, Stack, Typography } from '@mui/material';
 import ChatBubble from './ChatBubble';
-import { EccomerceUserWithoutCars } from '../../dashboard/components/Header';
 import UserContext from '../../../hooks/user/UserContext';
 import { request } from '../../../hooks/authentication/authentication';
 import useWebSocket from '../../../hooks/useWebsocket';
@@ -23,15 +22,16 @@ export default function MessagesPane(props: MessagesPaneProps) {
   const { messages, sendMessage } = useWebSocket(`ws://localhost:8000/ws/conversations/${chat.id}/`);
 
     
-    React.useEffect(() => {
-        if (user && chat) {
-          if (chat.buyer.email === user.email) {
-            setSender(chat.seller);
-          } else {
-            setSender(chat.buyer);
-          }
-        }
-      }, [user, chat]);
+  React.useEffect(() => {
+    if (user && chat) {
+      if (chat.buyer.email === user.email) {
+        setSender(chat.seller);
+      } else {
+        setSender(chat.buyer);
+      }
+    }
+  }, [user, chat]);
+
     
     React.useEffect(() => {
       if (!user || !sender) {
@@ -71,10 +71,14 @@ export default function MessagesPane(props: MessagesPaneProps) {
   }, [chat.id]);
 
   React.useEffect(() => {
-      messages.forEach((message) => {
-          setChatMessages((prevMessages) => [...prevMessages, message]);
-      });
-    }, [messages]);
+    if (messages.length > 0) {
+      setChatMessages((prevMessages) => [...prevMessages, ...messages]);
+    }
+  }, [messages]);
+  
+  if (!user || !sender) {
+    return <Typography>Loading...</Typography>;
+  }
   
 
   return (

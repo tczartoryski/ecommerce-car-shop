@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { Conversation, Message, MessageProps, UserProps } from '../types';
+import { Conversation, EccomerceUserWithoutCars } from '../types';
 import { toggleMessagesPane } from '../utils';
 import { Typography, Box, Stack, IconButton, Input, List, ListItemButtonProps, ListItem, ListItemButton, Divider, Avatar } from '@mui/material';
 import UserContext from '../../../hooks/user/UserContext';
-import { EccomerceUserWithoutCars } from '../../dashboard/components/Header';
 import { formatDistanceToNow, parseISO } from 'date-fns';
 
 type ChatListItemProps = ListItemButtonProps & {

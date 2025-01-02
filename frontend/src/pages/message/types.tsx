@@ -1,4 +1,3 @@
-import { EccomerceUserWithoutCars } from "../dashboard/components/Header";
 
 export type UserProps = {
     name: string;
@@ -35,6 +34,12 @@ export type UserProps = {
     sender: UserProps;
     messages: MessageProps[];
   };
+
+  export type EccomerceUserWithoutCars = {
+    email: string;
+    first_name: string;
+    last_name: string;
+  }
 
   export type Conversation = {
     id: number;

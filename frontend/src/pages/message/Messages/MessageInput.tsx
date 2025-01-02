@@ -3,7 +3,7 @@ import SendRoundedIcon from '@mui/icons-material/SendRounded';
 import { FormControl, Button, TextField } from '@mui/material';
 import { Box, Stack } from '@mui/system';
 
-export type MessageInputProps = {
+type MessageInputProps = {
   textAreaValue: string;
   setTextAreaValue: (value: string) => void;
   onSubmit: () => void;

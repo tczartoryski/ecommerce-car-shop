@@ -1,11 +1,5 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import { InputAdornment, Stack, Typography } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography, Stack, CircularProgress, OutlinedInput, InputAdornment } from '@mui/material';
 import { MakeDropdown } from './MakeDropdown';
 import { ModelDropdown } from './ModelDropdown';
 import { ColorDropdown } from './ColorDropdown';
@@ -32,6 +26,8 @@ export default function AddCar({ open, handleClose, onSuccess }: AddCarProps) {
     const { location, getCityByZipcode } = useCityByZipcode();
     const [error, setError] = React.useState('');
     const [city, setCity] = React.useState('');
+    const [loading, setLoading] = React.useState(false);
+
 
     const handleYearChange = (value: any) => {
       const parsedValue = parseInt(value, 10);
@@ -71,6 +67,7 @@ export default function AddCar({ open, handleClose, onSuccess }: AddCarProps) {
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
+      setLoading(true);
       if (!make || !model || !year || !color || !mileage || !price || !zipcode  || images.length === 0) {
         setError('Please fill in all fields and upload at least one image.');
         return;
@@ -106,6 +103,8 @@ export default function AddCar({ open, handleClose, onSuccess }: AddCarProps) {
     } catch (error) {
       console.error('Error:', error);
       setError('Failed to create car listing. Please try again.');
+    } finally {
+      setLoading(false);
     }
        };
 
@@ -276,9 +275,9 @@ export default function AddCar({ open, handleClose, onSuccess }: AddCarProps) {
 
      <DialogActions sx={{ pb: 3, px: 3 }}>
        <Button onClick={handleClose}>Cancel</Button>
-       <Button variant="contained" type="submit">
-         Create Listing
-       </Button>
+       <Button type="submit" variant="contained" disabled={loading}>
+          {loading ? <CircularProgress size={24} /> : 'Create Listing'}
+        </Button>
      </DialogActions>
    </Dialog>
  );
