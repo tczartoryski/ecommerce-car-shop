@@ -5,7 +5,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import OutlinedInput from '@mui/material/OutlinedInput';
-import { FormHelperText, InputAdornment, Stack, Typography } from '@mui/material';
+import { InputAdornment, Stack, Typography } from '@mui/material';
 import { MakeDropdown } from './MakeDropdown';
 import { ModelDropdown } from './ModelDropdown';
 import { ColorDropdown } from './ColorDropdown';
@@ -28,7 +28,6 @@ export default function AddCar({ open, handleClose, onSuccess }: AddCarProps) {
     const [price, setPrice] = React.useState('');
     const [images, setImages] = React.useState<File[]>([]);
     const [selectedImageIndex, setSelectedImageIndex] = React.useState(0);
-    const [yearError, setYearError] = React.useState('');
     const [zipcode, setZipcode] = React.useState('');
     const { location, getCityByZipcode } = useCityByZipcode();
     const [error, setError] = React.useState('');
@@ -38,13 +37,10 @@ export default function AddCar({ open, handleClose, onSuccess }: AddCarProps) {
       const parsedValue = parseInt(value, 10);
       if (isNaN(parsedValue)) {
         setYear('');
-        setYearError('Please enter a valid year');
       } else if (parsedValue < 1970 || parsedValue > 2025) {
         setYear(value);
-        setYearError('Year must be between 1970 and 2025');
       } else {
         setYear(value);
-        setYearError('');
       }
      };
      React.useEffect(() => {
@@ -60,17 +56,19 @@ export default function AddCar({ open, handleClose, onSuccess }: AddCarProps) {
       }
     }, [zipcode, location]);
 
-    const handleExit = () => {
+    const resetFormFields = () => {
       setMake('');
       setModel('');
       setYear('');
       setColor('');
       setDescription('');
       setMileage('');
-      setImages([]);
+      setPrice('');
       setZipcode('');
-      handleClose();
-    }
+      setCity('');
+      setImages([]);
+    };
+
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
       if (!make || !model || !year || !color || !mileage || !price || !zipcode  || images.length === 0) {
@@ -102,17 +100,7 @@ export default function AddCar({ open, handleClose, onSuccess }: AddCarProps) {
         throw new Error('Failed to create car listing');
       }
 
-      // Reset form fields
-      setMake('');
-      setModel('');
-      setYear('');
-      setColor('');
-      setDescription('');
-      setMileage('');
-      setPrice('');
-      setImages([]);
-      setZipcode('');
-      setCity('');
+      resetFormFields();
       onSuccess();
       handleClose();
     } catch (error) {
@@ -124,7 +112,7 @@ export default function AddCar({ open, handleClose, onSuccess }: AddCarProps) {
  return (
    <Dialog
      open={open}
-     onClose={handleExit}
+     onClose={() => {resetFormFields(); handleClose();}}
      PaperProps={{
        component: 'form',
        onSubmit: handleSubmit,
@@ -153,9 +141,7 @@ export default function AddCar({ open, handleClose, onSuccess }: AddCarProps) {
             sx={{ height: '40px' }}
             value={year}
             onChange={(e) => handleYearChange(e.target.value)}
-            error={yearError !== ''}
           />
-          {yearError && <FormHelperText error>{yearError}</FormHelperText>}
         </Stack>
         <ColorDropdown color={color} setColor={setColor} />
       </Stack>

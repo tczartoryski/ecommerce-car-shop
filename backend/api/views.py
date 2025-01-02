@@ -67,6 +67,19 @@ class FetchDetailsView(generics.RetrieveAPIView):
         }, status=200)
 
 
+class ChangePasswordView(generics.UpdateAPIView):
+    model = EcommerceUser
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def update(self, request, *args, **kwargs):
+        user = request.user
+        new_password = request.data.get('new_password')
+        user.set_password(new_password)
+        user.save()
+        return Response({'success': True, 'message': 'Password changed successfully'}, status=200)
+
+
 class CarListView(generics.ListAPIView):
     serializer_class = CarSerializer
     authentication_classes = [JWTAuthentication]

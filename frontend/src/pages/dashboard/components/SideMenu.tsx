@@ -9,7 +9,6 @@ import MenuContent from './MenuContent';
 import OptionsMenu from './OptionsMenu';
 import { Avatar } from '@mui/material';
 import UserContext from '../../../hooks/user/UserContext';
-import { request } from '../../../hooks/authentication/authentication';
 
 const drawerWidth = 240;
 
@@ -24,30 +23,8 @@ const Drawer = styled(MuiDrawer)({
 });
 
 export default function SideMenu() {
-  const { user, updateUser } = React.useContext(UserContext);
-
-  React.useEffect(() => {
-    const fetchUserDetails = async () => {
-      try {
-        const response = await request('api/user/details/');
-        if (response.ok) {
-          const data = await response.json();
-          const { first_name, last_name, email, id } = data;
-          updateUser({ firstName: first_name, lastName: last_name, id: id, email });
-        } else {
-          console.error('Failed to fetch user details');
-        }
-      } catch (error) {
-        console.error('Error fetching user details:', error);
-      }
-    };
-
-    if (user === null) {
-      fetchUserDetails();
-    }
-  }, [user, updateUser]);
+  const { user } = React.useContext(UserContext);
   
-
   return (
     <Drawer
  variant="permanent"

@@ -11,6 +11,7 @@ import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import MenuButton from './MenuButton';
 import { logout } from '../../../hooks/authentication/authentication';
+import ChangePasswordDialog from './ChangePasswordDialog';
 
 const MenuItem = styled(MuiMenuItem)({
   margin: '2px 0',
@@ -18,7 +19,12 @@ const MenuItem = styled(MuiMenuItem)({
 
 export default function OptionsMenu() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [resetPasswordOpen, setResetPasswordOpen] = React.useState(false);
   const open = Boolean(anchorEl);
+  const handleResetPassword = () => {
+    setAnchorEl(null);
+    setResetPasswordOpen(true);
+  };
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -60,10 +66,8 @@ export default function OptionsMenu() {
           },
         }}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
         <Divider />
-        <MenuItem onClick={handleClose}>Settings</MenuItem>
+        <MenuItem onClick={handleResetPassword}>Change Password</MenuItem>
         <Divider />
         <MenuItem
           onClick={handleLogout}
@@ -80,6 +84,10 @@ export default function OptionsMenu() {
           </ListItemIcon>
         </MenuItem>
       </Menu>
+      <ChangePasswordDialog
+        open={resetPasswordOpen}
+        onClose={() => setResetPasswordOpen(false)}
+      />
     </React.Fragment>
   );
 }

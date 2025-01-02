@@ -7,50 +7,45 @@ import { Button, Card, Divider, Stack } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import MessageCard from '../messages/MessageCard';
 import { Car } from '../car/MyCars';
-import { request } from '../../../../hooks/authentication/authentication';
 import ShowCar from '../car/ShowCar';
 import EditCar from '../car/EditCar';
+import useFetchCars from '../../../../hooks/cars/useFetchCars';
+import { Conversation } from '../../../message/types';
+import useWebSocket from '../../../../hooks/useWebsocket';
 
 
 export default function MainGrid() {
-  const [myCars, setMyCars] = React.useState<Car[]>([]);
-  const [marketCars, setMarketCars] = React.useState<Car[]>([]);
+  const { cars: myCars,  refetch: fetchMyCars } = useFetchCars('api/my-cars/');
+  const { cars: marketCars } = useFetchCars('api/market-cars/');
   const [displayedMarketCar, setDisplayedMarketCar] = React.useState<Car | undefined>(undefined);
   const [displayedMyCar, setDisplayedMyCar] = React.useState<Car | undefined>(undefined);
   const [openShow, setOpenShow] = React.useState(false);
   const [openEdit, setOpenEdit] = React.useState(false);
-  const fetchMyCars = async () => {
-    try {
-      const response = await request('api/my-cars/', {
-        method: 'GET',
-      });
-      if (!response.ok) {
-        throw new Error('Failed to fetch cars');
-      }
-      const data: Car[] = await response.json();
-      setMyCars(data);
-    } catch (error) {
-      console.error('Error fetching cars:', error);
-    }
-  };
-  const fetchMarketCars = async () => {
-    try {
-      const response = await request('api/market-cars/', {
-        method: 'GET',
-      });
-      if (!response.ok) {
-        throw new Error('Failed to fetch cars');
-      }
-      const data: Car[] = await response.json();
-      setMarketCars(data);
-    } catch (error) {
-      console.error('Error fetching cars:', error);
-    }
-  };
+  const [conversations, setConversations] = React.useState<Conversation[]>([]);
+  const { messages } = useWebSocket('ws://localhost:8000/ws/conversations/');
+
+
   React.useEffect(() => {
-    fetchMyCars();
-    fetchMarketCars();
-  }, []);
+      const newConversations = [...conversations];
+      messages.forEach((message) => {
+       
+      if (message.type === 'initial_conversations') {
+        setConversations(message.conversations);
+      } else if (message.type === 'conversation_update') {
+        const index = newConversations.findIndex((conv) => conv.id === message.conversation.id);
+        if (index !== -1) {
+          newConversations[index] = message.conversation;
+        } else {
+          newConversations.push(message.conversation);
+        }
+        setConversations(newConversations);
+      }
+        
+      });
+    }, [messages]);
+  
+  
+
   const navigate = useNavigate();
 
    const handleMarketCarClick = (car: Car) => {
@@ -122,19 +117,12 @@ export default function MainGrid() {
         spacing={2}
         columns={16}
       >
+        {conversations.map((conversation) => (
+          <Grid item xs={16} sm={8} lg={4} key={conversation.id}>
+            <MessageCard conversation={conversation} />
+          </Grid>
+        ))}
        
-          <Grid item xs={16} sm={8} lg={4}>
-            <MessageCard ></MessageCard>
-          </Grid>
-          <Grid item xs={16} sm={8} lg={4}>
-            <MessageCard ></MessageCard>
-          </Grid>
-          <Grid item xs={16} sm={8} lg={4}>
-            <MessageCard ></MessageCard>
-          </Grid>
-          <Grid item xs={16} sm={8} lg={4}>
-            <MessageCard ></MessageCard>
-          </Grid>
       </Grid>
       
     </Box>

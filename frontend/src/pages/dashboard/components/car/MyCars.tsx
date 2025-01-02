@@ -7,6 +7,7 @@ import { Button, Stack } from '@mui/material';
 import AddCar from './AddCar';
 import { request } from '../../../../hooks/authentication/authentication';
 import EditCar from './EditCar';
+import useFetchCars from '../../../../hooks/cars/useFetchCars';
 
 
 export interface CarImage {
@@ -28,26 +29,9 @@ export interface Car {
 
 export default function MyCars() {
     const [addOpen, setAddOpen] = React.useState(false);
+    const { cars: myCars, loading: myCarsLoading, error: myCarsError, refetch: fetchMyCars } = useFetchCars('api/my-cars/');
     const [editOpen, setEditOpen] = React.useState(false);
-    const [cars, setCars] = React.useState<Car[]>([]);
     const [editCar, setEditCar] = React.useState<Car | undefined>(undefined);
-    const fetchCars = async () => {
-      try {
-        const response = await request('api/my-cars/', {
-          method: 'GET',
-        });
-        if (!response.ok) {
-          throw new Error('Failed to fetch cars');
-        }
-        const data: Car[] = await response.json();
-        setCars(data);
-      } catch (error) {
-        console.error('Error fetching cars:', error);
-      }
-    };
-    React.useEffect(() => {
-      fetchCars();
-    }, []);
 
 
       const handleCarClick = (car: Car) => {
@@ -57,7 +41,7 @@ export default function MyCars() {
       };
 
       const handleSuccess = () => {
-        fetchCars();
+        fetchMyCars();
         setAddOpen(false);
         setEditOpen(false);
 
@@ -87,7 +71,7 @@ export default function MyCars() {
         sx={{ mb: '30px' }}
       >
        
-       {cars.map((car) => (
+       {myCars.map((car) => (
           <Grid item xs={16} sm={8} lg={4} key={car.id}>
             <CarCard car={car} onClick={handleCarClick} />
           </Grid>

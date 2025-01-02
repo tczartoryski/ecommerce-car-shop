@@ -58,7 +58,6 @@ export default function MessagesPane(props: MessagesPaneProps) {
           throw new Error('Failed to fetch messages');
         }
         const data = await response.json();
-        console.log("Here is the data", data);
         setChatMessages(data);
       } catch (error) {
         console.error('Error fetching messages:', error);

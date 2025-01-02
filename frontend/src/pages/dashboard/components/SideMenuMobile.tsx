@@ -11,7 +11,7 @@ import NotificationsRoundedIcon from '@mui/icons-material/NotificationsRounded';
 import MenuButton from './MenuButton';
 import MenuContent from './MenuContent';
 import UserContext from '../../../hooks/user/UserContext';
-import { logout, request } from '../../../hooks/authentication/authentication';
+import { logout} from '../../../hooks/authentication/authentication';
 
 interface SideMenuMobileProps {
   open: boolean | undefined;
@@ -19,30 +19,7 @@ interface SideMenuMobileProps {
 }
 
 export default function SideMenuMobile({ open, toggleDrawer }: SideMenuMobileProps) {
-  const { user, updateUser } = React.useContext(UserContext);
-  const handleLogout = () => {
-      logout();
-  }
-  React.useEffect(() => {
-      const fetchUserDetails = async () => {
-        try {
-          const response = await request('api/user/details/');
-          if (response.ok) {
-            const data = await response.json();
-            const { first_name, last_name, email, id } = data;
-            updateUser({ firstName: first_name, lastName: last_name, id: id, email });
-          } else {
-            console.error('Failed to fetch user details');
-          }
-        } catch (error) {
-          console.error('Error fetching user details:', error);
-        }
-      };
-  
-      if (user === null) {
-        fetchUserDetails();
-      }
-    }, [user, updateUser]);
+  const { user} = React.useContext(UserContext);
 
   return (
     <Drawer
@@ -97,7 +74,7 @@ export default function SideMenuMobile({ open, toggleDrawer }: SideMenuMobilePro
           <Divider />
         </Stack>
         <Stack sx={{ p: 2 }}>
-          <Button variant="outlined" onClick={handleLogout} fullWidth startIcon={<LogoutRoundedIcon />}>
+          <Button variant="outlined" onClick={logout} fullWidth startIcon={<LogoutRoundedIcon />}>
             Logout
           </Button>
         </Stack>

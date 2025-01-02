@@ -8,10 +8,11 @@ import { MessagesProvider } from '../../../../hooks/messages/MessagesContext';
 import ShowCar from '../car/ShowCar';
 import { Car } from '../car/MyCars';
 import { request } from '../../../../hooks/authentication/authentication';
+import { useSelectedChat } from '../../../../hooks/messages/SelectedChatContext';
 
 export default function Messages() {
   const [conversations, setConversations] = React.useState<Conversation[]>([]);
-  const [selectedChat, setSelectedChat] = React.useState<Conversation | undefined>(undefined);
+  const {selectedChat, setSelectedChat} = useSelectedChat();
   const { messages, sendMessage } = useWebSocket('ws://localhost:8000/ws/conversations/');
   const [displayedCar, setDisplayedCar] = React.useState<Car | undefined>(undefined);
   const [open, setOpen] = React.useState(false);

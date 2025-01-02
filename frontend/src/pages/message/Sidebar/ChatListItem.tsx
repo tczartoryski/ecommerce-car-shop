@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ChatProps, Conversation, Message, MessageProps, UserProps } from '../types';
+import { Conversation, Message, MessageProps, UserProps } from '../types';
 import { toggleMessagesPane } from '../utils';
 import { Typography, Box, Stack, IconButton, Input, List, ListItemButtonProps, ListItem, ListItemButton, Divider, Avatar } from '@mui/material';
 import UserContext from '../../../hooks/user/UserContext';

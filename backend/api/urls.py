@@ -22,6 +22,7 @@ urlpatterns = [
    path('car/<str:pk>/update/', views.CarUpdateView.as_view(), name="car-update"),
    path('market-cars/', views.CarListView.as_view(), name="market-cars"),
    path('my-cars/', views.CarListView.as_view(), name="my-cars"),
+   path('change-password/', views.ChangePasswordView.as_view(), name='change-password'),
    path('password_reset/', views.password_reset_request, name='password_reset_request'),
    path('message-owner/', views.CreateConversationAndMessageView.as_view(), name='message-owner'),
    path('conversations/<int:conversation_id>/messages/', ConversationMessagesView.as_view(), name='conversation-messages'),
