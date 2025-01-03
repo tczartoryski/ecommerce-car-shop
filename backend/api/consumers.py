@@ -27,16 +27,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         try:
             data = json.loads(text_data)
-            print("Data received from ChatConsumer: ", data)
             if data["type"] == "new_message":
-                print("Data type is new message")
                 message = data["message"]
                 sender_id = data["sender_id"]
-                print("Here is the message and sender id ", message, sender_id)
-                print("Saving message")
 
                 new_message = await self.save_message(sender_id, message)
-                print("sending chat message over websocket")
                 await self.channel_layer.group_send(
                     self.conversation_group_name,
                     {
@@ -44,7 +39,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
                         "message": MessageSerializer(new_message).data,
                     },
                 )
-                print("updating the conversations group")
                 await self.channel_layer.group_send(
                     "conversations_group",
                     {
@@ -69,15 +63,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def save_message(self, sender_id, message):
-        print("Inside saving message function")
         Conversation = apps.get_model("api", "Conversation")
         Message = apps.get_model("api", "Message")
-        print("Retrieved models")
 
         sender = EcommerceUser.objects.get(id=sender_id)
-        print("Retrieved sender")
         conversation = Conversation.objects.get(id=self.conversation_id)
-        print("Retrieved conversation")
         new_message = Message.objects.create(
             conversation=conversation,
             sender=sender,
@@ -88,7 +78,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
             ),
             content=message,
         )
-        print("Message saved")
         return new_message
 
 

@@ -1,4 +1,3 @@
-from rest_framework.serializers import ModelSerializer
 from .models import Car, EcommerceUser, Conversation, Message, CarImage
 from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
@@ -147,5 +146,4 @@ class MessageSerializer(serializers.ModelSerializer):
             "receiver",
             "content",
             "timestamp",
-            "read",
         )
