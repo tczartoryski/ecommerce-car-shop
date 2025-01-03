@@ -35,7 +35,7 @@ const OptionsMenu: React.FC = () => {
   const handleLogout = () => {
     setAnchorEl(null);
     logout();
-  }
+  };
 
   return (
     <React.Fragment>

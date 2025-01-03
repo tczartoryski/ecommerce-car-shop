@@ -11,7 +11,13 @@ type MessageInputProps = {
   placeholder?: string;
 };
 
-const MessageInput: React.FC<MessageInputProps> = ({textAreaValue, setTextAreaValue, onSubmit, sx, placeholder="Type a message here"}) => {
+const MessageInput: React.FC<MessageInputProps> = ({
+  textAreaValue,
+  setTextAreaValue,
+  onSubmit,
+  sx,
+  placeholder = 'Type a message here',
+}) => {
   const textAreaRef = React.useRef<HTMLDivElement>(null);
   const handleClick = () => {
     if (textAreaValue.trim() !== '') {
@@ -20,8 +26,8 @@ const MessageInput: React.FC<MessageInputProps> = ({textAreaValue, setTextAreaVa
     }
   };
   return (
-    <Box sx={{ px: 2, pb: 3,  ...sx }}>
-      <FormControl sx={{width: '100%'}}>
+    <Box sx={{ px: 2, pb: 3, ...sx }}>
+      <FormControl sx={{ width: '100%' }}>
         <Stack direction="row" sx={{ alignItems: 'center', gap: '8px' }}>
           <TextField
             placeholder={placeholder}
@@ -33,7 +39,7 @@ const MessageInput: React.FC<MessageInputProps> = ({textAreaValue, setTextAreaVa
             value={textAreaValue}
             minRows={3}
             maxRows={10}
-            onKeyDown={(event: { key: string; metaKey: any; ctrlKey: any; }) => {
+            onKeyDown={(event: { key: string; metaKey: any; ctrlKey: any }) => {
               if (event.key === 'Enter' && (event.metaKey || event.ctrlKey)) {
                 handleClick();
               }
@@ -61,7 +67,7 @@ const MessageInput: React.FC<MessageInputProps> = ({textAreaValue, setTextAreaVa
                 sx={{ alignSelf: 'center', borderRadius: 'sm' }}
                 onClick={handleClick}
                 endIcon={<SendRoundedIcon />}
-                >
+              >
                 Send
               </Button>
             </Stack>
@@ -69,7 +75,7 @@ const MessageInput: React.FC<MessageInputProps> = ({textAreaValue, setTextAreaVa
         </Stack>
       </FormControl>
     </Box>
-   );
-  };
+  );
+};
 
-  export default MessageInput;
+export default MessageInput;

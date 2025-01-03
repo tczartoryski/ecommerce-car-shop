@@ -1,12 +1,23 @@
 import * as React from 'react';
-import { Link, Stack, Snackbar, Alert, Box, Button, CssBaseline, Divider, FormControl, FormLabel, TextField, Typography } from '@mui/material';
+import {
+  Link,
+  Snackbar,
+  Alert,
+  Box,
+  Button,
+  CssBaseline,
+  Divider,
+  FormControl,
+  FormLabel,
+  TextField,
+  Typography,
+} from '@mui/material';
 import ForgotPassword from './ForgotPassword';
 import AppTheme from '../../shared-theme/AppTheme';
 import ColorModeSelect from '../../shared-theme/ColorModeSelect';
 import { useNavigate } from 'react-router-dom';
 import useAuthenticate from '../../hooks/authentication/useAuthenticate';
 import { AuthContainer, Card } from './AuthStyles';
-
 
 export default function SignIn(props: { disableCustomTheme?: boolean }) {
   const navigate = useNavigate();
@@ -19,7 +30,6 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
   const [snackbarOpen, setSnackbarOpen] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState('');
 
-
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (emailError || passwordError) {
@@ -28,16 +38,18 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
     }
     const data = new FormData(event.currentTarget);
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/login/'
-        , {
+      const response = await fetch('http://127.0.0.1:8000/api/login/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({email: data.get('email'), password: data.get('password')}),
+        body: JSON.stringify({
+          email: data.get('email'),
+          password: data.get('password'),
+        }),
       });
 
-     if (response.ok) {
+      if (response.ok) {
         const newData = await response.json();
         authenticate(newData);
         navigate('/home');
@@ -80,22 +92,25 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
 
   return (
     <AppTheme {...props}>
-        <Snackbar
+      <Snackbar
         open={snackbarOpen}
         autoHideDuration={3000}
         onClose={() => setSnackbarOpen(false)}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       >
         <Alert
-          onClose={() => setSnackbarOpen(false)} severity="error" 
-          sx={{ fontSize: '1.2rem', backgroundColor: 'red', color: 'white',}}
+          onClose={() => setSnackbarOpen(false)}
+          severity="error"
+          sx={{ fontSize: '1.2rem', backgroundColor: 'red', color: 'white' }}
         >
           {errorMessage}
         </Alert>
       </Snackbar>
       <CssBaseline enableColorScheme />
       <AuthContainer direction="column" justifyContent="space-between">
-        <ColorModeSelect sx={{ position: 'fixed', top: '1rem', right: '1rem' }} />
+        <ColorModeSelect
+          sx={{ position: 'fixed', top: '1rem', right: '1rem' }}
+        />
         <Card variant="outlined">
           <Typography
             component="h1"

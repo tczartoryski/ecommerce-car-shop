@@ -5,7 +5,7 @@ import NotificationsRoundedIcon from '@mui/icons-material/NotificationsRounded';
 import MenuButton from './MenuButton';
 import MenuContent from './MenuContent';
 import UserContext from '../../../hooks/user/UserContext';
-import { logout} from '../../../hooks/authentication/authUtils';
+import { logout } from '../../../hooks/authentication/authUtils';
 import { Avatar, Typography, Divider, Button, Stack } from '@mui/material';
 
 interface SideMenuMobileProps {
@@ -13,8 +13,11 @@ interface SideMenuMobileProps {
   toggleDrawer: (newOpen: boolean) => () => void;
 }
 
-const SideMenuMobile: React.FC<SideMenuMobileProps> = ({ open, toggleDrawer }) => {
-  const { user} = React.useContext(UserContext);
+const SideMenuMobile: React.FC<SideMenuMobileProps> = ({
+  open,
+  toggleDrawer,
+}) => {
+  const { user } = React.useContext(UserContext);
 
   return (
     <Drawer
@@ -46,18 +49,18 @@ const SideMenuMobile: React.FC<SideMenuMobileProps> = ({ open, toggleDrawer }) =
               src="/static/images/avatar/7.jpg"
               sx={{ width: 36, height: 36 }}
             />
-           <Typography
-           variant="body2"
-           sx={{
-             fontWeight: 500,
-             lineHeight: '16px',
-             whiteSpace: 'nowrap',
-             overflow: 'hidden',
-             textOverflow: 'ellipsis',
-           }}
-         >
-           {user?.firstName} {user?.lastName}
-         </Typography>
+            <Typography
+              variant="body2"
+              sx={{
+                fontWeight: 500,
+                lineHeight: '16px',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}
+            >
+              {user?.firstName} {user?.lastName}
+            </Typography>
           </Stack>
           <MenuButton showBadge>
             <NotificationsRoundedIcon />
@@ -69,7 +72,12 @@ const SideMenuMobile: React.FC<SideMenuMobileProps> = ({ open, toggleDrawer }) =
           <Divider />
         </Stack>
         <Stack sx={{ p: 2 }}>
-          <Button variant="outlined" onClick={logout} fullWidth startIcon={<LogoutRoundedIcon />}>
+          <Button
+            variant="outlined"
+            onClick={logout}
+            fullWidth
+            startIcon={<LogoutRoundedIcon />}
+          >
             Logout
           </Button>
         </Stack>

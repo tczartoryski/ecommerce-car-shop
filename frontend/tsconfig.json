@@ -13,5 +13,5 @@
     "esModuleInterop": true,
     "moduleResolution": "node" // Add this line
   },
-  "include": ["src", "src/custom.d.ts"]
+  "include": ["src"]
 }

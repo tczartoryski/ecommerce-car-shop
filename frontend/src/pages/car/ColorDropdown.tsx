@@ -1,8 +1,24 @@
 import * as React from 'react';
-import { FormControl, Select, MenuItem, Typography, SelectChangeEvent } from '@mui/material';
+import {
+  FormControl,
+  Select,
+  MenuItem,
+  Typography,
+  SelectChangeEvent,
+} from '@mui/material';
 
 const possibleColors = [
-  'Red', 'Blue', 'Green', 'Black', 'White', 'Silver', 'Gray', 'Yellow', 'Orange', 'Brown', 'Purple'
+  'Red',
+  'Blue',
+  'Green',
+  'Black',
+  'White',
+  'Silver',
+  'Gray',
+  'Yellow',
+  'Orange',
+  'Brown',
+  'Purple',
 ];
 
 interface ColorDropdownProps {
@@ -28,9 +44,17 @@ const ColorDropdown: React.FC<ColorDropdownProps> = ({ color, setColor }) => {
           sx={{ width: '100%', minWidth: 150 }}
           renderValue={(selected) => {
             if (selected.length === 0) {
-              return <Typography sx={{ color: 'text.secondary', paddingLeft: 2 }}>Enter a Color</Typography>;
+              return (
+                <Typography sx={{ color: 'text.secondary', paddingLeft: 2 }}>
+                  Enter a Color
+                </Typography>
+              );
             }
-            return <Typography sx={{ color: 'text.secondary', paddingLeft: 2 }}>{selected}</Typography>;
+            return (
+              <Typography sx={{ color: 'text.secondary', paddingLeft: 2 }}>
+                {selected}
+              </Typography>
+            );
           }}
         >
           {possibleColors.map((color) => (

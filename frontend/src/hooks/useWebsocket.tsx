@@ -30,11 +30,18 @@ const useWebSocket = (url: string) => {
     };
   }, [url, token]);
 
-  const sendMessage = React.useCallback((message: any) => {
-    if (isConnected && webSocketRef.current && webSocketRef.current.readyState === WebSocket.OPEN) {
-      webSocketRef.current.send(JSON.stringify(message));
-    }
-  }, [isConnected]);
+  const sendMessage = React.useCallback(
+    (message: any) => {
+      if (
+        isConnected &&
+        webSocketRef.current &&
+        webSocketRef.current.readyState === WebSocket.OPEN
+      ) {
+        webSocketRef.current.send(JSON.stringify(message));
+      }
+    },
+    [isConnected]
+  );
 
   return { messages, sendMessage };
 };

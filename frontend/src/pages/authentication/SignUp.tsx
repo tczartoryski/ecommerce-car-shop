@@ -4,8 +4,17 @@ import ColorModeSelect from '../../shared-theme/ColorModeSelect';
 import { useNavigate } from 'react-router-dom';
 import useAuthenticate from '../../hooks/authentication/useAuthenticate';
 import { AuthContainer, Card } from './AuthStyles';
-import { Box, CssBaseline, Typography, FormControl, FormLabel, TextField, Button, Divider, Link } from '@mui/material';
-
+import {
+  Box,
+  CssBaseline,
+  Typography,
+  FormControl,
+  FormLabel,
+  TextField,
+  Button,
+  Divider,
+  Link,
+} from '@mui/material';
 
 export default function SignUp(props: { disableCustomTheme?: boolean }) {
   const { authenticate } = useAuthenticate();
@@ -22,7 +31,6 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
     const password = document.getElementById('password') as HTMLInputElement;
     const firstName = document.getElementById('firstName') as HTMLInputElement;
     const lastName = document.getElementById('lastName') as HTMLInputElement;
-
 
     let isValid = true;
 
@@ -54,13 +62,13 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
     }
 
     if (!lastName.value || lastName.value.length < 1) {
-        setNameError(true);
-        setNameErrorMessage('Name is required.');
-        isValid = false;
-      } else {
-        setNameError(false);
-        setNameErrorMessage('');
-      }
+      setNameError(true);
+      setNameErrorMessage('Name is required.');
+      isValid = false;
+    } else {
+      setNameError(false);
+      setNameErrorMessage('');
+    }
 
     return isValid;
   };
@@ -70,7 +78,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
     if (nameError || emailError || passwordError) {
       return;
     }
-   
+
     const data = new FormData(event.currentTarget);
     const formData = {
       first_name: data.get('firstName'),
@@ -78,7 +86,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
       email: data.get('email'),
       password: data.get('password'),
     };
-   
+
     try {
       const response = await fetch('http://127.0.0.1:8000/api/register/', {
         method: 'POST',
@@ -87,7 +95,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
         },
         body: JSON.stringify(formData),
       });
-   
+
       if (response.ok) {
         const newData = await response.json();
         authenticate(newData);
@@ -98,7 +106,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
     } catch (error) {
       console.error('Error:', error);
     }
-   };
+  };
 
   return (
     <AppTheme {...props}>
@@ -192,11 +200,7 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Typography sx={{ textAlign: 'center' }}>
               Already have an account?{' '}
-              <Link
-                href="/login/"
-                variant="body2"
-                sx={{ alignSelf: 'center' }}
-              >
+              <Link href="/login/" variant="body2" sx={{ alignSelf: 'center' }}>
                 Sign in
               </Link>
             </Typography>

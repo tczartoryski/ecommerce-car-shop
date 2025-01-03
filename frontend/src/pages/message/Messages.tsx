@@ -12,29 +12,33 @@ import { Car } from '../car/types';
 
 const Messages: React.FC = () => {
   const [conversations, setConversations] = React.useState<Conversation[]>([]);
-  const {selectedChat, setSelectedChat} = useSelectedChat();
-  const { messages, sendMessage } = useWebSocket('ws://localhost:8000/ws/conversations/');
-  const [displayedCar, setDisplayedCar] = React.useState<Car | undefined>(undefined);
+  const { selectedChat, setSelectedChat } = useSelectedChat();
+  const { messages, sendMessage } = useWebSocket(
+    'ws://localhost:8000/ws/conversations/'
+  );
+  const [displayedCar, setDisplayedCar] = React.useState<Car | undefined>(
+    undefined
+  );
   const [open, setOpen] = React.useState(false);
   const carCache = React.useRef<Map<number, Car>>(new Map());
 
   React.useEffect(() => {
     const newConversations = [...conversations];
     messages.forEach((message) => {
-     
-    if (message.type === 'initial_conversations') {
-      setConversations(message.conversations);
-      setSelectedChat(message.conversations[0]);
-    } else if (message.type === 'conversation_update') {
-      const index = newConversations.findIndex((conv) => conv.id === message.conversation.id);
-      if (index !== -1) {
-        newConversations[index] = message.conversation;
-      } else {
-        newConversations.push(message.conversation);
+      if (message.type === 'initial_conversations') {
+        setConversations(message.conversations);
+        setSelectedChat(message.conversations[0]);
+      } else if (message.type === 'conversation_update') {
+        const index = newConversations.findIndex(
+          (conv) => conv.id === message.conversation.id
+        );
+        if (index !== -1) {
+          newConversations[index] = message.conversation;
+        } else {
+          newConversations.push(message.conversation);
+        }
+        setConversations(newConversations);
       }
-      setConversations(newConversations);
-    }
-      
     });
   }, [messages]);
 
@@ -73,32 +77,41 @@ const Messages: React.FC = () => {
   const handleCloseDialog = () => {
     setDisplayedCar(undefined);
     setOpen(false);
-  }
-
+  };
 
   return (
-    <MessagesProvider handleDeleteConversation={handleDeleteConversation} handleViewCar={handleViewCar}>
-    <Box
-      sx={{
-        flex: 1,
-        width: '100%',
-        mx: 'auto',
-        pt: { xs: 'var(--Header-height)', md: 0 },
-        display: 'grid',
-        gridTemplateColumns: {
-          xs: '1fr',
-          md: '300px 1fr',
-        },
-      }}
+    <MessagesProvider
+      handleDeleteConversation={handleDeleteConversation}
+      handleViewCar={handleViewCar}
     >
-      {displayedCar && <ShowCar car={displayedCar} open={open} handleClose={handleCloseDialog} canMessage={false}/>}
-      <ChatsPane
-        chats={conversations}
-        selectedChatId={selectedChat ? selectedChat.id.toString() : ''}
-        setSelectedChat={setSelectedChat}
-      />
-      {selectedChat && <MessagesPane chat={selectedChat} />}
-    </Box>
+      <Box
+        sx={{
+          flex: 1,
+          width: '100%',
+          mx: 'auto',
+          pt: { xs: 'var(--Header-height)', md: 0 },
+          display: 'grid',
+          gridTemplateColumns: {
+            xs: '1fr',
+            md: '300px 1fr',
+          },
+        }}
+      >
+        {displayedCar && (
+          <ShowCar
+            car={displayedCar}
+            open={open}
+            handleClose={handleCloseDialog}
+            canMessage={false}
+          />
+        )}
+        <ChatsPane
+          chats={conversations}
+          selectedChatId={selectedChat ? selectedChat.id.toString() : ''}
+          setSelectedChat={setSelectedChat}
+        />
+        {selectedChat && <MessagesPane chat={selectedChat} />}
+      </Box>
     </MessagesProvider>
   );
 };

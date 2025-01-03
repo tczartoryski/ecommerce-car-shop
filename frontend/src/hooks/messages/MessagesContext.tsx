@@ -5,11 +5,19 @@ interface MessagesContextType {
   handleViewCar: () => void;
 }
 
-const MessagesContext = React.createContext<MessagesContextType | undefined>(undefined);
+const MessagesContext = React.createContext<MessagesContextType | undefined>(
+  undefined
+);
 
-export const MessagesProvider: React.FC<{ handleDeleteConversation: () => void, handleViewCar: () => void, children: React.ReactNode }> = ({ handleDeleteConversation, handleViewCar, children }) => {
+export const MessagesProvider: React.FC<{
+  handleDeleteConversation: () => void;
+  handleViewCar: () => void;
+  children: React.ReactNode;
+}> = ({ handleDeleteConversation, handleViewCar, children }) => {
   return (
-    <MessagesContext.Provider value={{ handleDeleteConversation, handleViewCar }}>
+    <MessagesContext.Provider
+      value={{ handleDeleteConversation, handleViewCar }}
+    >
       {children}
     </MessagesContext.Provider>
   );

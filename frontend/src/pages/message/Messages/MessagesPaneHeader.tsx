@@ -10,7 +10,7 @@ type MessagesPaneHeaderProps = {
   sender: EccomerceUserWithoutCars;
 };
 
-const MessagesPaneHeader: React.FC<MessagesPaneHeaderProps> = ({sender}) => {
+const MessagesPaneHeader: React.FC<MessagesPaneHeaderProps> = ({ sender }) => {
   const { handleViewCar } = useMessages();
   return (
     <Stack
@@ -37,21 +37,23 @@ const MessagesPaneHeader: React.FC<MessagesPaneHeaderProps> = ({sender}) => {
         >
           <ArrowBackIosNewRoundedIcon />
         </IconButton>
-        <Avatar alt={sender.first_name}  src="/static/images/avatar/7.jpg" />
+        <Avatar alt={sender.first_name} src="/static/images/avatar/7.jpg" />
         <div>
-        <Stack direction="row" sx={{ alignItems: 'flex-end' }}>
-        <Typography
-            component="h2"
-            noWrap
-            sx={{ fontWeight: 'lg', fontSize: 'lg' }}
-          >{sender.first_name} {sender.last_name}</Typography>
-        </Stack>
-          
+          <Stack direction="row" sx={{ alignItems: 'flex-end' }}>
+            <Typography
+              component="h2"
+              noWrap
+              sx={{ fontWeight: 'lg', fontSize: 'lg' }}
+            >
+              {sender.first_name} {sender.last_name}
+            </Typography>
+          </Stack>
         </div>
       </Stack>
       <Stack spacing={1} direction="row" sx={{ alignItems: 'center' }}>
-        
-        <Button variant='contained' onClick={handleViewCar}>View Car</Button>
+        <Button variant="contained" onClick={handleViewCar}>
+          View Car
+        </Button>
         <MessagesOptionsMenu></MessagesOptionsMenu>
       </Stack>
     </Stack>

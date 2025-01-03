@@ -2,7 +2,7 @@ import * as React from 'react';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import { Conversation } from '../types';
 import { toggleMessagesPane } from '../utils';
-import { Typography, Box, Stack, IconButton, Input, List, Chip } from '@mui/material';
+import { Typography, Box, Stack, IconButton, List, Chip } from '@mui/material';
 import ChatListItem from './ChatListItem';
 
 type ChatsPaneProps = {
@@ -11,7 +11,11 @@ type ChatsPaneProps = {
   selectedChatId: string;
 };
 
-const ChatsPane: React.FC<ChatsPaneProps> = ({chats, selectedChatId, setSelectedChat}) => {
+const ChatsPane: React.FC<ChatsPaneProps> = ({
+  chats,
+  selectedChatId,
+  setSelectedChat,
+}) => {
   return (
     <Box
       sx={{
@@ -24,25 +28,33 @@ const ChatsPane: React.FC<ChatsPaneProps> = ({chats, selectedChatId, setSelected
       <Stack
         direction="row"
         spacing={1}
-        sx={{ alignItems: 'center', justifyContent: 'space-between', p: 2, pb: 1.5 }}
+        sx={{
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          p: 2,
+          pb: 1.5,
+        }}
       >
         <Stack direction="row" sx={{ alignItems: 'center', gap: '16px' }}>
-            <Chip
-              variant="filled"
-              color="primary"
-              size="medium"
-              label={chats.length}
-            />
-            <Typography
-              component="h1"
-              sx={{ fontSize: { xs: 'md', md: 'lg' }, fontWeight: 'lg', mr: 'auto' }}
-            >
-              {chats.length == 1 ? 'Message' : 'Messages'}
-            </Typography>
+          <Chip
+            variant="filled"
+            color="primary"
+            size="medium"
+            label={chats.length}
+          />
+          <Typography
+            component="h1"
+            sx={{
+              fontSize: { xs: 'md', md: 'lg' },
+              fontWeight: 'lg',
+              mr: 'auto',
+            }}
+          >
+            {chats.length == 1 ? 'Message' : 'Messages'}
+          </Typography>
         </Stack>
-       
+
         <IconButton
-          
           aria-label="edit"
           color="primary"
           size="small"

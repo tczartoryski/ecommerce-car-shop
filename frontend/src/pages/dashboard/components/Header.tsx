@@ -3,9 +3,7 @@ import Stack from '@mui/material/Stack';
 import NavbarBreadcrumbs from './NavbarBreadcrumbs';
 import ColorModeIconDropdown from '../../../shared-theme/ColorModeIconDropdown';
 
-
 const Header: React.FC = () => {
-
   return (
     <Stack
       direction="row"

@@ -1,17 +1,41 @@
 import * as React from 'react';
-import { FormControl, Select, MenuItem, Typography, SelectChangeEvent } from '@mui/material';
+import {
+  FormControl,
+  Select,
+  MenuItem,
+  Typography,
+  SelectChangeEvent,
+} from '@mui/material';
 
 const possibleMakes = [
-  'Alfa Romeo', 'Audi', 'BMW',
-  'Chevrolet', 'Chrysler',
-  'Dodge', 'Fiat', 'Ford', 'Honda',
-  'Hummer', 'Hyundai', 'Infiniti',
-  'Jaguar', 'Jeep', 'Kia',
-  'Land Rover', 'Lexus', 'Mazda',
-  'Mercedes-Benz', 'MINI', 'Mitsubishi', 'Nissan',
-  'Porsche', 'Rover',
-  'Subaru', 'Toyota',
-  'Volkswagen', 'Volvo'
+  'Alfa Romeo',
+  'Audi',
+  'BMW',
+  'Chevrolet',
+  'Chrysler',
+  'Dodge',
+  'Fiat',
+  'Ford',
+  'Honda',
+  'Hummer',
+  'Hyundai',
+  'Infiniti',
+  'Jaguar',
+  'Jeep',
+  'Kia',
+  'Land Rover',
+  'Lexus',
+  'Mazda',
+  'Mercedes-Benz',
+  'MINI',
+  'Mitsubishi',
+  'Nissan',
+  'Porsche',
+  'Rover',
+  'Subaru',
+  'Toyota',
+  'Volkswagen',
+  'Volvo',
 ];
 
 interface MakeDropdownProps {
@@ -23,7 +47,7 @@ const MakeDropdown: React.FC<MakeDropdownProps> = ({ make, setMake }) => {
   const handleChange = async (event: SelectChangeEvent) => {
     setMake(event.target.value);
   };
-  
+
   return (
     <div>
       <FormControl variant="standard" sx={{ width: '100%' }}>
@@ -37,9 +61,17 @@ const MakeDropdown: React.FC<MakeDropdownProps> = ({ make, setMake }) => {
           sx={{ width: '100%', minWidth: 150 }}
           renderValue={(selected) => {
             if (selected.length === 0) {
-              return <Typography sx={{ color: 'text.secondary', paddingLeft: 2 }}>Enter a Make</Typography>;
+              return (
+                <Typography sx={{ color: 'text.secondary', paddingLeft: 2 }}>
+                  Enter a Make
+                </Typography>
+              );
             }
-            return <Typography sx={{ color: 'text.secondary', paddingLeft: 2 }}>{selected}</Typography>;;
+            return (
+              <Typography sx={{ color: 'text.secondary', paddingLeft: 2 }}>
+                {selected}
+              </Typography>
+            );
           }}
         >
           {possibleMakes.map((make) => (

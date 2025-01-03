@@ -1,5 +1,15 @@
 import * as React from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, IconButton, InputAdornment, Typography } from '@mui/material';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  TextField,
+  IconButton,
+  InputAdornment,
+  Typography,
+} from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { request } from '../../../hooks/authentication/authUtils';
@@ -9,7 +19,10 @@ interface ChangePasswordDialogProps {
   onClose: () => void;
 }
 
-const ChangePasswordDialog: React.FC<ChangePasswordDialogProps> = ({ open, onClose }) => {
+const ChangePasswordDialog: React.FC<ChangePasswordDialogProps> = ({
+  open,
+  onClose,
+}) => {
   const [password, setPassword] = React.useState('');
   const [confirmPassword, setConfirmPassword] = React.useState('');
   const [showPassword, setShowPassword] = React.useState(false);
@@ -64,7 +77,10 @@ const ChangePasswordDialog: React.FC<ChangePasswordDialogProps> = ({ open, onClo
           type={showPassword ? 'text' : 'password'}
           fullWidth
           value={password}
-          onChange={(e) => {setPassword(e.target.value); setError(null);}}
+          onChange={(e) => {
+            setPassword(e.target.value);
+            setError(null);
+          }}
           slotProps={{
             input: {
               endAdornment: (
@@ -87,7 +103,7 @@ const ChangePasswordDialog: React.FC<ChangePasswordDialogProps> = ({ open, onClo
             '& .MuiInputLabel-shrink': {
               transform: 'translate(14px, -18px) scale(0.75)',
             },
-        }}
+          }}
         />
         <TextField
           margin="normal"
@@ -95,7 +111,10 @@ const ChangePasswordDialog: React.FC<ChangePasswordDialogProps> = ({ open, onClo
           type={showConfirmPassword ? 'text' : 'password'}
           fullWidth
           value={confirmPassword}
-          onChange={(e) => {setConfirmPassword(e.target.value); setError(null);}}
+          onChange={(e) => {
+            setConfirmPassword(e.target.value);
+            setError(null);
+          }}
           slotProps={{
             input: {
               endAdornment: (
@@ -118,7 +137,7 @@ const ChangePasswordDialog: React.FC<ChangePasswordDialogProps> = ({ open, onClo
             '& .MuiInputLabel-shrink': {
               transform: 'translate(14px, -18px) scale(0.75)',
             },
-        }}
+          }}
         />
         {error && <Typography color="error">{error}</Typography>}
       </DialogContent>

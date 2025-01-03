@@ -14,13 +14,18 @@ type MessagesPaneProps = {
 
 export default function MessagesPane(props: MessagesPaneProps) {
   const { chat } = props;
-  const [chatMessages, setChatMessages] = React.useState<Message[]>([chat.most_recent_message]);
+  const [chatMessages, setChatMessages] = React.useState<Message[]>([
+    chat.most_recent_message,
+  ]);
   const [textAreaValue, setTextAreaValue] = React.useState('');
   const { user } = React.useContext(UserContext);
-  const [sender, setSender] = React.useState<EccomerceUserWithoutCars | null>(null);
-  const { messages, sendMessage } = useWebSocket(`ws://localhost:8000/ws/conversations/${chat.id}/`);
+  const [sender, setSender] = React.useState<EccomerceUserWithoutCars | null>(
+    null
+  );
+  const { messages, sendMessage } = useWebSocket(
+    `ws://localhost:8000/ws/conversations/${chat.id}/`
+  );
 
-    
   React.useEffect(() => {
     if (user && chat) {
       if (chat.buyer.email === user.email) {
@@ -31,27 +36,28 @@ export default function MessagesPane(props: MessagesPaneProps) {
     }
   }, [user, chat]);
 
-    
-    React.useEffect(() => {
-      if (!user || !sender) {
-        return;
-      }});
-  
-    const handleNewMessage = () => {
-      const message = {
-        type: 'new_message',
-        message: textAreaValue,
-        sender_id: user.id,
-      };
-      sendMessage(message);
-      setTextAreaValue('');
-      }
-  
-  
+  React.useEffect(() => {
+    if (!user || !sender) {
+      return;
+    }
+  });
+
+  const handleNewMessage = () => {
+    const message = {
+      type: 'new_message',
+      message: textAreaValue,
+      sender_id: user.id,
+    };
+    sendMessage(message);
+    setTextAreaValue('');
+  };
+
   React.useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const response = await request(`api/conversations/${chat.id}/messages/`);
+        const response = await request(
+          `api/conversations/${chat.id}/messages/`
+        );
         if (!response.ok) {
           throw new Error('Failed to fetch messages');
         }
@@ -64,9 +70,7 @@ export default function MessagesPane(props: MessagesPaneProps) {
 
     fetchMessages();
 
-
-    return () => {
-    };
+    return () => {};
   }, [chat.id]);
 
   React.useEffect(() => {
@@ -74,11 +78,10 @@ export default function MessagesPane(props: MessagesPaneProps) {
       setChatMessages((prevMessages) => [...prevMessages, ...messages]);
     }
   }, [messages]);
-  
+
   if (!user || !sender) {
     return <Typography>Loading...</Typography>;
   }
-  
 
   return (
     <Box
@@ -115,11 +118,14 @@ export default function MessagesPane(props: MessagesPaneProps) {
               >
                 {message.sender.email !== user.email && (
                   <Avatar
-                    src={"/static/images/avatar/7.jpg"}
+                    src={'/static/images/avatar/7.jpg'}
                     alt={sender.first_name}
                   />
                 )}
-                <ChatBubble variant={isYou ? 'sent' : 'received'} message={message} />
+                <ChatBubble
+                  variant={isYou ? 'sent' : 'received'}
+                  message={message}
+                />
               </Stack>
             );
           })}

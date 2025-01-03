@@ -12,4 +12,9 @@ export default [
   ...tseslint.configs.recommended,
   pluginReact.configs.flat.recommended,
   eslintPluginPrettierRecommended,
+  {
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off',  // Disable the no-explicit-any rule
+    },
+  },
 ];

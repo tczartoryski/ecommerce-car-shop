@@ -9,7 +9,6 @@ import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import MenuButton from '../../dashboard/components/MenuButton';
 import { useMessages } from '../../../hooks/messages/MessagesContext';
 
-
 const MenuItem = styled(MuiMenuItem)({
   margin: '2px 0',
 });
@@ -56,7 +55,14 @@ const MessagesOptionsMenu: React.FC = () => {
           },
         }}
       >
-        <MenuItem onClick={() => {handleClose(); handleDeleteConversation();}}>End Conversation</MenuItem>
+        <MenuItem
+          onClick={() => {
+            handleClose();
+            handleDeleteConversation();
+          }}
+        >
+          End Conversation
+        </MenuItem>
       </Menu>
     </React.Fragment>
   );

@@ -1,18 +1,20 @@
 import * as React from 'react';
-import { alpha } from '@mui/material/styles';;
+import { alpha } from '@mui/material/styles';
 import AppNavbar from './components/AppNavbar';
 import Header from './components/Header';
 import SideMenu from './components/SideMenu';
 import AppTheme from '../../shared-theme/AppTheme';
 import { CssBaseline, Box, Stack } from '@mui/material';
 
-
 interface DashboardProps {
   disableCustomTheme?: boolean;
   mainContent: React.ReactNode;
- }
- 
-const Dashboard: React.FC<DashboardProps> = ({ disableCustomTheme, mainContent }) => {
+}
+
+const Dashboard: React.FC<DashboardProps> = ({
+  disableCustomTheme,
+  mainContent,
+}) => {
   return (
     <AppTheme {...{ disableCustomTheme }}>
       <CssBaseline enableColorScheme />
@@ -37,7 +39,7 @@ const Dashboard: React.FC<DashboardProps> = ({ disableCustomTheme, mainContent }
               mt: { xs: 8, md: 0 },
             }}
           >
-            <Header/>
+            <Header />
             {mainContent}
           </Stack>
         </Box>
