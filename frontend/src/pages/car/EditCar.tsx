@@ -1,17 +1,9 @@
-import React, { useEffect } from 'react';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import { Box, CircularProgress, FormHelperText, InputAdornment, Stack, Typography } from '@mui/material';
-import { MakeDropdown } from './MakeDropdown';
-import { ModelDropdown } from './ModelDropdown';
-import { ColorDropdown } from './ColorDropdown';
-import { request } from '../../../../hooks/authentication/authentication';
-import useCityByZipcode from '../../../../hooks/getCityByZipcode';
-import { Car, CarImage } from './MyCars';
+import * as React from 'react';
+import { Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Stack} from '@mui/material';
+import { request } from '../../hooks/authentication/authUtils';
+import useCityByZipcode from '../../hooks/getCityByZipcode';
+import CarForm from './CarForm';
+import { Car, CarImage } from './types';
 
 interface EditCarProps {
   car: Car;
@@ -20,7 +12,7 @@ interface EditCarProps {
   handleClose: () => void;
 }
 
-export default function EditCar({ open, handleClose, car, onSuccess }: EditCarProps) {
+const EditCar: React.FC<EditCarProps> = ({ open, handleClose, car, onSuccess }) => {  
   const [make, setMake] = React.useState(car.make);
   const [model, setModel] = React.useState(car.model);
   const [year, setYear] = React.useState(car.year);
@@ -31,7 +23,6 @@ export default function EditCar({ open, handleClose, car, onSuccess }: EditCarPr
   const [existingImages, setExistingImages] = React.useState<string[]>(car.images.map((img: CarImage) => img.image_url));
   const [newImages, setNewImages] = React.useState<File[]>([]);
   const [currentImageIndex, setCurrentImageIndex] = React.useState(0);
-  const [yearError, setYearError] = React.useState('');
   const [zipcode, setZipcode] = React.useState(car.zipcode);
   const { location, getCityByZipcode } = useCityByZipcode();
   const [error, setError] = React.useState('');
@@ -39,12 +30,11 @@ export default function EditCar({ open, handleClose, car, onSuccess }: EditCarPr
   const [loading, setLoading] = React.useState(false);
 
 
-  useEffect(() => {
+  React.useEffect(() => {
         if (zipcode.length === 5) {
           const fetchCity = async () => {
             await getCityByZipcode(zipcode);
             setCity(location);
-            console.log("New location is: ", location);
           };
           fetchCity();
         } else {
@@ -53,25 +43,10 @@ export default function EditCar({ open, handleClose, car, onSuccess }: EditCarPr
       }, [zipcode, location]);
 
 
-  const handleYearChange = (value: any) => {
-    const parsedValue = parseInt(value, 10);
-    if (isNaN(parsedValue)) {
-      setYear('');
-      setYearError('Please enter a valid year');
-    } else if (parsedValue < 1970 || parsedValue > 2025) {
-      setYear(value);
-      setYearError('Year must be between 1970 and 2025');
-    } else {
-      setYear(value);
-      setYearError('');
-    }
-  };
-
   const handleAddImage = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const newImagesArray = Array.from(event.target.files);
       setNewImages((prevImages) => [...prevImages, ...newImagesArray]);
-      console.log("new images being set");
     }
   };
 
@@ -97,7 +72,6 @@ export default function EditCar({ open, handleClose, car, onSuccess }: EditCarPr
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-      console.log('Car deleted successfully');
       handleClose();
       onSuccess();
     }).catch((error) => {
@@ -145,7 +119,6 @@ export default function EditCar({ open, handleClose, car, onSuccess }: EditCarPr
         throw new Error('Network response was not ok');
       }
 
-      console.log('Car updated successfully');
       handleClose();
       onSuccess();
     } catch (error) {
@@ -168,106 +141,26 @@ export default function EditCar({ open, handleClose, car, onSuccess }: EditCarPr
     >
       <DialogTitle>Edit Car Listing</DialogTitle>
       <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, width: '100%' }}>
-        {error && <Typography color="error">{error}</Typography>}
-        <Stack direction="row" spacing={2} sx={{ justifyContent: 'space-between' }}>
-          <MakeDropdown make={make} setMake={setMake} />
-          <ModelDropdown make={make} model={model} setModel={setModel} edit={true} />
-        </Stack>
-
-        <Stack direction="row" spacing={2} sx={{ gap: 2, alignItems: 'flex-end', justifyContent: 'space-between' }}>
-          <Stack direction="column" sx={{ width: 150, alignItems: 'flex-start' }}>
-          <Typography variant="body1">Year</Typography>
-            <OutlinedInput
-              required
-              margin="dense"
-              id="year"
-              name="year"
-              label="Year"
-              placeholder="Enter the year"
-              type="number"
-              sx={{ height: '40px' }}
-              value={year}
-              onChange={(e) => handleYearChange(e.target.value)}
-              error={yearError !== ''}
-            />
-            {yearError && <FormHelperText error>{yearError}</FormHelperText>}
-          </Stack>
-          <ColorDropdown color={color} setColor={setColor} />
-        </Stack>
-        <Typography variant="body1">Description</Typography>
-        <OutlinedInput
-          margin="dense"
-          id="description"
-          name="description"
-          label="Description"
-          placeholder="Enter the description"
-          multiline
-          rows={4}
-          fullWidth
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-        />
-        <Stack direction="row" spacing={2} sx={{ justifyContent: 'space-between' }}>
-          <Stack direction="column" spacing={1} sx={{ width: 150, alignItems: 'flex-start' }}>
-            <Typography variant="body1">Mileage</Typography>
-            <OutlinedInput
-              required
-              margin="dense"
-              id="mileage"
-              name="mileage"
-              placeholder="Enter the mileage"
-              type="text"
-              value={mileage}
-              onChange={(e) => {
-                const value = e.target.value.replace(/,/g, '');
-                setMileage(value.replace(/\B(?=(\d{3})+(?!\d))/g, ','));
-              }}
-            />
-          </Stack>
-          <Stack direction="column" spacing={1} sx={{ width: 150, alignItems: 'flex-start' }}>
-            <Typography variant="body1">Price</Typography>
-            <OutlinedInput
-              required
-              margin="dense"
-              id="price"
-              name="price"
-              placeholder="Enter the price"
-              type="text"
-              sx={{ marginTop: 0}}
-              value={price}
-              onChange={(e) => {
-                const value = e.target.value.replace(/[^0-9]/g, '');
-                setPrice(value.replace(/\B(?=(\d{3})+(?!\d))/g, ','));
-              }}
-              startAdornment={<InputAdornment position="start">$</InputAdornment>}
-            />
-          </Stack>
-        </Stack>
-        <Stack direction="row" spacing={1} sx={{ width: '100%' }}>
-        <Stack direction="column">
-        <Typography variant="body1">Zipcode</Typography>
-          <OutlinedInput
-            required
-            margin="dense"
-            id="zipcode"
-            name="zipcode"
-            placeholder="Enter the zipcode"
-            type="text"
-            value={zipcode}
-            sx={{ width: 150}}
-            onChange={async (e) => {
-              const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 5);
-              setZipcode(value);
-            }}
-          />
-        </Stack>
-        
-          {city && (
-            <Typography variant="body2" color="textSecondary" sx={{paddingTop: '30px'}}>
-              Location: {city}
-            </Typography>
-          )}
-        </Stack>
+      <CarForm
+        make={make}
+        setMake={setMake}
+        model={model}
+        setModel={setModel}
+        year={year}
+        setYear={setYear}
+        color={color}
+        setColor={setColor}
+        description={description}
+        setDescription={setDescription}
+        mileage={mileage}
+        setMileage={setMileage}
+        price={price}
+        setPrice={setPrice}
+        zipcode={zipcode}
+        setZipcode={setZipcode}
+        city={city}
+        error={error}
+      />
 
         <Stack direction="row" spacing={2} sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
           <Button
@@ -328,4 +221,6 @@ export default function EditCar({ open, handleClose, car, onSuccess }: EditCarPr
       </DialogActions>
     </Dialog>
   );
-}
+};
+
+export default EditCar;

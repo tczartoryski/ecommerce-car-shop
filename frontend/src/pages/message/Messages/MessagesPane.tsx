@@ -1,13 +1,12 @@
 import * as React from 'react';
-import AvatarWithStatus from './AvatarWithStatus';
-import MessageInput from './MessageInput';
-import MessagesPaneHeader from './MessagesPaneHeader';
 import { Conversation, EccomerceUserWithoutCars, Message } from '../types';
-import { Box, Stack, Typography } from '@mui/material';
-import ChatBubble from './ChatBubble';
+import { Avatar, Box, Stack, Typography } from '@mui/material';
 import UserContext from '../../../hooks/user/UserContext';
-import { request } from '../../../hooks/authentication/authentication';
+import { request } from '../../../hooks/authentication/authUtils';
 import useWebSocket from '../../../hooks/useWebsocket';
+import MessagesPaneHeader from './MessagesPaneHeader';
+import ChatBubble from './ChatBubble';
+import MessageInput from './MessageInput';
 
 type MessagesPaneProps = {
   chat: Conversation;
@@ -115,8 +114,7 @@ export default function MessagesPane(props: MessagesPaneProps) {
                 sx={{ flexDirection: isYou ? 'row-reverse' : 'row' }}
               >
                 {message.sender.email !== user.email && (
-                  <AvatarWithStatus
-                    online={true}
+                  <Avatar
                     src={"/static/images/avatar/7.jpg"}
                     alt={sender.first_name}
                   />

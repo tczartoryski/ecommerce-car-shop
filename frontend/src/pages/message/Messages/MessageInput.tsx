@@ -11,8 +11,7 @@ type MessageInputProps = {
   placeholder?: string;
 };
 
-export default function MessageInput(props: MessageInputProps) {
-  const { textAreaValue, setTextAreaValue, onSubmit, sx, placeholder="Type a message here" } = props;
+const MessageInput: React.FC<MessageInputProps> = ({textAreaValue, setTextAreaValue, onSubmit, sx, placeholder="Type a message here"}) => {
   const textAreaRef = React.useRef<HTMLDivElement>(null);
   const handleClick = () => {
     if (textAreaValue.trim() !== '') {
@@ -71,4 +70,6 @@ export default function MessageInput(props: MessageInputProps) {
       </FormControl>
     </Box>
    );
-  }
+  };
+
+  export default MessageInput;

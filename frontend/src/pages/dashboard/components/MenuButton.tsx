@@ -6,10 +6,10 @@ export interface MenuButtonProps extends IconButtonProps {
   showBadge?: boolean;
 }
 
-export default function MenuButton({
+const MenuButton: React.FC<MenuButtonProps> = ({
   showBadge = false,
   ...props
-}: MenuButtonProps) {
+}) => {
   return (
     <Badge
       color="error"
@@ -20,4 +20,6 @@ export default function MenuButton({
       <IconButton size="small" {...props} />
     </Badge>
   );
-}
+};
+
+export default MenuButton;

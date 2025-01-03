@@ -3,9 +3,6 @@ export const isAuthenticated = (): string | null => {
   return localStorage.getItem('authToken');
 };
 
-export const getUserId = (): string | null => {
-  return localStorage.getItem('userId');
-};
 
 export const logout = (): void => {
   localStorage.removeItem('authToken');

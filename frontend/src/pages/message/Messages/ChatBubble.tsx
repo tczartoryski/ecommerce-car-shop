@@ -1,10 +1,9 @@
 import * as React from 'react';
-import InsertDriveFileRoundedIcon from '@mui/icons-material/InsertDriveFileRounded';
-import { Typography, Avatar, IconButton } from '@mui/material';
-import { Box, Stack } from '@mui/system';
-import { Message, MessageProps } from '../types';
+import { Typography, Box, Stack } from '@mui/material';
+import { Message } from '../types';
 import UserContext from '../../../hooks/user/UserContext';
 import { formatDistanceToNow, parseISO } from 'date-fns';
+import exp from 'constants';
 
 
 type ChatBubbleProps = {
@@ -12,8 +11,7 @@ type ChatBubbleProps = {
   message: Message;
 };
 
-export default function ChatBubble(props: ChatBubbleProps) {
-  const { variant, message } = props;
+const ChatBubble: React.FC<ChatBubbleProps> = ({ variant, message }) => {
   const isSent = variant === 'sent';
   const { user } = React.useContext(UserContext);
   const formattedTimestamp = formatDistanceToNow(parseISO(message.timestamp), { addSuffix: true });
@@ -81,4 +79,6 @@ export default function ChatBubble(props: ChatBubbleProps) {
         </Box>
     </Box>
   );
-}
+};
+
+export default ChatBubble;

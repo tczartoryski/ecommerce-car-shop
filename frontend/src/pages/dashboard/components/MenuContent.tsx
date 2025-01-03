@@ -1,15 +1,10 @@
 import * as React from 'react';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import Stack from '@mui/material/Stack';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import ForumIcon from '@mui/icons-material/Forum';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import { To, useNavigate } from 'react-router-dom';
+import { List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack } from '@mui/material';
 
 const mainListItems = [
   { text: 'Home', icon: <HomeRoundedIcon />, path: '/home' },
@@ -18,7 +13,7 @@ const mainListItems = [
   { text: 'My Cars', icon: <DirectionsCarIcon />, path: '/my-cars' },
  ];
  
- export default function MenuContent() {
+const MenuContent: React.FC = () => {
   const navigate = useNavigate();
  
   const handleListItemClick = (path: To) => {
@@ -39,4 +34,6 @@ const mainListItems = [
       </List>
     </Stack>
   );
- }
+ };
+
+ export default MenuContent;

@@ -1,15 +1,15 @@
 import './App.css';
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import SignIn from './pages/sign-in/SignIn';
-import { Container } from '@mui/system';
+import SignIn from './pages/authentication/SignIn';
 import Dashboard from './pages/dashboard/Dashboard';
-import MainGrid from './pages/dashboard/components/home/MainGrid';
-import Messages from './pages/dashboard/components/messages/Messages';
-import SignUp from './pages/sign-up/SignUp';
-import Market from './pages/dashboard/components/market/Market';
+import MainGrid from './pages/dashboard/MainGrid';
+import Messages from './pages/message/Messages';
+import SignUp from './pages/authentication/SignUp';
+import Market from './pages/car/Market';
 import ProtectedRoute from './hooks/authentication/ProtectedRoutes';
-import MyCars from './pages/dashboard/components/car/MyCars';
+import MyCars from './pages/car/MyCars';
+import { Container } from '@mui/material';
 
 function App() {
   return (

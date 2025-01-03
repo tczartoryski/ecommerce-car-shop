@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Car } from '../../pages/dashboard/components/car/MyCars';
-import { request } from '../authentication/authentication';
+import { request } from '../authentication/authUtils';
+import { Car } from '../../pages/car/types';
 
 const useFetchCars = (url: string) => {
   const [cars, setCars] = React.useState<Car[]>([]);

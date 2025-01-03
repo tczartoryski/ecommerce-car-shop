@@ -1,12 +1,10 @@
 import * as React from 'react';
-import { alpha } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
+import { alpha } from '@mui/material/styles';;
 import AppNavbar from './components/AppNavbar';
 import Header from './components/Header';
 import SideMenu from './components/SideMenu';
 import AppTheme from '../../shared-theme/AppTheme';
+import { CssBaseline, Box, Stack } from '@mui/material';
 
 
 interface DashboardProps {
@@ -14,7 +12,7 @@ interface DashboardProps {
   mainContent: React.ReactNode;
  }
  
- export default function Dashboard({ disableCustomTheme, mainContent }: DashboardProps) {
+const Dashboard: React.FC<DashboardProps> = ({ disableCustomTheme, mainContent }) => {
   return (
     <AppTheme {...{ disableCustomTheme }}>
       <CssBaseline enableColorScheme />
@@ -46,4 +44,6 @@ interface DashboardProps {
       </Box>
     </AppTheme>
   );
-}
+};
+
+export default Dashboard;

@@ -1,23 +1,4 @@
 
-export type UserProps = {
-    name: string;
-    username: string;
-    avatar: string;
-    online: boolean;
-  };
-  
-  export type MessageProps = {
-    id: string;
-    content: string;
-    timestamp: string;
-    unread?: boolean;
-    sender: UserProps | 'You';
-    attachment?: {
-      fileName: string;
-      type: string;
-      size: string;
-    };
-  };
 
   export type Message = {
     content: string;
@@ -29,11 +10,7 @@ export type UserProps = {
     timestamp: string;
   }
   
-  export type ChatProps = {
-    id: string;
-    sender: UserProps;
-    messages: MessageProps[];
-  };
+
 
   export type EccomerceUserWithoutCars = {
     email: string;
@@ -48,3 +25,4 @@ export type UserProps = {
     buyer: EccomerceUserWithoutCars;
     most_recent_message: Message;
   }
+

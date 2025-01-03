@@ -1,6 +1,6 @@
 import * as React from 'react';
 import UserContext, { UserData } from './UserContext';
-import { request } from '../authentication/authentication';
+import { request } from '../authentication/authUtils';
 
 interface UserProviderProps {
  children: React.ReactNode;

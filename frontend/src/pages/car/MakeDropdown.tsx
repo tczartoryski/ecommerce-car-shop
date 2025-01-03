@@ -1,6 +1,5 @@
-import React from 'react';
-import { FormControl, InputLabel, Select, MenuItem, Typography } from '@mui/material';
-import { SelectChangeEvent } from '@mui/material/Select';
+import * as React from 'react';
+import { FormControl, Select, MenuItem, Typography, SelectChangeEvent } from '@mui/material';
 
 const possibleMakes = [
   'Alfa Romeo', 'Audi', 'BMW',
@@ -20,7 +19,7 @@ interface MakeDropdownProps {
   setMake: (value: string) => void;
 }
 
-export const MakeDropdown: React.FC<MakeDropdownProps> = ({ make, setMake }) => {
+const MakeDropdown: React.FC<MakeDropdownProps> = ({ make, setMake }) => {
   const handleChange = async (event: SelectChangeEvent) => {
     setMake(event.target.value);
   };

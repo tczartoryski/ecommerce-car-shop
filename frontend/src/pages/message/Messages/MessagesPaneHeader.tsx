@@ -1,18 +1,16 @@
-import { IconButton, Avatar, Typography, Chip, Button } from '@mui/material';
-import { Stack } from '@mui/system';
 import * as React from 'react';
+import { IconButton, Avatar, Typography, Stack, Button } from '@mui/material';
 import { toggleMessagesPane } from '../utils';
 import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded';
-import MessagesOptionsMenu from './MessagesOptionsMenu';
 import { useMessages } from '../../../hooks/messages/MessagesContext';
 import { EccomerceUserWithoutCars } from '../types';
+import MessagesOptionsMenu from './MessagesOptionsMenu';
 
 type MessagesPaneHeaderProps = {
   sender: EccomerceUserWithoutCars;
 };
 
-export default function MessagesPaneHeader(props: MessagesPaneHeaderProps) {
-  const { sender } = props;
+const MessagesPaneHeader: React.FC<MessagesPaneHeaderProps> = ({sender}) => {
   const { handleViewCar } = useMessages();
   return (
     <Stack
@@ -54,8 +52,10 @@ export default function MessagesPaneHeader(props: MessagesPaneHeaderProps) {
       <Stack spacing={1} direction="row" sx={{ alignItems: 'center' }}>
         
         <Button variant='contained' onClick={handleViewCar}>View Car</Button>
-        <MessagesOptionsMenu sender={sender}></MessagesOptionsMenu>
+        <MessagesOptionsMenu></MessagesOptionsMenu>
       </Stack>
     </Stack>
   );
-}
+};
+
+export default MessagesPaneHeader;

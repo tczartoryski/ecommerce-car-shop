@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { Card, CardContent, Stack, Typography, Link, useTheme, IconButton, Box } from "@mui/material";
-import { Conversation, EccomerceUserWithoutCars } from '../../../message/types';
+import { Card, CardContent, Stack, Typography, Link, useTheme } from "@mui/material";
+import { Conversation, EccomerceUserWithoutCars } from '../../message/types';
 import { formatDistanceToNow, parseISO } from 'date-fns';
-import UserContext from '../../../../hooks/user/UserContext';
-import { useSelectedChat } from '../../../../hooks/messages/SelectedChatContext';
+import UserContext from '../../../hooks/user/UserContext';
+import { useSelectedChat } from '../../../hooks/messages/SelectedChatContext';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -11,7 +11,7 @@ interface MessagesCardProps {
   conversation: Conversation;
 };
 
-export default function MessageCard({conversation}: MessagesCardProps) {
+const MessageCard: React.FC<MessagesCardProps> = ({conversation}) => {
   const theme = useTheme();
   const { user } = React.useContext(UserContext);
   const { setSelectedChat } = useSelectedChat();
@@ -57,6 +57,7 @@ export default function MessageCard({conversation}: MessagesCardProps) {
         </CardContent>
       </Card>
     </Link>
-   );
-   
-}
+   );   
+};
+
+export default MessageCard;

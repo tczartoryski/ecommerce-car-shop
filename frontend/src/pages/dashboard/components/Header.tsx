@@ -4,9 +4,7 @@ import NavbarBreadcrumbs from './NavbarBreadcrumbs';
 import ColorModeIconDropdown from '../../../shared-theme/ColorModeIconDropdown';
 
 
-
-
-export default function Header() {
+const Header: React.FC = () => {
 
   return (
     <Stack
@@ -27,4 +25,6 @@ export default function Header() {
       </Stack>
     </Stack>
   );
-}
+};
+
+export default Header;

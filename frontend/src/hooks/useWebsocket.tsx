@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { isAuthenticated } from './authentication/authentication';
+import { isAuthenticated } from './authentication/authUtils';
 
 const useWebSocket = (url: string) => {
   const token: string = isAuthenticated();

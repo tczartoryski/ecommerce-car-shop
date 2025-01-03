@@ -1,11 +1,6 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import OutlinedInput from '@mui/material/OutlinedInput';
+import { Dialog, DialogTitle, DialogContent, DialogContentText, OutlinedInput, DialogActions, Button } from '@mui/material';
+
 
 interface ForgotPasswordProps {
  open: boolean;
@@ -13,7 +8,7 @@ interface ForgotPasswordProps {
 }
 const apiUrl = 'http://127.0.0.1:8000/api/password_reset/';
 
-export default function ForgotPassword({ open, handleClose }: ForgotPasswordProps) {
+const ForgotPassword: React.FC<ForgotPasswordProps> = ({ open, handleClose }) => {
  const [email, setEmail] = React.useState('');
 
  const handleResetSubmit = async () => {
@@ -29,7 +24,6 @@ export default function ForgotPassword({ open, handleClose }: ForgotPasswordProp
     const data = await response.json();
  
     if (response.ok) {
-      console.log(data.message);
       handleClose();
     } else {
       console.error(data.message);
@@ -74,4 +68,6 @@ export default function ForgotPassword({ open, handleClose }: ForgotPasswordProp
      </DialogActions>
    </Dialog>
  );
-}
+};
+
+export default ForgotPassword;

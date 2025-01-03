@@ -10,14 +10,14 @@ import ListItemIcon, { listItemIconClasses } from '@mui/material/ListItemIcon';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import MenuButton from './MenuButton';
-import { logout } from '../../../hooks/authentication/authentication';
+import { logout } from '../../../hooks/authentication/authUtils';
 import ChangePasswordDialog from './ChangePasswordDialog';
 
 const MenuItem = styled(MuiMenuItem)({
   margin: '2px 0',
 });
 
-export default function OptionsMenu() {
+const OptionsMenu: React.FC = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [resetPasswordOpen, setResetPasswordOpen] = React.useState(false);
   const open = Boolean(anchorEl);
@@ -90,4 +90,6 @@ export default function OptionsMenu() {
       />
     </React.Fragment>
   );
-}
+};
+
+export default OptionsMenu;

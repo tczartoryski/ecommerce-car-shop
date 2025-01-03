@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { Card, CardContent, CardMedia, Stack, Typography, Link, useTheme, IconButton, Box } from "@mui/material";
+import { Card, CardContent, CardMedia, Stack, Typography, useTheme, IconButton, Box } from "@mui/material";
+import useCityByZipcode from '../../hooks/getCityByZipcode';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { Car } from './MyCars';
-import useCityByZipcode from '../../../../hooks/getCityByZipcode';
+import { Car } from './types';
 
 interface CarCardProps {
   car: Car;
@@ -26,7 +26,6 @@ const CarCard: React.FC<CarCardProps> = ({ car, onClick }) => {
 
  const handleNextImage = () => {
    setCurrentImageIndex((prevIndex) => (prevIndex === car.images.length - 1 ? 0 : prevIndex + 1));
-   console.log("Current image index: ", currentImageIndex);
  };
 
  const handleCardClick = (event: React.MouseEvent) => {

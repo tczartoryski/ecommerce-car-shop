@@ -15,7 +15,7 @@ const StyledBreadcrumbs = styled(Breadcrumbs)(({ theme }) => ({
   },
 }));
 
-export default function NavbarBreadcrumbs() {
+const NavbarBreadcrumbs: React.FC = () => {
   return (
     <StyledBreadcrumbs
       aria-label="breadcrumb"
@@ -27,4 +27,6 @@ export default function NavbarBreadcrumbs() {
       </Typography>
     </StyledBreadcrumbs>
   );
-}
+};
+
+export default NavbarBreadcrumbs;

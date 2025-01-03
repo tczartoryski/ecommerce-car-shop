@@ -1,17 +1,12 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import {CircularProgress, Stack, Typography } from '@mui/material';
-import { Car } from './MyCars';
-import useCityByZipcode from '../../../../hooks/getCityByZipcode';
-import MessageInput from '../../../message/Messages/MessageInput';
-import { request } from '../../../../hooks/authentication/authentication';
-import { useSelectedChat } from '../../../../hooks/messages/SelectedChatContext';
+import useCityByZipcode from '../../hooks/getCityByZipcode';
+import MessageInput from '../message/messages/MessageInput';
+import { request } from '../../hooks/authentication/authUtils';
+import { useSelectedChat } from '../../hooks/messages/SelectedChatContext';
 import { useNavigate } from 'react-router-dom';
-import { Conversation } from '../../../message/types';
+import { Conversation } from '../message/types';
+import { Dialog, DialogTitle, Button, DialogContent, Typography, DialogActions, CircularProgress, Stack } from '@mui/material';
+import { Car } from './types';
 
 interface ShowCarProps {
  car: Car;
@@ -20,7 +15,7 @@ interface ShowCarProps {
  handleClose: () => void;
 }
 
-export default function ShowCar({ car, open, handleClose, canMessage=true }: ShowCarProps) {
+const ShowCar: React.FC<ShowCarProps> = ({ car, open, handleClose, canMessage=true }) => {
     const { location, getCityByZipcode } = useCityByZipcode();
     const [loading, setLoading] = React.useState(false);
     const [selectedImageIndex, setSelectedImageIndex] = React.useState(0);
@@ -156,4 +151,6 @@ export default function ShowCar({ car, open, handleClose, canMessage=true }: Sho
     
    </Dialog>
  );
-}
+};
+
+export default ShowCar;

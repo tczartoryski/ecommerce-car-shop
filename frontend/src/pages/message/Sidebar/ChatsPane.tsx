@@ -1,11 +1,9 @@
 import * as React from 'react';
-import EditNoteRoundedIcon from '@mui/icons-material/EditNoteRounded';
-import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
-import ChatListItem from './ChatListItem';
 import { Conversation } from '../types';
 import { toggleMessagesPane } from '../utils';
 import { Typography, Box, Stack, IconButton, Input, List, Chip } from '@mui/material';
+import ChatListItem from './ChatListItem';
 
 type ChatsPaneProps = {
   chats: Conversation[];
@@ -13,8 +11,7 @@ type ChatsPaneProps = {
   selectedChatId: string;
 };
 
-export default function ChatsPane(props: ChatsPaneProps) {
-  const { chats, setSelectedChat, selectedChatId } = props;
+const ChatsPane: React.FC<ChatsPaneProps> = ({chats, selectedChatId, setSelectedChat}) => {
   return (
     <Box
       sx={{
@@ -75,4 +72,6 @@ export default function ChatsPane(props: ChatsPaneProps) {
       </List>
     </Box>
   );
-}
+};
+
+export default ChatsPane;

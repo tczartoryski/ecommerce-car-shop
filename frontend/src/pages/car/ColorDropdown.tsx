@@ -1,6 +1,5 @@
-import React from 'react';
-import { FormControl, InputLabel, Select, MenuItem, Typography } from '@mui/material';
-import { SelectChangeEvent } from '@mui/material/Select';
+import * as React from 'react';
+import { FormControl, Select, MenuItem, Typography, SelectChangeEvent } from '@mui/material';
 
 const possibleColors = [
   'Red', 'Blue', 'Green', 'Black', 'White', 'Silver', 'Gray', 'Yellow', 'Orange', 'Brown', 'Purple'
@@ -11,7 +10,7 @@ interface ColorDropdownProps {
   setColor: (value: string) => void;
 }
 
-export const ColorDropdown: React.FC<ColorDropdownProps> = ({ color, setColor }) => {
+const ColorDropdown: React.FC<ColorDropdownProps> = ({ color, setColor }) => {
   const handleChange = async (event: SelectChangeEvent) => {
     setColor(event.target.value);
   };

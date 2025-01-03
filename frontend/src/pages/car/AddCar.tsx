@@ -1,10 +1,8 @@
 import * as React from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography, Stack, CircularProgress, OutlinedInput, InputAdornment } from '@mui/material';
-import { MakeDropdown } from './MakeDropdown';
-import { ModelDropdown } from './ModelDropdown';
-import { ColorDropdown } from './ColorDropdown';
-import { request } from '../../../../hooks/authentication/authentication';
-import useCityByZipcode from '../../../../hooks/getCityByZipcode';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Stack, CircularProgress } from '@mui/material';
+import { request } from '../../hooks/authentication/authUtils';
+import useCityByZipcode from '../../hooks/getCityByZipcode';
+import CarForm from './CarForm';
 
 interface AddCarProps {
  open: boolean;
@@ -12,7 +10,7 @@ interface AddCarProps {
  onSuccess: () => void;
 }
 
-export default function AddCar({ open, handleClose, onSuccess }: AddCarProps) {
+const AddCar: React.FC<AddCarProps> = ({ open, handleClose, onSuccess }) => {
     const [make, setMake] = React.useState('');
     const [model, setModel] = React.useState('');
     const [year, setYear] = React.useState('');
@@ -44,7 +42,6 @@ export default function AddCar({ open, handleClose, onSuccess }: AddCarProps) {
         const fetchCity = async () => {
           await getCityByZipcode(zipcode);
           setCity(location);
-          console.log("New location is: ", location);
         };
         fetchCity();
       } else {
@@ -120,103 +117,26 @@ export default function AddCar({ open, handleClose, onSuccess }: AddCarProps) {
    >
      <DialogTitle>Create A Car Listing</DialogTitle>
     <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, width: '100%' }}>
-      {error && <Typography color="error">{error}</Typography>}
-      <Stack direction="row" spacing={2} sx={{ justifyContent: 'space-between' }}>
-        <MakeDropdown make={make} setMake={setMake} />
-        <ModelDropdown make={make} model={model} setModel={setModel} />
-      </Stack>
-
-      <Stack direction="row" spacing={2} sx={{ gap: 2, alignItems: 'flex-end', justifyContent: 'space-between' }}>
-        <Stack direction="column" sx={{ width: 150, alignItems: 'flex-start' }}>
-          <Typography variant="body1">Year</Typography>
-          <OutlinedInput
-            required
-            margin="dense"
-            id="year"
-            name="year"
-            label="Year"
-            placeholder="Enter the year"
-            type="number"
-            sx={{ height: '40px' }}
-            value={year}
-            onChange={(e) => handleYearChange(e.target.value)}
-          />
-        </Stack>
-        <ColorDropdown color={color} setColor={setColor} />
-      </Stack>
-      <Typography variant="body1">Description</Typography>
-      <OutlinedInput
-        margin="dense"
-        id="description"
-        name="description"
-        label="Description"
-        placeholder="Enter the description"
-        multiline
-        rows={4}
-        fullWidth
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
+    <CarForm
+        make={make}
+        setMake={setMake}
+        model={model}
+        setModel={setModel}
+        year={year}
+        setYear={setYear}
+        color={color}
+        setColor={setColor}
+        description={description}
+        setDescription={setDescription}
+        mileage={mileage}
+        setMileage={setMileage}
+        price={price}
+        setPrice={setPrice}
+        zipcode={zipcode}
+        setZipcode={setZipcode}
+        city={city}
+        error={error}
       />
-      <Stack direction="row" spacing={2} sx={{ justifyContent: 'space-between' }}>
-        <Stack direction="column" spacing={1} sx={{ width: 150, alignItems: 'flex-start' }}>
-          <Typography variant="body1">Mileage</Typography>
-          <OutlinedInput
-            required
-            margin="dense"
-            id="mileage"
-            name="mileage"
-            placeholder="Enter the mileage"
-            type="text"
-            value={mileage}
-            onChange={(e) => {
-              const value = e.target.value.replace(/[^0-9]/g, '');
-              setMileage(value.replace(/\B(?=(\d{3})+(?!\d))/g, ','));
-            }}
-          />
-        </Stack>
-        <Stack direction="column" spacing={1} sx={{ width: 150, alignItems: 'flex-start' }}>
-          <Typography variant="body1">Price</Typography>
-          <OutlinedInput
-            required
-            margin="dense"
-            id="price"
-            name="price"
-            placeholder="Enter the price"
-            type="text"
-            value={price}
-            onChange={(e) => {
-              const value = e.target.value.replace(/[^0-9]/g, '');
-              setPrice(value.replace(/\B(?=(\d{3})+(?!\d))/g, ','));
-            }}
-            startAdornment={<InputAdornment position="start">$</InputAdornment>}
-          />
-        </Stack>
-      </Stack>
-      <Stack direction="row" spacing={1} sx={{ width: '100%', alignItems: 'center' }}>
-        <Stack direction="column">
-        <Typography variant="body1">Zipcode</Typography>
-        <OutlinedInput
-          required
-          margin="dense"
-          id="zipcode"
-          name="zipcode"
-          placeholder="Enter the zipcode"
-          type="text"
-          value={zipcode}
-          sx={{ width: 150 }}
-          onChange={async (e) => {
-            const value = e.target.value.replace(/[^0-9]/g, '').slice(0, 5);
-            setZipcode(value);
-            console.log("This is the value: ", value);
-          }}
-        />
-        </Stack>
-        {city && (
-          <Typography variant="body2" color="textSecondary" paddingTop="30px">
-            Location: {city}
-          </Typography>
-        )}
-      </Stack>
 
       <Stack direction="row" spacing={2} sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
         <Button
@@ -281,4 +201,6 @@ export default function AddCar({ open, handleClose, onSuccess }: AddCarProps) {
      </DialogActions>
    </Dialog>
  );
-}
+};
+
+export default AddCar;

@@ -1,9 +1,6 @@
 import * as React from 'react';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { Typography } from '@mui/material';
+import { SelectChangeEvent, FormControl, Typography, Select, MenuItem } from '@mui/material';
+
 
 const car_data = [
   {"brand": "Alfa Romeo", "models": ["145", "146", "147", "155", "156", "156 Sportwagon", "159", "159 Sportwagon", "164", "166", "4C", "Brera", "GTV", "MiTo", "Crosswagon", "Spider", "GT", "Giulietta", "Giulia"]},
@@ -43,7 +40,7 @@ interface ModelDropdownProps {
   setModel: (value: string) => void;
 }
 
-export const ModelDropdown: React.FC<ModelDropdownProps> = ({ make, model, setModel, edit=false }) => {
+const ModelDropdown: React.FC<ModelDropdownProps> = ({ make, model, setModel, edit=false }) => {
   const handleChange = async (event: SelectChangeEvent) => {
     setModel(event.target.value);
   };

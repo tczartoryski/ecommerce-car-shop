@@ -1,16 +1,16 @@
 import * as React from 'react';
-import ChatsPane from '../../../message/Sidebar/ChatsPane';
-import { Conversation } from '../../../message/types';
+import ChatsPane from './sidebar/ChatsPane';
+import { Conversation } from './types';
 import { Box } from '@mui/material';
-import MessagesPane from '../../../message/Messages/MessagesPane';
-import useWebSocket from '../../../../hooks/useWebsocket';
-import { MessagesProvider } from '../../../../hooks/messages/MessagesContext';
+import MessagesPane from './messages/MessagesPane';
+import useWebSocket from '../../hooks/useWebsocket';
+import { MessagesProvider } from '../../hooks/messages/MessagesContext';
 import ShowCar from '../car/ShowCar';
-import { Car } from '../car/MyCars';
-import { request } from '../../../../hooks/authentication/authentication';
-import { useSelectedChat } from '../../../../hooks/messages/SelectedChatContext';
+import { request } from '../../hooks/authentication/authUtils';
+import { useSelectedChat } from '../../hooks/messages/SelectedChatContext';
+import { Car } from '../car/types';
 
-export default function Messages() {
+const Messages: React.FC = () => {
   const [conversations, setConversations] = React.useState<Conversation[]>([]);
   const {selectedChat, setSelectedChat} = useSelectedChat();
   const { messages, sendMessage } = useWebSocket('ws://localhost:8000/ws/conversations/');
@@ -101,4 +101,6 @@ export default function Messages() {
     </Box>
     </MessagesProvider>
   );
-}
+};
+
+export default Messages;

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, IconButton, InputAdornment, Typography } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { request } from '../../../hooks/authentication/authentication';
+import { request } from '../../../hooks/authentication/authUtils';
 
 interface ChangePasswordDialogProps {
   open: boolean;
@@ -39,7 +39,6 @@ const ChangePasswordDialog: React.FC<ChangePasswordDialogProps> = ({ open, onClo
         throw new Error('Failed to change password');
       }
 
-      console.log('Password reset:', password);
       onClose();
     } catch (error) {
       console.error('Error:', error);

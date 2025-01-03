@@ -8,17 +8,13 @@ import { listClasses } from '@mui/material/List';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import MenuButton from '../../dashboard/components/MenuButton';
 import { useMessages } from '../../../hooks/messages/MessagesContext';
-import { EccomerceUserWithoutCars } from '../types';
 
 
 const MenuItem = styled(MuiMenuItem)({
   margin: '2px 0',
 });
-type MessagesOptionsMenuProps = {
-    sender: EccomerceUserWithoutCars;
-  };
 
-export default function MessagesOptionsMenu(props: MessagesOptionsMenuProps) {
+const MessagesOptionsMenu: React.FC = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const { handleDeleteConversation } = useMessages();
 
@@ -64,4 +60,6 @@ export default function MessagesOptionsMenu(props: MessagesOptionsMenuProps) {
       </Menu>
     </React.Fragment>
   );
-}
+};
+
+export default MessagesOptionsMenu;

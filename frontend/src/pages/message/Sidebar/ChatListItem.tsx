@@ -1,18 +1,17 @@
 import * as React from 'react';
 import { Conversation, EccomerceUserWithoutCars } from '../types';
 import { toggleMessagesPane } from '../utils';
-import { Typography, Box, Stack, IconButton, Input, List, ListItemButtonProps, ListItem, ListItemButton, Divider, Avatar } from '@mui/material';
+import { Typography, Box, Stack, ListItem, ListItemButton, Divider, Avatar } from '@mui/material';
 import UserContext from '../../../hooks/user/UserContext';
 import { formatDistanceToNow, parseISO } from 'date-fns';
 
-type ChatListItemProps = ListItemButtonProps & {
+type ChatListItemProps =  {
   conversation: Conversation;
   selectedChatId?: string;
   setSelectedChat: (conversation: Conversation) => void;
 };
 
-export default function ChatListItem(props: ChatListItemProps) {
-  const { conversation, selectedChatId, setSelectedChat } = props;
+const ChatListItem: React.FC<ChatListItemProps> = ({ conversation, selectedChatId, setSelectedChat }) => {
   const selected = selectedChatId === conversation.id.toString();
   const { user } = React.useContext(UserContext);
   const [sender, setSender] = React.useState<EccomerceUserWithoutCars | null>(null);
@@ -75,4 +74,6 @@ export default function ChatListItem(props: ChatListItemProps) {
       <Divider sx={{ margin: 0 }} />
     </React.Fragment>
   );
-}
+};
+
+export default ChatListItem;

@@ -1,13 +1,9 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import MuiDrawer, { drawerClasses } from '@mui/material/Drawer';
-import Box from '@mui/material/Box';
-import Divider from '@mui/material/Divider';
-import Stack from '@mui/material/Stack';
-import Typography from '@mui/material/Typography';
 import MenuContent from './MenuContent';
 import OptionsMenu from './OptionsMenu';
-import { Avatar } from '@mui/material';
+import { Avatar, Box, Divider, Stack, Typography } from '@mui/material';
 import UserContext from '../../../hooks/user/UserContext';
 
 const drawerWidth = 240;
@@ -22,7 +18,7 @@ const Drawer = styled(MuiDrawer)({
   },
 });
 
-export default function SideMenu() {
+const SideMenu: React.FC = () => {
   const { user } = React.useContext(UserContext);
   
   return (
@@ -101,8 +97,8 @@ export default function SideMenu() {
      <OptionsMenu />
    </Box>
  </Box>
-</Drawer>
-
-   
+</Drawer> 
   );
-}
+};
+
+export default SideMenu;

@@ -1,15 +1,11 @@
 import * as React from 'react';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import CarCard from '../car/CarCard';
-import { Stack } from '@mui/material';
-import { Car } from '../car/MyCars';
-import ShowCar from '../car/ShowCar';
-import useFetchCars from '../../../../hooks/cars/useFetchCars';
+import CarCard from './CarCard';
+import ShowCar from './ShowCar';
+import useFetchCars from '../../hooks/cars/useFetchCars';
+import { Typography, Box, Stack, Grid } from '@mui/material';
+import { Car } from './types';
 
-
-export default function Market() {
+const Market: React.FC = () => {
   const { cars: marketCars } = useFetchCars('api/market-cars/');
   const [open, setOpen] = React.useState(false);
   const [displayedCar, setDisplayedCar] = React.useState<Car | undefined>(undefined);
@@ -42,4 +38,6 @@ export default function Market() {
       </Grid>
     </Box>
   );
-}
+};
+
+export default Market;

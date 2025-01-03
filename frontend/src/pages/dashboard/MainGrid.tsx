@@ -1,20 +1,17 @@
 import * as React from 'react';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import CarCard from '../car/CarCard';
-import { Button, Card, Divider, Stack } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import MessageCard from '../messages/MessageCard';
-import { Car } from '../car/MyCars';
+import MessageCard from './components/MessageCard';
 import ShowCar from '../car/ShowCar';
 import EditCar from '../car/EditCar';
-import useFetchCars from '../../../../hooks/cars/useFetchCars';
-import { Conversation } from '../../../message/types';
-import useWebSocket from '../../../../hooks/useWebsocket';
+import useFetchCars from '../../hooks/cars/useFetchCars';
+import { Conversation } from '../message/types';
+import useWebSocket from '../../hooks/useWebsocket';
+import { Typography, Button, Divider,  Box, Stack, Grid } from '@mui/material';
+import { Car } from '../car/types';
 
 
-export default function MainGrid() {
+const MainGrid: React.FC = () => {
   const { cars: myCars,  refetch: fetchMyCars } = useFetchCars('api/my-cars/');
   const { cars: marketCars } = useFetchCars('api/market-cars/');
   const [displayedMarketCar, setDisplayedMarketCar] = React.useState<Car | undefined>(undefined);
@@ -127,4 +124,6 @@ export default function MainGrid() {
       
     </Box>
   );
-}
+};
+
+export default MainGrid

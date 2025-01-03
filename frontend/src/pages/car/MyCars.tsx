@@ -1,34 +1,16 @@
 import * as React from 'react';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import CarCard from './CarCard';
-import { Button, Stack } from '@mui/material';
 import AddCar from './AddCar';
 import EditCar from './EditCar';
-import useFetchCars from '../../../../hooks/cars/useFetchCars';
+import useFetchCars from '../../hooks/cars/useFetchCars';
+import { Typography, Button, Grid, Box, Stack } from '@mui/material';
+import { Car } from './types';
 
 
-export interface CarImage {
-  image_url: string;
-}
 
-export interface Car {
-  id: number;
-  make: string;
-  model: string;
-  year: string;
-  color: string;
-  description: string;
-  mileage: number;
-  price: string;
-  zipcode: string;
-  images: CarImage[];
-}
-
-export default function MyCars() {
+const MyCars: React.FC = () => {
     const [addOpen, setAddOpen] = React.useState(false);
-    const { cars: myCars, loading: myCarsLoading, error: myCarsError, refetch: fetchMyCars } = useFetchCars('api/my-cars/');
+    const { cars: myCars, refetch: fetchMyCars } = useFetchCars('api/my-cars/');
     const [editOpen, setEditOpen] = React.useState(false);
     const [editCar, setEditCar] = React.useState<Car | undefined>(undefined);
 
@@ -77,4 +59,6 @@ export default function MyCars() {
       </Grid>
     </Box>
   );
-}
+};
+
+export default MyCars;
