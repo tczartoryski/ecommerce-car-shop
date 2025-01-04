@@ -5,9 +5,10 @@ import {
   DialogContent,
   DialogActions,
   Button,
+  CircularProgress,
   TextField,
-  IconButton,
   InputAdornment,
+  IconButton,
   Typography,
 } from '@mui/material';
 import Visibility from '@mui/icons-material/Visibility';
@@ -25,11 +26,15 @@ const ChangePasswordDialog: React.FC<ChangePasswordDialogProps> = ({
 }) => {
   const [password, setPassword] = React.useState('');
   const [confirmPassword, setConfirmPassword] = React.useState('');
+  const [error, setError] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
-  const [error, setError] = React.useState<string | null>(null);
 
-  const handleResetPassword = async () => {
+  const handleChangePassword = async (event: React.FormEvent) => {
+    event.preventDefault();
+    setError('');
+
     if (password !== confirmPassword) {
       setError('Passwords do not match');
       return;
@@ -38,6 +43,8 @@ const ChangePasswordDialog: React.FC<ChangePasswordDialogProps> = ({
       setError('Password must be at least 8 characters long');
       return;
     }
+
+    setLoading(true);
 
     try {
       const response = await request('api/change-password/', {
@@ -56,6 +63,8 @@ const ChangePasswordDialog: React.FC<ChangePasswordDialogProps> = ({
     } catch (error) {
       console.error('Error:', error);
       setError('Failed to change password. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -71,80 +80,91 @@ const ChangePasswordDialog: React.FC<ChangePasswordDialogProps> = ({
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Change Password</DialogTitle>
       <DialogContent>
-        <TextField
-          margin="normal"
-          label="New Password"
-          type={showPassword ? 'text' : 'password'}
-          fullWidth
-          value={password}
-          onChange={(e) => {
-            setPassword(e.target.value);
-            setError(null);
-          }}
-          slotProps={{
-            input: {
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
-                    edge="end"
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            },
-          }}
-          sx={{
-            '& .MuiInputLabel-root': {
-              transform: 'translate(14px, 12px) scale(1)',
-            },
-            '& .MuiInputLabel-shrink': {
-              transform: 'translate(14px, -18px) scale(0.75)',
-            },
-          }}
-        />
-        <TextField
-          margin="normal"
-          label="Confirm Password"
-          type={showConfirmPassword ? 'text' : 'password'}
-          fullWidth
-          value={confirmPassword}
-          onChange={(e) => {
-            setConfirmPassword(e.target.value);
-            setError(null);
-          }}
-          slotProps={{
-            input: {
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle confirm password visibility"
-                    onClick={handleClickShowConfirmPassword}
-                    edge="end"
-                  >
-                    {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            },
-          }}
-          sx={{
-            '& .MuiInputLabel-root': {
-              transform: 'translate(14px, 12px) scale(1)',
-            },
-            '& .MuiInputLabel-shrink': {
-              transform: 'translate(14px, -18px) scale(0.75)',
-            },
-          }}
-        />
-        {error && <Typography color="error">{error}</Typography>}
+        <form onSubmit={handleChangePassword}>
+          <TextField
+            margin="normal"
+            label="New Password"
+            type={showPassword ? 'text' : 'password'}
+            fullWidth
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+              setError(null);
+            }}
+            slotProps={{
+              input: {
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              },
+            }}
+            sx={{
+              '& .MuiInputLabel-root': {
+                transform: 'translate(14px, 12px) scale(1)',
+              },
+              '& .MuiInputLabel-shrink': {
+                transform: 'translate(14px, -18px) scale(0.75)',
+              },
+            }}
+          />
+          <TextField
+            margin="normal"
+            label="Confirm Password"
+            type={showConfirmPassword ? 'text' : 'password'}
+            fullWidth
+            value={confirmPassword}
+            onChange={(e) => {
+              setConfirmPassword(e.target.value);
+              setError(null);
+            }}
+            slotProps={{
+              input: {
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle confirm password visibility"
+                      onClick={handleClickShowConfirmPassword}
+                      edge="end"
+                    >
+                      {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              },
+            }}
+            sx={{
+              '& .MuiInputLabel-root': {
+                transform: 'translate(14px, 12px) scale(1)',
+              },
+              '& .MuiInputLabel-shrink': {
+                transform: 'translate(14px, -18px) scale(0.75)',
+              },
+            }}
+          />
+          {error && <Typography color="error">{error}</Typography>}
+          <DialogActions>
+            <Button onClick={onClose} disabled={loading}>
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              disabled={loading}
+            >
+              {loading ? <CircularProgress size={24} /> : 'Change Password'}
+            </Button>
+          </DialogActions>
+        </form>
       </DialogContent>
-      <DialogActions>
-        <Button onClick={onClose}>Cancel</Button>
-        <Button onClick={handleResetPassword}>Reset</Button>
-      </DialogActions>
     </Dialog>
   );
 };

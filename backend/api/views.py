@@ -192,7 +192,7 @@ class CreateConversationAndMessageView(generics.CreateAPIView):
         car_id = request.data.get("car_id")
         message_content = request.data.get("content")
         sender = request.user
-        car = get_object_or_404(Car, id=car_id)
+        car = get_object_or_404(models.Car, id=car_id)
         conversation, created = models.Conversation.objects.get_or_create(
             car=car, buyer=sender, seller=car.owner
         )

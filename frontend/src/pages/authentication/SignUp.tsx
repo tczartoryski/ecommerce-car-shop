@@ -14,6 +14,8 @@ import {
   Button,
   Divider,
   Link,
+  Snackbar,
+  Alert,
 } from '@mui/material';
 
 export default function SignUp(props: { disableCustomTheme?: boolean }) {
@@ -24,6 +26,9 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
   const [nameError, setNameError] = React.useState(false);
   const [nameErrorMessage, setNameErrorMessage] = React.useState('');
+  const [snackbarOpen, setSnackbarOpen] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState('');
+
   const navigate = useNavigate();
 
   const validateInputs = () => {
@@ -95,12 +100,13 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
         },
         body: JSON.stringify(formData),
       });
-
+      const newData = await response.json();
       if (response.ok) {
-        const newData = await response.json();
         authenticate(newData);
         navigate('/home');
       } else {
+        setErrorMessage(JSON.stringify(newData));
+        setSnackbarOpen(true);
         console.error('Registration failed');
       }
     } catch (error) {
@@ -110,6 +116,20 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
 
   return (
     <AppTheme {...props}>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={() => setSnackbarOpen(false)}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert
+          onClose={() => setSnackbarOpen(false)}
+          severity="error"
+          sx={{ fontSize: '1.2rem', backgroundColor: 'red', color: 'white' }}
+        >
+          {errorMessage}
+        </Alert>
+      </Snackbar>
       <CssBaseline enableColorScheme />
       <ColorModeSelect sx={{ position: 'fixed', top: '1rem', right: '1rem' }} />
       <AuthContainer direction="column" justifyContent="space-between">

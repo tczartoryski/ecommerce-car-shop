@@ -4,32 +4,39 @@ import {
   DialogTitle,
   DialogContent,
   DialogContentText,
-  OutlinedInput,
   DialogActions,
   Button,
+  CircularProgress,
+  OutlinedInput,
 } from '@mui/material';
 
 interface ForgotPasswordProps {
   open: boolean;
   handleClose: () => void;
 }
-const apiUrl = 'http://127.0.0.1:8000/api/password_reset/';
 
 const ForgotPassword: React.FC<ForgotPasswordProps> = ({
   open,
   handleClose,
 }) => {
+  const [loading, setLoading] = React.useState(false);
   const [email, setEmail] = React.useState('');
 
-  const handleResetSubmit = async () => {
+  const handleResetPassword = async (event: React.FormEvent) => {
+    event.preventDefault();
+    setLoading(true);
+
     try {
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email }),
-      });
+      const response = await fetch(
+        'http://127.0.0.1:8000/api/password_reset/',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email }),
+        }
+      );
 
       const data = await response.json();
 
@@ -40,6 +47,8 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({
       }
     } catch (error) {
       console.error('Error:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -59,18 +68,22 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({
           margin="dense"
           id="email"
           name="email"
-          label="Email address"
-          placeholder="Email address"
           type="email"
-          fullWidth
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
       </DialogContent>
-      <DialogActions sx={{ pb: 3, px: 3 }}>
-        <Button onClick={handleClose}>Cancel</Button>
-        <Button variant="contained" onClick={() => handleResetSubmit()}>
-          Continue
+      <DialogActions>
+        <Button onClick={handleClose} disabled={loading}>
+          Cancel
+        </Button>
+        <Button
+          onClick={handleResetPassword}
+          variant="contained"
+          color="primary"
+          disabled={loading}
+        >
+          {loading ? <CircularProgress size={24} /> : 'Reset Password'}
         </Button>
       </DialogActions>
     </Dialog>

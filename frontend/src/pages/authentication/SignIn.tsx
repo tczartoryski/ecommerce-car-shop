@@ -48,13 +48,12 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
           password: data.get('password'),
         }),
       });
-
+      const newData = await response.json();
       if (response.ok) {
-        const newData = await response.json();
         authenticate(newData);
         navigate('/home');
       } else {
-        setErrorMessage('Login failed');
+        setErrorMessage(JSON.stringify(newData));
         setSnackbarOpen(true);
         console.error('Login failed');
       }

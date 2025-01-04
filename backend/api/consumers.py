@@ -30,8 +30,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
             if data["type"] == "new_message":
                 message = data["message"]
                 sender_id = data["sender_id"]
-
+                print("Saving message")
                 new_message = await self.save_message(sender_id, message)
+                print(f"New message saved: {new_message}")
                 await self.channel_layer.group_send(
                     self.conversation_group_name,
                     {
@@ -39,6 +40,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                         "message": MessageSerializer(new_message).data,
                     },
                 )
+                print("Sending conversation update")
                 await self.channel_layer.group_send(
                     "conversations_group",
                     {
@@ -59,6 +61,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def serialize_conversation(self, conversation):
+        print("Serializing new conversation")
         return ConversationSerializer(conversation).data
 
     @database_sync_to_async
