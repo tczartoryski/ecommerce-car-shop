@@ -27,7 +27,6 @@ const MainGrid: React.FC = () => {
   React.useEffect(() => {
     const newConversations = [...conversations];
     messages.forEach((message) => {
-      console.log(message);
       if (message.type === 'initial_conversations') {
         setConversations(message.conversations);
       } else if (message.type === 'conversation_update') {

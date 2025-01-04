@@ -1,7 +1,6 @@
 import * as React from 'react';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import { Conversation } from '../types';
-import { toggleMessagesPane } from '../utils';
 import { Typography, Box, Stack, IconButton, List, Chip } from '@mui/material';
 import ChatListItem from './ChatListItem';
 
@@ -58,9 +57,6 @@ const ChatsPane: React.FC<ChatsPaneProps> = ({
           aria-label="edit"
           color="primary"
           size="small"
-          onClick={() => {
-            toggleMessagesPane();
-          }}
           sx={{ display: { sm: 'none' } }}
         >
           <CloseRoundedIcon />

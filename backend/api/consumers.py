@@ -30,9 +30,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             if data["type"] == "new_message":
                 message = data["message"]
                 sender_id = data["sender_id"]
-                print("Saving message")
                 new_message = await self.save_message(sender_id, message)
-                print(f"New message saved: {new_message}")
                 await self.channel_layer.group_send(
                     self.conversation_group_name,
                     {
@@ -40,7 +38,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
                         "message": MessageSerializer(new_message).data,
                     },
                 )
-                print("Sending conversation update")
                 await self.channel_layer.group_send(
                     "conversations_group",
                     {
@@ -61,7 +58,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def serialize_conversation(self, conversation):
-        print("Serializing new conversation")
         return ConversationSerializer(conversation).data
 
     @database_sync_to_async
@@ -108,7 +104,6 @@ class ConversationsConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         data = json.loads(text_data)
         if data["type"] == "delete_conversation":
-            print("Delete conversation request received")
             conversation_id = data["conversation_id"]
             await self.delete_conversation(conversation_id)
             conversations = await self.get_conversations()
@@ -127,6 +122,14 @@ class ConversationsConsumer(AsyncWebsocketConsumer):
             )
         )
 
+    async def conversation_created(self, event):
+        conversations = await self.get_conversations()
+        await self.send(
+            text_data=json.dumps(
+                {"type": "initial_conversations", "conversations": conversations}
+            )
+        )
+
     @database_sync_to_async
     def get_conversations(self):
         Conversation = apps.get_model("api", "Conversation")
@@ -140,4 +143,3 @@ class ConversationsConsumer(AsyncWebsocketConsumer):
         Conversation = apps.get_model("api", "Conversation")
         conversation = Conversation.objects.get(id=conversation_id)
         conversation.delete()
-        print(f"Conversation {conversation_id} deleted")

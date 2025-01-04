@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { IconButton, Avatar, Typography, Stack, Button } from '@mui/material';
-import { toggleMessagesPane } from '../utils';
 import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded';
 import { useMessages } from '../../../hooks/messages/MessagesContext';
 import { EccomerceUserWithoutCars } from '../types';
@@ -33,7 +32,6 @@ const MessagesPaneHeader: React.FC<MessagesPaneHeaderProps> = ({ sender }) => {
           color="primary"
           size="small"
           sx={{ display: { xs: 'inline-flex', sm: 'none' } }}
-          onClick={() => toggleMessagesPane()}
         >
           <ArrowBackIosNewRoundedIcon />
         </IconButton>

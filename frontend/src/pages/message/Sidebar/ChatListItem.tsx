@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Conversation, EccomerceUserWithoutCars } from '../types';
-import { toggleMessagesPane } from '../utils';
 import {
   Typography,
   Box,
@@ -54,7 +53,6 @@ const ChatListItem: React.FC<ChatListItemProps> = ({
       <ListItem>
         <ListItemButton
           onClick={() => {
-            toggleMessagesPane();
             setSelectedChat(conversation);
           }}
           selected={selected}

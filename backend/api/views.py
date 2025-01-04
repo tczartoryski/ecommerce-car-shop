@@ -4,6 +4,8 @@ from django.shortcuts import get_object_or_404
 from rest_framework_simplejwt.tokens import RefreshToken
 from . import serializers
 from . import models
+from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
@@ -204,6 +206,16 @@ class CreateConversationAndMessageView(generics.CreateAPIView):
             content=message_content,
         )
         serialized_conversation = serializers.ConversationSerializer(conversation).data
+
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+            "conversations_group",
+            {
+                "type": "conversation_created",
+                "conversation": serialized_conversation,
+            },
+        )
+
         return Response(serialized_conversation, status=status.HTTP_201_CREATED)
 
 
