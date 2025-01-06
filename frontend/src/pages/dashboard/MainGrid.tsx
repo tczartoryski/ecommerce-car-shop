@@ -22,7 +22,9 @@ const MainGrid: React.FC = () => {
   const [openShow, setOpenShow] = React.useState(false);
   const [openEdit, setOpenEdit] = React.useState(false);
   const [conversations, setConversations] = React.useState<Conversation[]>([]);
-  const { messages } = useWebSocket('ws://localhost:8000/ws/conversations/');
+  const { messages } = useWebSocket(
+    'ws://178.156.150.202:8000/ws/conversations/'
+  );
 
   React.useEffect(() => {
     const newConversations = [...conversations];

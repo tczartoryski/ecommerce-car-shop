@@ -23,7 +23,7 @@ export default function MessagesPane(props: MessagesPaneProps) {
     null
   );
   const { messages, sendMessage } = useWebSocket(
-    `ws://localhost:8000/ws/conversations/${chat.id}/`
+    `ws://178.156.150.202:8000/ws/conversations/${chat.id}/`
   );
 
   React.useEffect(() => {

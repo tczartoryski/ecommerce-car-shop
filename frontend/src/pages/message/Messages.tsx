@@ -14,7 +14,7 @@ const Messages: React.FC = () => {
   const [conversations, setConversations] = React.useState<Conversation[]>([]);
   const { selectedChat, setSelectedChat } = useSelectedChat();
   const { messages, sendMessage } = useWebSocket(
-    'ws://localhost:8000/ws/conversations/'
+    'ws://178.156.150.202:8000/ws/conversations/'
   );
   const [displayedCar, setDisplayedCar] = React.useState<Car | undefined>(
     undefined
