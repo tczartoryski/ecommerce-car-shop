@@ -1,5 +1,5 @@
-# Ecommerce Marketplacec Car Shop
-Welcome to our Ecommerce Car Marketplace, a feature-rich web application built with Python Django and React TypeScript. This platform empowers users to buy and sell cars seamlessly, providing a user-friendly interface for both sellers and buyers.
+# Tom's Car Shop
+Welcome to Tom's Car Shop an ecommerce car marketplace built with **Python Django** and **React TypeScript**. This platform empowers users to buy and sell cars seamlessly, providing a user-friendly interface for both sellers and buyers. This project makes use of S3 buckets, Websockets, and a VPS to deliver a a feature-rich web application.
 
 Click here to try it out !!!  http://178.156.150.202:3000/
 
@@ -25,5 +25,5 @@ https://github.com/user-attachments/assets/eaf49266-d4a1-4060-b992-818d862b3772
 * **Timestamped Conversations:** All conversations are time-stamped, providing clarity on the communication timeline.
 ### 4. Technology Stack:
 * **Backend:** Developed using Python Django, ensuring robust and scalable server-side functionality.
-* **Frontend:** Implemented with React JavaScript for a dynamic and responsive user interface.
+* **Frontend:** Implemented with React TypeScript for a dynamic and responsive user interface.
 * **API Integration:** Utilizes APIs for seamless communication between the frontend and backend components.
