@@ -1,8 +1,8 @@
 import * as React from 'react';
-import ChatsPane from './sidebar/ChatsPane';
+import ChatsPane from './Sidebar/ChatsPane';
 import { Conversation } from './types';
 import { Box } from '@mui/material';
-import MessagesPane from './messages/MessagesPane';
+import MessagesPane from './Messages/MessagesPane';
 import useWebSocket from '../../hooks/useWebsocket';
 import { MessagesProvider } from '../../hooks/messages/MessagesContext';
 import ShowCar from '../car/ShowCar';

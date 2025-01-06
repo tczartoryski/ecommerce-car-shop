@@ -1,6 +1,6 @@
 import * as React from 'react';
 import useCityByZipcode from '../../hooks/getCityByZipcode';
-import MessageInput from '../message/messages/MessageInput';
+import MessageInput from '../message/Messages/MessageInput';
 import { request } from '../../hooks/authentication/authUtils';
 import { useSelectedChat } from '../../hooks/messages/SelectedChatContext';
 import { useNavigate } from 'react-router-dom';
