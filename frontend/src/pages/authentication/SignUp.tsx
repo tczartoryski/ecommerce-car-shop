@@ -16,6 +16,7 @@ import {
   Link,
   Snackbar,
   Alert,
+  Stack,
 } from '@mui/material';
 
 export default function SignUp(props: { disableCustomTheme?: boolean }) {
@@ -131,8 +132,15 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
         </Alert>
       </Snackbar>
       <CssBaseline enableColorScheme />
-      <ColorModeSelect sx={{ position: 'fixed', top: '1rem', right: '1rem' }} />
       <AuthContainer direction="column" justifyContent="space-between">
+        <Stack direction="row">
+          <Typography component="h1" variant="h3" sx={{ fontWeight: 600 }}>
+            Tom&apos;s Car Shop
+          </Typography>
+          <ColorModeSelect
+            sx={{ position: 'fixed', top: '1rem', right: '1rem' }}
+          />
+        </Stack>
         <Card variant="outlined">
           <Typography
             component="h1"

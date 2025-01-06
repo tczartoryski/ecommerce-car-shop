@@ -836,6 +836,7 @@ const ModelDropdown: React.FC<ModelDropdownProps> = ({
     if (!edit) {
       setModel('');
     }
+    setModel(model);
   }, [make]);
 
   return (

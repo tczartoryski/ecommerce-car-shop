@@ -1,8 +1,6 @@
 import * as React from 'react';
 import Drawer, { drawerClasses } from '@mui/material/Drawer';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
-import NotificationsRoundedIcon from '@mui/icons-material/NotificationsRounded';
-import MenuButton from './MenuButton';
 import MenuContent from './MenuContent';
 import UserContext from '../../../hooks/user/UserContext';
 import { logout } from '../../../hooks/authentication/authUtils';
@@ -62,9 +60,6 @@ const SideMenuMobile: React.FC<SideMenuMobileProps> = ({
               {user?.firstName} {user?.lastName}
             </Typography>
           </Stack>
-          <MenuButton showBadge>
-            <NotificationsRoundedIcon />
-          </MenuButton>
         </Stack>
         <Divider />
         <Stack sx={{ flexGrow: 1 }}>

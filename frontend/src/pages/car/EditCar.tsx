@@ -70,12 +70,23 @@ const EditCar: React.FC<EditCarProps> = ({
 
   const handleRemoveImage = (index: number, isExisting: boolean) => {
     if (isExisting) {
-      setExistingImages((prevImages) =>
-        prevImages.filter((_, i) => i !== index)
-      );
+      setExistingImages((prevImages) => {
+        const updatedImages = prevImages.filter((_, i) => i !== index);
+        return updatedImages;
+      });
     } else {
-      setNewImages((prevImages) => prevImages.filter((_, i) => i !== index));
+      setNewImages((prevImages) => {
+        const updatedImages = prevImages.filter(
+          (_, i) => i !== index - existingImages.length
+        );
+        return updatedImages;
+      });
     }
+    setCurrentImageIndex((prevIndex) => {
+      const totalImages = existingImages.length + newImages.length - 1;
+      const newIndex = Math.min(prevIndex, totalImages - 1);
+      return newIndex;
+    });
   };
   const handleNextImage = () => {
     setCurrentImageIndex(

@@ -11,6 +11,7 @@ import {
   FormLabel,
   TextField,
   Typography,
+  Stack,
 } from '@mui/material';
 import ForgotPassword from './ForgotPassword';
 import AppTheme from '../../shared-theme/AppTheme';
@@ -107,9 +108,14 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
       </Snackbar>
       <CssBaseline enableColorScheme />
       <AuthContainer direction="column" justifyContent="space-between">
-        <ColorModeSelect
-          sx={{ position: 'fixed', top: '1rem', right: '1rem' }}
-        />
+        <Stack direction="row">
+          <Typography component="h1" variant="h3" sx={{ fontWeight: 600 }}>
+            Tom&apos;s Car Shop
+          </Typography>
+          <ColorModeSelect
+            sx={{ position: 'fixed', top: '1rem', right: '1rem' }}
+          />
+        </Stack>
         <Card variant="outlined">
           <Typography
             component="h1"

@@ -42,7 +42,7 @@ const SideMenu: React.FC = () => {
         }}
       >
         <Typography component="h1" variant="h6">
-          Ecommerce Car Shop
+          Tom&apos;s Car Shop
         </Typography>
         <Divider sx={{ my: 1 }} />
         <MenuContent />

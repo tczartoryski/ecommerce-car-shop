@@ -7,11 +7,9 @@ import { SelectedChatProvider } from './hooks/messages/SelectedChatContext';
 const rootElement = document.getElementById('root') as HTMLElement;
 const root = ReactDOM.createRoot(rootElement);
 root.render(
-  <React.StrictMode>
-    <UserProvider>
-      <SelectedChatProvider>
-        <App />
-      </SelectedChatProvider>
-    </UserProvider>
-  </React.StrictMode>
+  <UserProvider>
+    <SelectedChatProvider>
+      <App />
+    </SelectedChatProvider>
+  </UserProvider>
 );
