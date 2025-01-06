@@ -23,7 +23,7 @@ FROM nginx:alpine
 COPY --from=build /app/build /usr/share/nginx/html
 
 # Copy custom nginx configuration file if needed
-# COPY nginx.conf /etc/nginx/nginx.conf
+ COPY nginx.conf /etc/nginx/nginx.conf
 
 # Expose the port on which the app will run
 EXPOSE 80
