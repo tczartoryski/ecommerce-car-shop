@@ -94,13 +94,16 @@ export default function SignUp(props: { disableCustomTheme?: boolean }) {
     };
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/register/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        'http://178.156.150.202:8000/api/register/',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+        }
+      );
       const newData = await response.json();
       if (response.ok) {
         authenticate(newData);

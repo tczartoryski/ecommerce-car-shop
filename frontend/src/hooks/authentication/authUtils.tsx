@@ -28,7 +28,7 @@ export const request = async (
     headers['Content-Type'] = 'application/json';
   }
 
-  const response = await fetch(`http://127.0.0.1:8000/${url}`, {
+  const response = await fetch(`http://178.156.150.202:8000/${url}`, {
     ...options,
     headers,
   });
@@ -61,13 +61,16 @@ const refreshAccessToken = async (): Promise<string | null> => {
   }
 
   try {
-    const response = await fetch('http://127.0.0.1:8000/api/token/refresh/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ refresh: refreshToken }),
-    });
+    const response = await fetch(
+      'http://178.156.150.202:8000/api/token/refresh/',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ refresh: refreshToken }),
+      }
+    );
 
     if (!response.ok) {
       logout();

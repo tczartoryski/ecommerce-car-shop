@@ -39,7 +39,7 @@ export default function SignIn(props: { disableCustomTheme?: boolean }) {
     }
     const data = new FormData(event.currentTarget);
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/login/', {
+      const response = await fetch('http://178.156.150.202:8000/api/login/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

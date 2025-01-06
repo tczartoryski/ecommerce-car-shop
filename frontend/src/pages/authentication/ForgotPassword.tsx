@@ -28,7 +28,7 @@ const ForgotPassword: React.FC<ForgotPasswordProps> = ({
 
     try {
       const response = await fetch(
-        'http://127.0.0.1:8000/api/password_reset/',
+        'http://178.156.150.202:8000/api/password_reset/',
         {
           method: 'POST',
           headers: {
